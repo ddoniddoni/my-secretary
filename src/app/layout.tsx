@@ -1,20 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
   subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
-  title: "My Secretary",
-  description: "A Next.js starter project for My Secretary.",
+  title: {
+    default: "My SECRETARY",
+    template: "%s | My SECRETARY",
+  },
+  description:
+    "Purpose-built AI assistants for reading news and market briefings in a clean dashboard.",
 };
 
 export default function RootLayout({
@@ -23,8 +28,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="ko"
+      className={`${spaceGrotesk.variable} ${ibmPlexMono.variable}`}
+    >
+      <body className="min-h-screen bg-[var(--color-bg)] text-[var(--color-foreground)] antialiased">
+        {children}
+      </body>
     </html>
   );
 }

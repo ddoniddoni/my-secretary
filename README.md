@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pixel Agents
 
-## Getting Started
+Pixel Agents는 목적별 AI 비서를 추가하고 실행 결과를 대시보드에서 읽기 좋게 확인하는 반응형 웹 애플리케이션입니다. 사용자는 로그인 후 뉴스 비서, 주식 비서 같은 AI 비서를 추가하고, 채팅창이 아닌 전용 결과 UI에서 구조화된 브리핑을 확인할 수 있습니다.
 
-First, run the development server:
+## 프로젝트 개요
+
+- 랜딩 페이지에서 제품 소개와 비서 미리보기 제공
+- 로그인 후 사용자 전용 대시보드에서 비서 관리
+- 비서 상세 페이지에서 최근 실행 결과와 실행 기록 확인
+- 서버에서만 AI를 실행하고 구조화된 응답을 검증
+- 뉴스/주식 데이터는 우선 mock provider로 시작하고 나중에 실제 API로 교체 가능하게 설계
+
+## 제품 원칙
+
+- 데모보다 실제로 쓸 수 있는 MVP를 우선합니다.
+- 모든 비서를 같은 채팅 UI로 처리하지 않습니다.
+- AI 응답은 문자열이 아니라 Zod로 검증된 구조화 데이터로 렌더링합니다.
+- provider, runner, API, UI를 분리해 유지보수 가능하게 만듭니다.
+- 보호가 필요한 키는 클라이언트에 노출하지 않습니다.
+- 주식 비서는 투자 추천이 아니라 공개 데이터 기반 정보 요약 도구로 유지합니다.
+
+## 현재 상태
+
+현재 저장소는 초기 부트스트랩 단계입니다.
+
+- Next.js App Router와 TypeScript는 설정되어 있습니다.
+- 핵심 제품 기능은 아직 구현 전입니다.
+- 상세한 구현 기준은 `AGENTS.md`와 `PRD.md`에 정리되어 있습니다.
+
+## 주요 문서
+
+- `AGENTS.md`: 개발 규칙, 아키텍처 원칙, 작업 방식, 완료 기준
+- `PRD.md`: 제품 범위, 사용자 플로우, 데이터 구조, API 설계, 화면 요구사항, MVP 정의
+
+## MVP 범위
+
+### 사용자 화면
+
+- 랜딩 페이지
+- 로그인 페이지
+- 보호된 대시보드
+- 비서 상세 페이지
+
+### 초기 비서 타입
+
+- 뉴스 비서: 주요 이슈, 중요 이유, 출처를 포함한 뉴스 브리핑 제공
+- 주식 비서: 가격 변동, 관련 이슈, 관련 뉴스를 포함한 주식 브리핑 제공
+
+### 백엔드 기능
+
+- Supabase Auth 기반 로그인
+- Supabase Postgres 기반 비서 및 실행 기록 저장
+- Route Handler 기반 비서 API
+- 서버 전용 AI 실행
+- 뉴스/주식 mock provider
+
+## 기술 방향
+
+### 현재 포함된 구성
+
+- Next.js
+- React
+- TypeScript
+- ESLint
+
+### 제품 구현에 추가할 구성
+
+- Tailwind CSS
+- Supabase Auth / Postgres
+- Zod
+- OpenAI API 또는 호환 LLM provider
+
+## 로컬 실행
+
+의존성 설치 후 개발 서버를 실행합니다.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm.cmd install
+npm.cmd run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+브라우저에서 `http://localhost:3000`을 열면 됩니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+PowerShell이 아닌 환경에서는 아래 명령도 사용할 수 있습니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+## 가까운 구현 순서
 
-To learn more about Next.js, take a look at the following resources:
+1. 프로젝트 세팅과 랜딩 페이지 기초 구성
+2. Supabase 인증 연결
+3. 데이터베이스 스키마와 seed 데이터 구성
+4. 비서 CRUD 흐름 구현
+5. AI runner와 mock provider 구현
+6. 비서 실행 API 구현
+7. 비서별 결과 UI 구현
+8. 반응형 마감, 문서화, 검증 정리
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 메모
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 이 프로젝트는 범용 채팅앱이 아니라 목적형 AI 비서 대시보드를 목표로 합니다.
+- 비서 실행 결과는 구조화되고 검증 가능하며 저장 가능한 형태여야 합니다.
+- 구현 방향이 바뀌면 `README.md`, `AGENTS.md`, `PRD.md`를 함께 맞춰서 관리합니다.

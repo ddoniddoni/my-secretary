@@ -21,9 +21,10 @@ Pixel Agents는 목적별 AI 비서를 추가하고 실행 결과를 대시보�
 
 ## 현재 상태
 
-현재 저장소는 초기 부트스트랩 단계입니다.
+현재 저장소는 Step 02 인증 기반까지 연결된 상태입니다.
 
 - Next.js App Router와 TypeScript는 설정되어 있습니다.
+- Supabase SSR 기반 로그인, 세션 복원, 보호 라우트가 연결되어 있습니다.
 - 핵심 제품 기능은 아직 구현 전입니다.
 - 상세한 구현 기준은 `AGENTS.md`와 `PRD.md`에 정리되어 있습니다.
 
@@ -87,6 +88,19 @@ PowerShell이 아닌 환경에서는 아래 명령도 사용할 수 있습니다
 npm install
 npm run dev
 ```
+
+## 환경변수
+
+인증 step에서 아래 값이 필요합니다.
+
+```env
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-key
+```
+
+- Supabase Auth의 Redirect URL에 `http://localhost:3000/auth/callback`을 추가해야 합니다.
+- 실제 배포 주소를 사용할 때는 `NEXT_PUBLIC_SITE_URL`과 Redirect URL을 함께 맞춰야 합니다.
 
 ## 가까운 구현 순서
 

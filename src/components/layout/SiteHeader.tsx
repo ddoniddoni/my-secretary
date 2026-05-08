@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { Container } from "@/components/layout/Container";
+import { signOutAction } from "@/lib/supabase/actions";
+import { getCurrentUser } from "@/lib/supabase/server";
 
 const navItems = [
   { href: "#assistant-preview", label: "Assistant Preview" },
@@ -8,7 +10,9 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard" },
 ];
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const user = await getCurrentUser();
+
   return (
     <header className="sticky top-0 z-20">
       <Container className="pt-5">
@@ -39,12 +43,28 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <Link
-            href="/login"
-            className="inline-flex items-center justify-center rounded-full bg-[var(--color-foreground)] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#342011]"
-          >
-            Login
-          </Link>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <p className="hidden rounded-full border border-[var(--color-stroke)] bg-white px-3 py-2 text-xs text-[var(--color-muted)] lg:block">
+                {user.email ?? "Signed in"}
+              </p>
+              <form action={signOutAction}>
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center rounded-full bg-[var(--color-foreground)] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#342011]"
+                >
+                  Logout
+                </button>
+              </form>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="inline-flex items-center justify-center rounded-full bg-[var(--color-foreground)] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#342011]"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </Container>
     </header>

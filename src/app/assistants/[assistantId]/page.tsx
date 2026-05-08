@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PixelAvatar } from "@/components/assistants/PixelAvatar";
 import { Container } from "@/components/layout/Container";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { requireUser } from "@/lib/supabase/server";
 
 type AssistantDetailPageProps = {
   params: Promise<{
@@ -10,10 +11,13 @@ type AssistantDetailPageProps = {
   }>;
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function AssistantDetailPage({
   params,
 }: AssistantDetailPageProps) {
   const { assistantId } = await params;
+  const user = await requireUser(`/assistants/${assistantId}`);
 
   return (
     <div className="min-h-screen">
@@ -26,13 +30,16 @@ export default async function AssistantDetailPage({
                 <p className="font-mono text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">
                   Assistant Detail Scaffold
                 </p>
+                <p className="mt-3 text-sm font-medium text-[var(--color-accent)]">
+                  Protected for {user.email ?? "signed-in users"}
+                </p>
                 <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em]">
                   비서 상세 페이지 뼈대
                 </h1>
                 <p className="mt-4 text-base leading-8 text-[var(--color-muted)]">
-                  현재 assistant id는 <strong>{assistantId}</strong> 입니다.
-                  Step 04 이후부터는 실제 비서 설정, 최근 실행 결과, 실행 기록이
-                  이 화면에 연결됩니다.
+                  현재 assistant id는 <strong>{assistantId}</strong> 입니다. Step 04
+                  이후부터는 실제 비서 설정, 최근 실행 결과, 실행 기록을 이
+                  화면에 연결합니다.
                 </p>
               </div>
               <PixelAvatar variant="news" size="md" />

@@ -21,10 +21,11 @@ Pixel Agents는 목적별 AI 비서를 추가하고 실행 결과를 대시보�
 
 ## 현재 상태
 
-현재 저장소는 Step 02 인증 기반까지 연결된 상태입니다.
+현재 저장소는 Step 03 데이터베이스 기반까지 준비 중인 상태입니다.
 
 - Next.js App Router와 TypeScript는 설정되어 있습니다.
 - Supabase SSR 기반 로그인, 세션 복원, 보호 라우트가 연결되어 있습니다.
+- Supabase assistant 스키마, RLS, seed SQL이 저장소에 추가되어 있습니다.
 - 핵심 제품 기능은 아직 구현 전입니다.
 - 상세한 구현 기준은 `AGENTS.md`와 `PRD.md`에 정리되어 있습니다.
 
@@ -101,6 +102,27 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-key
 
 - Supabase Auth의 Redirect URL에 `http://localhost:3000/auth/callback`을 추가해야 합니다.
 - 실제 배포 주소를 사용할 때는 `NEXT_PUBLIC_SITE_URL`과 Redirect URL을 함께 맞춰야 합니다.
+
+## Supabase 스키마 적용
+
+Step 03 기준 스키마 파일은 아래 경로에 있습니다.
+
+- `supabase/migrations/20260509_step_03_assistant_schema.sql`
+- `supabase/seed.sql`
+
+적용 순서는 다음을 기준으로 합니다.
+
+1. Supabase SQL Editor 또는 CLI에서 migration SQL을 먼저 실행합니다.
+2. 이어서 `supabase/seed.sql`을 실행해 기본 뉴스/주식 비서 템플릿 2개를 넣습니다.
+3. `assistant_templates`, `user_assistants`, `assistant_runs`, `assistant_sources` 테이블과 RLS 정책이 생성됐는지 확인합니다.
+
+현재 migration에는 다음이 포함되어 있습니다.
+
+- assistant template, user assistant, assistant run, assistant source 테이블
+- `updated_at` 자동 갱신 trigger
+- 주요 조회용 인덱스
+- 사용자 소유 데이터용 RLS policy
+- 인증 사용자용 활성 템플릿 조회 policy
 
 ## 가까운 구현 순서
 

@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createServerClient } from "@supabase/ssr";
-import type { User } from "@supabase/supabase-js";
+import type { SupabaseClient, User } from "@supabase/supabase-js";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
@@ -83,4 +83,42 @@ export async function requireUser(nextPath: string) {
   }
 
   return user;
+}
+
+export type RouteAuthContext =
+  | {
+      error: string;
+      status: number;
+    }
+  | {
+      supabase: SupabaseClient;
+      user: User;
+    };
+
+export async function getRouteAuthContext(): Promise<RouteAuthContext> {
+  if (!hasSupabaseEnv()) {
+    return {
+      error:
+        "Supabase 환경변수가 아직 설정되지 않았습니다. `.env.local`과 Supabase 프로젝트 설정을 먼저 확인해주세요.",
+      status: 500,
+    };
+  }
+
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    return {
+      error: "로그인이 필요합니다.",
+      status: 401,
+    };
+  }
+
+  return {
+    supabase,
+    user,
+  };
 }

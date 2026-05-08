@@ -21,11 +21,12 @@ Pixel Agents는 목적별 AI 비서를 추가하고 실행 결과를 대시보�
 
 ## 현재 상태
 
-현재 저장소는 Step 03 데이터베이스 기반까지 준비 중인 상태입니다.
+현재 저장소는 Step 04 비서 CRUD 기반까지 연결된 상태입니다.
 
 - Next.js App Router와 TypeScript는 설정되어 있습니다.
 - Supabase SSR 기반 로그인, 세션 복원, 보호 라우트가 연결되어 있습니다.
 - Supabase assistant 스키마, RLS, seed SQL이 저장소에 추가되어 있습니다.
+- 비서 템플릿 조회, 내 비서 CRUD API, 대시보드 추가/삭제 흐름이 연결되어 있습니다.
 - 핵심 제품 기능은 아직 구현 전입니다.
 - 상세한 구현 기준은 `AGENTS.md`와 `PRD.md`에 정리되어 있습니다.
 
@@ -55,6 +56,16 @@ Pixel Agents는 목적별 AI 비서를 추가하고 실행 결과를 대시보�
 - Route Handler 기반 비서 API
 - 서버 전용 AI 실행
 - 뉴스/주식 mock provider
+
+## 현재 구현 범위
+
+- 랜딩 페이지
+- 이메일 매직링크 로그인
+- 보호된 대시보드
+- 비서 템플릿 기반 비서 추가
+- 내 비서 목록 조회와 삭제
+- 비서 상세 페이지 조회와 설정 수정
+- Supabase assistant schema, seed, RLS
 
 ## 기술 방향
 
@@ -123,6 +134,10 @@ Step 03 기준 스키마 파일은 아래 경로에 있습니다.
 - 주요 조회용 인덱스
 - 사용자 소유 데이터용 RLS policy
 - 인증 사용자용 활성 템플릿 조회 policy
+
+주의:
+
+- Step 04 CRUD 화면과 API는 위 migration/seed가 실제 Supabase 프로젝트에 적용되어 있어야 정상 동작합니다.
 
 ## 가까운 구현 순서
 

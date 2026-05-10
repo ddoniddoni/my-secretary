@@ -42,12 +42,12 @@ export function ModalShell({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(20,12,6,0.42)] px-4 py-8"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(6,8,22,0.72)] px-4 py-8"
       onClick={onClose}
       role="presentation"
     >
       <div
-        className="surface-panel relative w-full max-w-2xl rounded-[2rem] border px-6 py-6 shadow-[0_32px_80px_rgba(20,12,6,0.18)] sm:px-8"
+        className="surface-panel relative w-full max-w-2xl rounded-[2rem] border px-6 py-6 shadow-[0_32px_80px_rgba(0,0,0,0.32)] sm:px-8"
         onClick={(event) => event.stopPropagation()}
         aria-describedby={description ? "modal-description" : undefined}
         aria-labelledby="modal-title"
@@ -57,7 +57,7 @@ export function ModalShell({
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-5 top-5 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-stroke)] bg-white text-lg text-[var(--color-muted)] transition hover:text-[var(--color-foreground)]"
+          className="absolute right-5 top-5 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] text-lg text-[var(--color-muted)] transition hover:text-[var(--color-foreground)]"
           aria-label="모달 닫기"
         >
           ×

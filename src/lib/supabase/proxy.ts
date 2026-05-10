@@ -46,7 +46,7 @@ export async function updateSession(request: NextRequest) {
   if (!data?.claims?.sub && isProtectedPath(request.nextUrl.pathname)) {
     const loginUrl = request.nextUrl.clone();
 
-    loginUrl.pathname = "/login";
+    loginUrl.pathname = "/";
     loginUrl.search = "";
     loginUrl.searchParams.set(
       "next",

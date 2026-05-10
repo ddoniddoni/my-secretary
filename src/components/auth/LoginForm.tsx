@@ -2,10 +2,8 @@
 
 import { useActionState } from "react";
 
-import {
-  initialLoginActionState,
-  requestMagicLinkAction,
-} from "@/lib/supabase/actions";
+import { requestMagicLinkAction } from "@/lib/supabase/actions";
+import { initialLoginActionState } from "@/lib/supabase/action-state";
 
 type LoginFormProps = {
   disabled?: boolean;
@@ -42,7 +40,7 @@ export function LoginForm({
           autoComplete="email"
           placeholder="you@example.com"
           disabled={disabled || isPending}
-          className="w-full rounded-2xl border border-[var(--color-stroke)] bg-white px-4 py-3 text-sm outline-none transition focus:border-[var(--color-foreground)] disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full rounded-[14px] border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-3 text-sm text-[var(--color-foreground)] outline-none transition focus:border-[var(--color-foreground)] disabled:cursor-not-allowed disabled:opacity-60"
         />
       </div>
 
@@ -61,7 +59,7 @@ export function LoginForm({
       <button
         type="submit"
         disabled={disabled || isPending}
-        className="inline-flex w-full items-center justify-center rounded-full bg-[var(--color-foreground)] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#342011] disabled:cursor-not-allowed disabled:opacity-60"
+        className="pixel-button pixel-button-primary h-[52px] w-full text-sm disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isPending ? "링크를 준비하고 있어요..." : "이메일 로그인 링크 받기"}
       </button>

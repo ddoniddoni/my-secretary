@@ -26,9 +26,9 @@ describe("supabase auth helpers", () => {
 
   it("builds login links with optional next paths and errors", () => {
     expect(buildLoginHref("/assistants/demo", "missing_code")).toBe(
-      "/login?next=%2Fassistants%2Fdemo&error=missing_code",
+      "/?next=%2Fassistants%2Fdemo&error=missing_code",
     );
-    expect(buildLoginHref(DEFAULT_AUTH_REDIRECT_PATH)).toBe("/login");
+    expect(buildLoginHref(DEFAULT_AUTH_REDIRECT_PATH)).toBe("/");
   });
 
   it("detects protected paths", () => {

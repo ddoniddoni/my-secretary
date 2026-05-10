@@ -1,4 +1,4 @@
-export const DEFAULT_AUTH_REDIRECT_PATH = "/dashboard";
+export const DEFAULT_AUTH_REDIRECT_PATH = "/";
 
 const PROTECTED_ROUTE_PREFIXES = ["/assistants", "/dashboard"] as const;
 
@@ -49,7 +49,7 @@ export function buildLoginHref(
 
   const query = searchParams.toString();
 
-  return query ? `/login?${query}` : "/login";
+  return query ? `/?${query}` : "/";
 }
 
 export function getAuthErrorMessage(code: string | null | undefined) {

@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import type { LoginActionState } from "@/lib/supabase/action-state";
 import { getSafeRedirectPath } from "@/lib/supabase/auth";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import {
@@ -14,16 +15,6 @@ const loginRequestSchema = z.object({
   email: z.string().trim().email(),
   next: z.string().optional(),
 });
-
-export type LoginActionState = {
-  message: string;
-  status: "error" | "idle" | "success";
-};
-
-export const initialLoginActionState: LoginActionState = {
-  message: "",
-  status: "idle",
-};
 
 export async function requestMagicLinkAction(
   _previousState: LoginActionState,
@@ -83,5 +74,5 @@ export async function signOutAction() {
     await supabase.auth.signOut();
   }
 
-  redirect("/login");
+  redirect("/");
 }

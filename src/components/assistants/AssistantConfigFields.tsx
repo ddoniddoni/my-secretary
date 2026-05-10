@@ -31,7 +31,7 @@ export function AssistantConfigFields({
             {newsCategoryOptions.map((category) => (
               <label
                 key={category}
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--color-stroke)] bg-white px-4 py-2 text-sm text-[var(--color-foreground)]"
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-2 text-sm text-[var(--color-foreground)]"
               >
                 <input
                   type="checkbox"
@@ -55,7 +55,7 @@ export function AssistantConfigFields({
               name="summaryStyle"
               defaultValue={newsConfig.summaryStyle}
               disabled={disabled}
-              className="w-full rounded-2xl border border-[var(--color-stroke)] bg-white px-4 py-3 text-sm outline-none"
+              className="w-full rounded-2xl border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-3 text-sm text-[var(--color-foreground)] outline-none"
             >
               {newsSummaryStyleOptions.map((style) => (
                 <option key={style} value={style}>
@@ -73,7 +73,7 @@ export function AssistantConfigFields({
               name="maxItems"
               defaultValue={String(newsConfig.maxItems)}
               disabled={disabled}
-              className="w-full rounded-2xl border border-[var(--color-stroke)] bg-white px-4 py-3 text-sm outline-none"
+              className="w-full rounded-2xl border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-3 text-sm text-[var(--color-foreground)] outline-none"
             >
               {[5, 7, 10].map((count) => (
                 <option key={count} value={count}>
@@ -100,7 +100,7 @@ export function AssistantConfigFields({
           defaultValue={getDefaultSymbolsInput(stockConfig)}
           disabled={disabled}
           rows={4}
-          className="w-full rounded-[1.5rem] border border-[var(--color-stroke)] bg-white px-4 py-3 text-sm outline-none"
+          className="w-full rounded-[1.5rem] border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-3 text-sm text-[var(--color-foreground)] outline-none"
           placeholder="AAPL, NVDA, TSLA"
         />
         <span className="text-xs text-[var(--color-muted)]">
@@ -117,7 +117,7 @@ export function AssistantConfigFields({
             name="market"
             defaultValue={stockConfig.market}
             disabled={disabled}
-            className="w-full rounded-2xl border border-[var(--color-stroke)] bg-white px-4 py-3 text-sm outline-none"
+            className="w-full rounded-2xl border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-3 text-sm text-[var(--color-foreground)] outline-none"
           >
             {stockMarketOptions.map((market) => (
               <option key={market} value={market}>
@@ -135,7 +135,7 @@ export function AssistantConfigFields({
             name="summaryStyle"
             defaultValue={stockConfig.summaryStyle}
             disabled={disabled}
-            className="w-full rounded-2xl border border-[var(--color-stroke)] bg-white px-4 py-3 text-sm outline-none"
+            className="w-full rounded-2xl border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-3 text-sm text-[var(--color-foreground)] outline-none"
           >
             {stockSummaryStyleOptions.map((style) => (
               <option key={style} value={style}>

@@ -11,8 +11,11 @@ import { getAssistantConfigInputFromFormData } from "@/lib/assistants/form-paylo
 import type { AssistantTemplate, UserAssistant } from "@/types/assistants";
 
 type AssistantCreateDialogProps = {
+  disabled?: boolean;
   onCreated: (assistant: UserAssistant) => void;
   templates: AssistantTemplate[];
+  triggerClassName?: string;
+  triggerLabel?: string;
 };
 
 type ApiResponse = {
@@ -23,8 +26,11 @@ type ApiResponse = {
 };
 
 export function AssistantCreateDialog({
+  disabled = false,
   onCreated,
   templates,
+  triggerClassName,
+  triggerLabel = "+ 비서 추가",
 }: AssistantCreateDialogProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -96,10 +102,19 @@ export function AssistantCreateDialog({
     <>
       <button
         type="button"
-        onClick={() => setIsOpen(true)}
-        className="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] px-6 py-3 text-sm font-medium text-[var(--color-foreground)]"
+        onClick={() => {
+          if (!disabled) {
+            setIsOpen(true);
+          }
+        }}
+        disabled={disabled}
+        className={
+          triggerClassName ??
+          "inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] px-6 py-3 text-sm font-medium text-[var(--color-foreground)]"
+        }
+        title={disabled ? "Preview mode에서는 비서 추가가 비활성화됩니다." : undefined}
       >
-        + 비서 추가
+        {triggerLabel}
       </button>
 
       <ModalShell
@@ -115,7 +130,7 @@ export function AssistantCreateDialog({
                 key={template.id}
                 type="button"
                 onClick={() => setSelectedTemplateId(template.id)}
-                className="rounded-[1.75rem] border border-[var(--color-stroke)] bg-white/80 p-5 text-left transition hover:-translate-y-0.5"
+                className="rounded-[1.75rem] border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] p-5 text-left transition hover:-translate-y-0.5"
               >
                 <div className="flex items-center gap-4">
                   <PixelAvatar variant={template.type} size="sm" />
@@ -134,7 +149,7 @@ export function AssistantCreateDialog({
           </div>
         ) : (
           <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="flex items-center gap-4 rounded-[1.75rem] border border-[var(--color-stroke)] bg-white/80 p-4">
+            <div className="flex items-center gap-4 rounded-[1.75rem] border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] p-4">
               <PixelAvatar variant={selectedTemplate.type} size="sm" />
               <div>
                 <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-muted)]">
@@ -155,7 +170,7 @@ export function AssistantCreateDialog({
                 name="name"
                 defaultValue={selectedTemplate.name}
                 disabled={isSubmitting || isRefreshing}
-                className="w-full rounded-2xl border border-[var(--color-stroke)] bg-white px-4 py-3 text-sm outline-none"
+                className="w-full rounded-2xl border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-3 text-sm text-[var(--color-foreground)] outline-none"
               />
             </label>
 
@@ -176,14 +191,14 @@ export function AssistantCreateDialog({
                 type="button"
                 onClick={() => setSelectedTemplateId(null)}
                 disabled={isSubmitting || isRefreshing}
-                className="inline-flex items-center justify-center rounded-full border border-[var(--color-stroke)] bg-white px-5 py-3 text-sm font-medium"
+                className="pixel-button pixel-button-secondary"
               >
                 템플릿 다시 선택
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting || isRefreshing}
-                className="inline-flex items-center justify-center rounded-full bg-[var(--color-foreground)] px-5 py-3 text-sm font-medium text-white"
+                className="pixel-button pixel-button-primary"
               >
                 {isSubmitting ? "비서를 저장하고 있어요..." : "비서 추가하기"}
               </button>

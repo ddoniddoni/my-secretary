@@ -1,12 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useDeferredValue, useState, useTransition } from "react";
 
 import { AssistantCard } from "@/components/assistants/AssistantCard";
 import { AssistantCreateDialog } from "@/components/assistants/AssistantCreateDialog";
-import { PixelAvatar } from "@/components/assistants/PixelAvatar";
 import { ModalShell } from "@/components/ui/ModalShell";
+import { filterAssistantsForDashboard } from "@/lib/assistants/dashboard";
 import type { AssistantTemplate, UserAssistant } from "@/types/assistants";
 
 type AssistantDashboardClientProps = {
@@ -29,6 +29,7 @@ export function AssistantDashboardClient({
 }: AssistantDashboardClientProps) {
   const router = useRouter();
   const [items, setItems] = useState(assistants);
+  const [query, setQuery] = useState("");
   const [feedback, setFeedback] = useState<{
     message: string;
     tone: "error" | "success";
@@ -36,15 +37,21 @@ export function AssistantDashboardClient({
   const [deleteTarget, setDeleteTarget] = useState<UserAssistant | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isRefreshing, startTransition] = useTransition();
+  const deferredQuery = useDeferredValue(query);
 
   const templateById = Object.fromEntries(
     templates.map((template) => [template.id, template]),
+  );
+  const filteredItems = filterAssistantsForDashboard(
+    items,
+    deferredQuery,
+    templateById,
   );
 
   function handleCreated(assistant: UserAssistant) {
     setItems((current) => [...current, assistant]);
     setFeedback({
-      message: "새 비서를 추가했습니다.",
+      message: "새 비서가 대시보드에 추가됐어요.",
       tone: "success",
     });
   }
@@ -65,7 +72,7 @@ export function AssistantDashboardClient({
 
       if (!response.ok || !result.data?.deleted) {
         setFeedback({
-          message: result.error ?? "비서를 삭제하지 못했습니다.",
+          message: result.error ?? "비서를 삭제하지 못했어요.",
           tone: "error",
         });
         return;
@@ -76,7 +83,7 @@ export function AssistantDashboardClient({
       );
       setDeleteTarget(null);
       setFeedback({
-        message: "비서를 삭제했습니다.",
+        message: "비서를 목록에서 제거했어요.",
         tone: "success",
       });
       startTransition(() => {
@@ -85,7 +92,7 @@ export function AssistantDashboardClient({
     } catch (error) {
       console.error("Failed to delete assistant", error);
       setFeedback({
-        message: "비서를 삭제하지 못했습니다.",
+        message: "비서를 삭제하지 못했어요.",
         tone: "error",
       });
     } finally {
@@ -94,73 +101,52 @@ export function AssistantDashboardClient({
   }
 
   return (
-    <div className="space-y-8">
-      <section className="surface-panel rounded-[2rem] border px-6 py-8 sm:px-8">
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-          <div className="max-w-2xl">
-            <p className="font-mono text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">
-              Dashboard
-            </p>
-            <p className="mt-3 text-sm font-medium text-[var(--color-accent)]">
-              Signed in as {userEmail ?? "your account"}
-            </p>
-            <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em]">
-              내 AI 비서를 추가하고 관리하세요.
-            </h1>
-            <p className="mt-4 text-base leading-8 text-[var(--color-muted)]">
-              뉴스와 주식 템플릿을 내 목적에 맞게 저장해두고, 다음 step에서는 실행
-              결과까지 이 대시보드에서 이어서 보게 됩니다.
-            </p>
-          </div>
-          <div className="flex flex-col items-start gap-3 sm:items-end">
-            <PixelAvatar variant="helper" size="lg" />
-            <AssistantCreateDialog templates={templates} onCreated={handleCreated} />
+    <div className="flex min-h-full flex-col">
+      <section className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0">
+          <div className="flex items-start gap-3">
+            <SparkleMark />
+            <div>
+              <h1 className="font-pixel text-[28px] leading-[1.3] text-[var(--dashboard-text)] sm:text-[36px]">
+                My AI Assistants
+              </h1>
+              <p className="mt-4 max-w-2xl text-[15px] leading-8 text-[var(--dashboard-muted)]">
+                Your custom AI assistants, ready to help you get things done.
+                <span className="ml-2 hidden text-[var(--dashboard-text)] sm:inline">
+                  {userEmail ?? "Signed in"}
+                </span>
+              </p>
+            </div>
           </div>
         </div>
-      </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
-        <article className="surface-panel rounded-[1.75rem] border p-5">
-          <p className="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">
-            My Assistants
-          </p>
-          <p className="mt-3 text-3xl font-semibold tracking-[-0.05em]">
-            {items.length}
-          </p>
-          <p className="mt-2 text-sm leading-7 text-[var(--color-muted)]">
-            지금 대시보드에 저장된 비서 수입니다.
-          </p>
-        </article>
-        <article className="surface-panel rounded-[1.75rem] border p-5">
-          <p className="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">
-            Active Templates
-          </p>
-          <p className="mt-3 text-3xl font-semibold tracking-[-0.05em]">
-            {templates.length}
-          </p>
-          <p className="mt-2 text-sm leading-7 text-[var(--color-muted)]">
-            현재 사용할 수 있는 기본 비서 템플릿 수입니다.
-          </p>
-        </article>
-        <article className="surface-panel rounded-[1.75rem] border p-5">
-          <p className="font-mono text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">
-            Run Status
-          </p>
-          <p className="mt-3 text-2xl font-semibold tracking-[-0.05em]">
-            아직 실행 전
-          </p>
-          <p className="mt-2 text-sm leading-7 text-[var(--color-muted)]">
-            Step 06부터 각 비서의 실행 상태와 결과가 연결됩니다.
-          </p>
-        </article>
+        <div className="flex w-full max-w-[560px] flex-col gap-4 md:flex-row">
+          <label className="pixel-search-shell relative flex-1">
+            <SearchIcon />
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search assistants..."
+              className="pixel-input h-[68px] pl-14 pr-5 text-[15px]"
+              aria-label="Search assistants"
+            />
+          </label>
+          <AssistantCreateDialog
+            onCreated={handleCreated}
+            templates={templates}
+            triggerClassName="pixel-button pixel-button-primary pixel-toolbar-button font-pixel text-[11px] uppercase"
+            triggerLabel="+ Add"
+          />
+        </div>
       </section>
 
       {feedback ? (
         <div
-          className={`rounded-[1.5rem] border px-4 py-3 text-sm leading-6 ${
+          className={`mt-6 rounded-[12px] border px-4 py-3 text-sm ${
             feedback.tone === "error"
-              ? "border-[rgba(181,67,51,0.25)] bg-[rgba(181,67,51,0.08)] text-[#7a2d23]"
-              : "border-[rgba(11,114,133,0.2)] bg-[rgba(11,114,133,0.08)] text-[#0b7285]"
+              ? "border-[rgba(255,125,147,0.4)] bg-[rgba(255,125,147,0.12)] text-[#ffd7df]"
+              : "border-[rgba(142,242,127,0.35)] bg-[rgba(142,242,127,0.08)] text-[#d9ffd3]"
           }`}
         >
           {feedback.message}
@@ -168,21 +154,43 @@ export function AssistantDashboardClient({
       ) : null}
 
       {items.length === 0 ? (
-        <section className="surface-panel rounded-[2rem] border px-6 py-10 text-center sm:px-10">
-          <div className="mx-auto flex max-w-xl flex-col items-center">
-            <PixelAvatar variant="helper" size="lg" />
-            <h2 className="mt-6 text-2xl font-semibold tracking-[-0.04em]">
-              아직 추가한 AI 비서가 없습니다.
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
-              위의 `+ 비서 추가` 버튼을 눌러 첫 번째 뉴스 비서나 주식 비서를
-              만들어보세요.
-            </p>
+        <section className="pixel-empty-state mt-8">
+          <p className="font-pixel text-[12px] uppercase text-[var(--dashboard-text)]">
+            No assistants yet
+          </p>
+          <p className="mt-4 max-w-xl text-center text-[15px] leading-8 text-[var(--dashboard-muted)]">
+            Start with a news briefing assistant or a stock watch assistant and
+            this grid will fill in like the main OS screen.
+          </p>
+          <div className="mt-6">
+            <AssistantCreateDialog
+              onCreated={handleCreated}
+              templates={templates}
+              triggerClassName="pixel-button pixel-button-primary pixel-toolbar-button font-pixel text-[11px] uppercase"
+              triggerLabel="+ Add"
+            />
           </div>
         </section>
+      ) : filteredItems.length === 0 ? (
+        <section className="pixel-empty-state mt-8">
+          <p className="font-pixel text-[12px] uppercase text-[var(--dashboard-warning)]">
+            No Match
+          </p>
+          <p className="mt-4 max-w-xl text-center text-[15px] leading-8 text-[var(--dashboard-muted)]">
+            Nothing matched <span>&quot;{query.trim()}&quot;</span>. Try an
+            assistant name, a stock symbol, or a news category.
+          </p>
+          <button
+            type="button"
+            onClick={() => setQuery("")}
+            className="pixel-button pixel-button-secondary mt-6 h-[52px] px-6"
+          >
+            Clear search
+          </button>
+        </section>
       ) : (
-        <section className="grid gap-5 xl:grid-cols-2">
-          {items.map((assistant) => (
+        <section className="mt-8 grid gap-5 xl:grid-cols-2 2xl:grid-cols-3">
+          {filteredItems.map((assistant) => (
             <AssistantCard
               key={assistant.id}
               assistant={assistant}
@@ -193,6 +201,12 @@ export function AssistantDashboardClient({
         </section>
       )}
 
+      <footer className="mt-auto pt-8 text-center">
+        <p className="font-mono text-sm text-[var(--dashboard-muted)]">
+          Built with pixels, powered by AI
+        </p>
+      </footer>
+
       <ModalShell
         open={Boolean(deleteTarget)}
         onClose={() => {
@@ -201,10 +215,10 @@ export function AssistantDashboardClient({
           }
         }}
         title="비서를 삭제할까요?"
-        description="삭제한 비서는 대시보드에서 사라지며, 연결된 실행 기록도 함께 삭제될 수 있습니다."
+        description="대시보드에서 바로 사라지고, 이후 실행 기록이 연결되면 함께 정리될 수 있어요."
       >
         <div className="space-y-5">
-          <div className="rounded-[1.5rem] border border-[var(--color-stroke)] bg-white/80 px-4 py-4 text-sm leading-7 text-[var(--color-muted)]">
+          <div className="rounded-[14px] border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-4 text-sm leading-7 text-[var(--color-foreground)]">
             {deleteTarget?.name}
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
@@ -212,7 +226,7 @@ export function AssistantDashboardClient({
               type="button"
               onClick={() => setDeleteTarget(null)}
               disabled={isDeleting || isRefreshing}
-              className="inline-flex items-center justify-center rounded-full border border-[var(--color-stroke)] bg-white px-5 py-3 text-sm font-medium"
+              className="pixel-button pixel-button-secondary h-[48px] px-5"
             >
               취소
             </button>
@@ -220,13 +234,58 @@ export function AssistantDashboardClient({
               type="button"
               onClick={handleDelete}
               disabled={isDeleting || isRefreshing}
-              className="inline-flex items-center justify-center rounded-full bg-[var(--color-foreground)] px-5 py-3 text-sm font-medium text-white"
+              className="pixel-button h-[48px] bg-[var(--dashboard-danger)] px-5 text-[#1d0910]"
             >
-              {isDeleting ? "삭제하고 있어요..." : "삭제하기"}
+              {isDeleting ? "삭제 중..." : "삭제"}
             </button>
           </div>
         </div>
       </ModalShell>
     </div>
+  );
+}
+
+function SparkleMark() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 40 40"
+      className="mt-1 h-7 w-7 shrink-0 text-[var(--dashboard-accent-strong)]"
+    >
+      <path
+        d="M20 4 23.8 16.2 36 20l-12.2 3.8L20 36l-3.8-12.2L4 20l12.2-3.8Z"
+        fill="currentColor"
+      />
+      <path
+        d="M30 5.5 31.5 10 36 11.5 31.5 13 30 17.5 28.5 13 24 11.5 28.5 10Z"
+        fill="currentColor"
+        opacity="0.8"
+      />
+    </svg>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="pointer-events-none absolute left-5 top-1/2 h-6 w-6 -translate-y-1/2 text-[var(--dashboard-text)]"
+    >
+      <circle
+        cx="11"
+        cy="11"
+        r="6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <path
+        d="m16 16 4 4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+    </svg>
   );
 }

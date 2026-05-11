@@ -21,14 +21,15 @@ Pixel Agents는 목적별 AI 비서를 추가하고 실행 결과를 대시보�
 
 ## 현재 상태
 
-현재 저장소는 Step 04 비서 CRUD 기반까지 연결된 상태입니다.
+현재 저장소는 Step 05 AI runner 기반까지 연결된 상태입니다.
 
 - Next.js App Router와 TypeScript는 설정되어 있습니다.
 - Supabase Auth와 데이터 접근 구조, assistant CRUD API가 준비되어 있습니다.
 - Supabase assistant 스키마, RLS, seed SQL이 저장소에 추가되어 있습니다.
 - 루트 화면에서 로그인 게이트와 사용자 대시보드가 분기됩니다.
 - 비서 템플릿 조회, 내 비서 CRUD API, 대시보드 추가/삭제 흐름이 연결되어 있습니다.
-- 핵심 제품 기능은 아직 구현 전입니다.
+- 뉴스/주식 mock provider와 구조화 AI runner 기반이 준비되어 있습니다.
+- 실행 API와 결과 UI는 아직 다음 단계 범위입니다.
 - 상세한 구현 기준은 `AGENTS.md`와 `PRD.md`에 정리되어 있습니다.
 
 ## 주요 문서
@@ -55,6 +56,7 @@ Pixel Agents는 목적별 AI 비서를 추가하고 실행 결과를 대시보�
 - Route Handler 기반 비서 API
 - 서버 전용 AI 실행
 - 뉴스/주식 mock provider
+- Zod 기반 구조화 출력 검증
 
 ## 현재 구현 범위
 
@@ -63,6 +65,10 @@ Pixel Agents는 목적별 AI 비서를 추가하고 실행 결과를 대시보�
 - 비서 템플릿 기반 비서 추가
 - 내 비서 목록 조회와 삭제
 - Supabase assistant schema, seed, RLS
+- OpenAI 호환 JSON 생성 클라이언트
+- 뉴스/주식 mock provider
+- 뉴스/주식 assistant runner
+- 구조화 출력 schema와 runner 테스트
 
 ## 기술 방향
 
@@ -107,11 +113,18 @@ npm run dev
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-key
+OPENAI_API_KEY=your-openai-api-key
+OPENAI_MODEL=gpt-4.1-mini
+OPENAI_BASE_URL=
+NEWS_PROVIDER=mock
+STOCK_PROVIDER=mock
 ```
 
 - Supabase Auth의 Redirect URL에 `http://localhost:3000/auth/callback`을 추가해야 합니다.
 - 실제 배포 주소를 사용할 때는 `NEXT_PUBLIC_SITE_URL`과 Redirect URL을 함께 맞춰야 합니다.
 - 환경변수가 없으면 로그인 게이트는 보이지만 실제 로그인 링크 발송은 비활성화됩니다.
+- `OPENAI_BASE_URL`은 OpenAI 호환 provider를 붙일 때만 선택적으로 사용합니다.
+- MVP에서는 `NEWS_PROVIDER`, `STOCK_PROVIDER`를 둘 다 `mock`으로 둡니다.
 
 ## Supabase 스키마 적용
 

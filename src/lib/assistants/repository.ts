@@ -3,17 +3,21 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseAssistantConfig } from "@/lib/assistants/config";
 import {
   mapAssistantRunRow,
+  mapAssistantSourceRow,
   mapAssistantTemplateRow,
   mapUserAssistantRow,
 } from "@/lib/supabase/mappers";
 import type {
   AssistantRun,
+  AssistantSource,
   AssistantTemplate,
   UserAssistant,
 } from "@/types/assistants";
 import type {
   AssistantRunRow,
+  AssistantSourceRow,
   AssistantTemplateRow,
+  JsonObject,
   UserAssistantRow,
 } from "@/types/database";
 
@@ -57,13 +61,20 @@ export async function listAssistantTemplates(
 export async function getAssistantTemplateById(
   supabase: SupabaseClient,
   templateId: string,
+  options?: {
+    includeInactive?: boolean;
+  },
 ): Promise<AssistantTemplate | null> {
-  const { data, error } = await supabase
+  let query = supabase
     .from("assistant_templates")
     .select("*")
-    .eq("id", templateId)
-    .eq("is_active", true)
-    .maybeSingle();
+    .eq("id", templateId);
+
+  if (!options?.includeInactive) {
+    query = query.eq("is_active", true);
+  }
+
+  const { data, error } = await query.maybeSingle();
 
   const row = assertQueryResult(
     data as AssistantTemplateRow | null,
@@ -280,4 +291,152 @@ export async function listAssistantRunsForUserAssistant(
     error,
     "실행 기록을 불러오지 못했습니다.",
   ).map(mapAssistantRunRow);
+}
+
+export async function createAssistantRun(
+  supabase: SupabaseClient,
+  input: {
+    userId: string;
+    assistantId: string;
+    type: UserAssistant["type"];
+    status: AssistantRun["status"];
+    input: JsonObject;
+    output?: JsonObject | null;
+    errorMessage?: string | null;
+    providerMeta?: JsonObject;
+    completedAt?: string | null;
+  },
+): Promise<AssistantRun> {
+  const { data, error } = await supabase
+    .from("assistant_runs")
+    .insert({
+      completed_at: input.completedAt ?? null,
+      error_message: input.errorMessage ?? null,
+      input: input.input,
+      output: input.output ?? null,
+      provider_meta: input.providerMeta ?? {},
+      status: input.status,
+      type: input.type,
+      user_assistant_id: input.assistantId,
+      user_id: input.userId,
+    })
+    .select("*")
+    .single();
+
+  const row = assertQueryResult(
+    data as AssistantRunRow | null,
+    error,
+    "비서 실행 기록을 생성하지 못했습니다.",
+  );
+
+  if (!row) {
+    throw new AssistantRepositoryError(
+      "비서 실행 기록을 생성하지 못했습니다.",
+    );
+  }
+
+  return mapAssistantRunRow(row);
+}
+
+export async function updateAssistantRun(
+  supabase: SupabaseClient,
+  input: {
+    runId: string;
+    userId: string;
+    status: AssistantRun["status"];
+    input: JsonObject;
+    output?: JsonObject | null;
+    errorMessage?: string | null;
+    providerMeta?: JsonObject;
+    completedAt?: string | null;
+  },
+): Promise<AssistantRun> {
+  const { data, error } = await supabase
+    .from("assistant_runs")
+    .update({
+      completed_at: input.completedAt ?? null,
+      error_message: input.errorMessage ?? null,
+      input: input.input,
+      output: input.output ?? null,
+      provider_meta: input.providerMeta ?? {},
+      status: input.status,
+    })
+    .eq("id", input.runId)
+    .eq("user_id", input.userId)
+    .select("*")
+    .maybeSingle();
+
+  const row = assertQueryResult(
+    data as AssistantRunRow | null,
+    error,
+    "비서 실행 기록을 저장하지 못했습니다.",
+  );
+
+  if (!row) {
+    throw new AssistantRepositoryError(
+      "비서 실행 기록을 저장하지 못했습니다.",
+    );
+  }
+
+  return mapAssistantRunRow(row);
+}
+
+export async function createAssistantSources(
+  supabase: SupabaseClient,
+  input: {
+    runId: string;
+    userId: string;
+    type: AssistantSource["type"];
+    sources: Array<{
+      publishedAt: string | null;
+      sourceName: string | null;
+      sourceUrl: string | null;
+      title: string;
+    }>;
+  },
+): Promise<AssistantSource[]> {
+  if (input.sources.length === 0) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("assistant_sources")
+    .insert(
+      input.sources.map((source) => ({
+        published_at: source.publishedAt,
+        run_id: input.runId,
+        source_name: source.sourceName,
+        source_url: source.sourceUrl,
+        title: source.title,
+        type: input.type,
+        user_id: input.userId,
+      })),
+    )
+    .select("*");
+
+  return assertQueryResult(
+    (data ?? []) as AssistantSourceRow[],
+    error,
+    "비서 실행 출처를 저장하지 못했습니다.",
+  ).map(mapAssistantSourceRow);
+}
+
+export async function deleteAssistantSourcesForRun(
+  supabase: SupabaseClient,
+  input: {
+    runId: string;
+    userId: string;
+  },
+) {
+  const { error } = await supabase
+    .from("assistant_sources")
+    .delete()
+    .eq("run_id", input.runId)
+    .eq("user_id", input.userId);
+
+  assertQueryResult(
+    true,
+    error,
+    "비서 실행 출처를 정리하지 못했습니다.",
+  );
 }

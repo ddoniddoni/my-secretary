@@ -86,6 +86,84 @@ function createStockTemplate(): AssistantTemplate<"stock"> {
   };
 }
 
+function createBaseballAssistant(): UserAssistant<"baseball"> {
+  return {
+    config: {
+      teams: ["LG", "KIA"],
+      summaryStyle: "series-focused",
+      includeStandings: true,
+      language: "ko",
+    },
+    createdAt: "2026-05-12T06:00:00.000Z",
+    id: "assistant-baseball-1",
+    name: "KBO",
+    sortOrder: 0,
+    templateId: "template-baseball-1",
+    type: "baseball",
+    updatedAt: "2026-05-12T06:00:00.000Z",
+    userId: "user-1",
+  };
+}
+
+function createBaseballTemplate(): AssistantTemplate<"baseball"> {
+  return {
+    avatarKey: "pixel-catcher",
+    createdAt: "2026-05-12T06:00:00.000Z",
+    defaultConfig: {
+      teams: ["LG", "KIA"],
+      summaryStyle: "series-focused",
+      includeStandings: true,
+      language: "ko",
+    },
+    description: "Baseball template",
+    id: "template-baseball-1",
+    isActive: true,
+    name: "Baseball template",
+    systemPrompt: "You are a baseball assistant.",
+    type: "baseball",
+    updatedAt: "2026-05-12T06:00:00.000Z",
+  };
+}
+
+function createRealEstateAssistant(): UserAssistant<"real_estate"> {
+  return {
+    config: {
+      regions: ["서울 마포구"],
+      propertyTypes: ["apartment"],
+      summaryStyle: "balanced",
+      language: "ko",
+    },
+    createdAt: "2026-05-12T06:00:00.000Z",
+    id: "assistant-real-estate-1",
+    name: "Homes",
+    sortOrder: 0,
+    templateId: "template-real-estate-1",
+    type: "real_estate",
+    updatedAt: "2026-05-12T06:00:00.000Z",
+    userId: "user-1",
+  };
+}
+
+function createRealEstateTemplate(): AssistantTemplate<"real_estate"> {
+  return {
+    avatarKey: "pixel-home",
+    createdAt: "2026-05-12T06:00:00.000Z",
+    defaultConfig: {
+      regions: ["서울 마포구"],
+      propertyTypes: ["apartment"],
+      summaryStyle: "balanced",
+      language: "ko",
+    },
+    description: "Real estate template",
+    id: "template-real-estate-1",
+    isActive: true,
+    name: "Real estate template",
+    systemPrompt: "You are a real estate assistant.",
+    type: "real_estate",
+    updatedAt: "2026-05-12T06:00:00.000Z",
+  };
+}
+
 describe("assistant runner", () => {
   it("returns structured news output and source metadata", async () => {
     const generateStructured = vi.fn(
@@ -237,5 +315,155 @@ describe("assistant runner", () => {
         },
       }),
     ).rejects.toThrow("Schema validation failed");
+  });
+
+  it("returns structured baseball output and team sources", async () => {
+    const generateStructured = vi.fn(
+      async () =>
+        ({
+          generatedAt: "2026-05-12T06:00:00.000Z",
+          leagueSummary: "상위권 경쟁이 이어졌습니다.",
+          standings: [
+            {
+              rank: 1,
+              team: "LG",
+              record: "26승 14패",
+              streak: "2연승",
+            },
+          ],
+          teamBriefs: [
+            {
+              latestResult: "LG가 최근 경기에서 승리했습니다.",
+              keyPlayer: "오스틴",
+              keyStory: "타선 집중력이 돋보였습니다.",
+              nextGame: "내일 18:30 경기 예정",
+              recentRecord: "최근 5경기 4승 1패",
+              source: {
+                publishedAt: "2026-05-12T05:50:00.000Z",
+                sourceName: "KBO Daily",
+                sourceUrl: "https://example.com/baseball/lg",
+                title: "LG 최근 경기 요약",
+              },
+              team: "LG",
+            },
+          ],
+        }) as never,
+    );
+    const baseballProvider = {
+      getLeagueBrief: vi.fn(async () => ({
+        generatedAt: "2026-05-12T06:00:00.000Z",
+        includeStandings: true,
+        isMock: true,
+        items: [
+          {
+            latestResult: "LG가 최근 경기에서 승리했습니다.",
+            keyPlayer: "오스틴",
+            keyStory: "타선 집중력이 돋보였습니다.",
+            nextGame: "내일 18:30 경기 예정",
+            publishedAt: "2026-05-12T05:50:00.000Z",
+            recentRecord: "최근 5경기 4승 1패",
+            sourceName: "KBO Daily",
+            sourceUrl: "https://example.com/baseball/lg",
+            team: "LG" as const,
+            title: "LG 최근 경기 요약",
+          },
+        ],
+        provider: "mock",
+        standings: [
+          {
+            rank: 1,
+            team: "LG" as const,
+            record: "26승 14패",
+            streak: "2연승",
+          },
+        ],
+        teams: ["LG", "KIA"],
+      })),
+    };
+
+    const result = (await runAssistant(
+      createBaseballAssistant() as UserAssistant,
+      createBaseballTemplate() as AssistantTemplate,
+      {
+        generateStructured,
+        baseballProvider,
+      } as never,
+    )) as {
+      output: { teamBriefs: Array<unknown> };
+      sources: Array<{ sourceUrl: string }>;
+      type: "baseball";
+    };
+
+    expect(result.type).toBe("baseball");
+    expect(result.output.teamBriefs).toHaveLength(1);
+    expect(result.sources[0]?.sourceUrl).toBe("https://example.com/baseball/lg");
+  });
+
+  it("returns real estate output with the required notice", async () => {
+    const generateStructured = vi.fn(
+      async () =>
+        ({
+          generatedAt: "2026-05-12T06:00:00.000Z",
+          marketSummary: "관심 지역은 실거주 선호가 유지됐습니다.",
+          notice:
+            "이 내용은 법률 자문이나 투자 권유가 아니라 공개 정보 기반 요약입니다.",
+          regions: [
+            {
+              demandSignal: "실거주 수요가 꾸준합니다.",
+              keyChanges: ["문의 강도가 유지되고 있습니다."],
+              priceTrendSummary: "마포구 아파트는 보합권에서 강세 흐름입니다.",
+              propertyType: "apartment",
+              region: "서울 마포구",
+              source: {
+                publishedAt: "2026-05-12T05:50:00.000Z",
+                sourceName: "Housing Watch",
+                sourceUrl: "https://example.com/real-estate/mapo",
+                title: "마포구 아파트 흐름",
+              },
+              supplySignal: "공급 뉴스는 제한적입니다.",
+            },
+          ],
+        }) as never,
+    );
+    const realEstateProvider = {
+      getMarketPulse: vi.fn(async () => ({
+        generatedAt: "2026-05-12T06:00:00.000Z",
+        isMock: true,
+        items: [
+          {
+            demandSignal: "실거주 수요가 꾸준합니다.",
+            keyChanges: ["문의 강도가 유지되고 있습니다."],
+            priceTrendSummary: "마포구 아파트는 보합권에서 강세 흐름입니다.",
+            propertyType: "apartment" as const,
+            publishedAt: "2026-05-12T05:50:00.000Z",
+            region: "서울 마포구",
+            sourceName: "Housing Watch",
+            sourceUrl: "https://example.com/real-estate/mapo",
+            supplySignal: "공급 뉴스는 제한적입니다.",
+            title: "마포구 아파트 흐름",
+          },
+        ],
+        propertyTypes: ["apartment" as const],
+        provider: "mock",
+        regions: ["서울 마포구"],
+      })),
+    };
+
+    const result = (await runAssistant(
+      createRealEstateAssistant() as UserAssistant,
+      createRealEstateTemplate() as AssistantTemplate,
+      {
+        generateStructured,
+        realEstateProvider,
+      } as never,
+    )) as {
+      output: { notice: string };
+      sources: Array<unknown>;
+      type: "real_estate";
+    };
+
+    expect(result.type).toBe("real_estate");
+    expect(result.output.notice).toContain("공개 정보 기반 요약");
+    expect(result.sources).toHaveLength(1);
   });
 });

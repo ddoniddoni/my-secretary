@@ -1,6 +1,12 @@
 import { ZodError } from "zod";
 
+import {
+  createDemoUserAssistant,
+  getDemoAssistantTemplateById,
+  listDemoUserAssistants,
+} from "@/lib/assistants/demo-store";
 import { parseAssistantConfig, createAssistantRequestSchema } from "@/lib/assistants/config";
+import { isDemoModeEnabled } from "@/lib/demo-mode";
 import {
   createUserAssistant,
   getAssistantTemplateById,
@@ -11,6 +17,12 @@ import { getRouteAuthContext } from "@/lib/supabase/server";
 import { dataResponse, errorResponse } from "@/lib/utils/api-response";
 
 export async function GET() {
+  if (isDemoModeEnabled()) {
+    return dataResponse({
+      assistants: listDemoUserAssistants(),
+    });
+  }
+
   const authContext = await getRouteAuthContext();
 
   if ("error" in authContext) {
@@ -32,12 +44,6 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const authContext = await getRouteAuthContext();
-
-  if ("error" in authContext) {
-    return errorResponse(authContext.error, authContext.status);
-  }
-
   let payload: unknown;
 
   try {
@@ -53,6 +59,30 @@ export async function POST(request: Request) {
   }
 
   try {
+    if (isDemoModeEnabled()) {
+      const template = getDemoAssistantTemplateById(parsed.data.templateId);
+
+      if (!template) {
+        return errorResponse("선택한 비서 템플릿을 찾을 수 없습니다.", 404);
+      }
+
+      const config = parseAssistantConfig(template.type, parsed.data.config);
+      const assistant = createDemoUserAssistant({
+        config,
+        name: parsed.data.name,
+        templateId: template.id,
+        type: template.type,
+      });
+
+      return dataResponse({ assistant }, { status: 201 });
+    }
+
+    const authContext = await getRouteAuthContext();
+
+    if ("error" in authContext) {
+      return errorResponse(authContext.error, authContext.status);
+    }
+
     const template = await getAssistantTemplateById(
       authContext.supabase,
       parsed.data.templateId,

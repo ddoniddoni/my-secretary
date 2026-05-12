@@ -1,4 +1,6 @@
+import { BaseballAssistantResult } from "@/components/assistants/BaseballAssistantResult";
 import { NewsAssistantResult } from "@/components/assistants/NewsAssistantResult";
+import { RealEstateAssistantResult } from "@/components/assistants/RealEstateAssistantResult";
 import { StockAssistantResult } from "@/components/assistants/StockAssistantResult";
 import {
   formatAssistantRunTimestamp,
@@ -83,5 +85,13 @@ export function AssistantResultRenderer({
     return <NewsAssistantResult result={parsed.output} />;
   }
 
-  return <StockAssistantResult result={parsed.output} />;
+  if (parsed.type === "stock") {
+    return <StockAssistantResult result={parsed.output} />;
+  }
+
+  if (parsed.type === "baseball") {
+    return <BaseballAssistantResult result={parsed.output} />;
+  }
+
+  return <RealEstateAssistantResult result={parsed.output} />;
 }

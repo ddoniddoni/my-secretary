@@ -1,4 +1,4 @@
-export type AssistantType = "news" | "stock";
+export type AssistantType = "news" | "stock" | "baseball" | "real_estate";
 
 export type AssistantRunStatus = "pending" | "success" | "failed";
 
@@ -18,6 +18,33 @@ export type StockMarket = "KR" | "US";
 
 export type StockSummaryStyle = "news-focused" | "risk-focused" | "short";
 
+export type KboTeam =
+  | "LG"
+  | "SSG"
+  | "두산"
+  | "롯데"
+  | "KIA"
+  | "삼성"
+  | "한화"
+  | "KT"
+  | "NC"
+  | "키움";
+
+export type BaseballSummaryStyle =
+  | "brief"
+  | "series-focused"
+  | "player-focused";
+
+export type RealEstatePropertyType =
+  | "apartment"
+  | "officetel"
+  | "villa";
+
+export type RealEstateSummaryStyle =
+  | "balanced"
+  | "price-focused"
+  | "supply-focused";
+
 export type NewsAssistantConfig = {
   categories: NewsCategory[];
   summaryStyle: NewsSummaryStyle;
@@ -32,9 +59,25 @@ export type StockAssistantConfig = {
   language: AssistantLanguage;
 };
 
+export type BaseballAssistantConfig = {
+  teams: KboTeam[];
+  summaryStyle: BaseballSummaryStyle;
+  includeStandings: boolean;
+  language: AssistantLanguage;
+};
+
+export type RealEstateAssistantConfig = {
+  regions: string[];
+  propertyTypes: RealEstatePropertyType[];
+  summaryStyle: RealEstateSummaryStyle;
+  language: AssistantLanguage;
+};
+
 export type AssistantConfigByType = {
   news: NewsAssistantConfig;
   stock: StockAssistantConfig;
+  baseball: BaseballAssistantConfig;
+  real_estate: RealEstateAssistantConfig;
 };
 
 export type AssistantConfig = AssistantConfigByType[AssistantType];

@@ -44,6 +44,40 @@ const stockAssistant: UserAssistant<"stock"> = {
   userId: "user-1",
 };
 
+const baseballAssistant: UserAssistant<"baseball"> = {
+  config: {
+    teams: ["LG", "KIA"],
+    summaryStyle: "series-focused",
+    includeStandings: true,
+    language: "ko",
+  },
+  createdAt: "2026-05-10T00:00:00.000Z",
+  id: "assistant-baseball",
+  name: "KBO Radar",
+  sortOrder: 2,
+  templateId: "template-baseball",
+  type: "baseball",
+  updatedAt: "2026-05-10T00:00:00.000Z",
+  userId: "user-1",
+};
+
+const realEstateAssistant: UserAssistant<"real_estate"> = {
+  config: {
+    regions: ["서울 마포구", "경기 성남시 분당구"],
+    propertyTypes: ["apartment", "officetel"],
+    summaryStyle: "balanced",
+    language: "ko",
+  },
+  createdAt: "2026-05-10T00:00:00.000Z",
+  id: "assistant-real-estate",
+  name: "Home Pulse",
+  sortOrder: 3,
+  templateId: "template-real-estate",
+  type: "real_estate",
+  updatedAt: "2026-05-10T00:00:00.000Z",
+  userId: "user-1",
+};
+
 const templatesById: Record<string, AssistantTemplate | undefined> = {
   "template-news": {
     avatarKey: "pixel-reporter",
@@ -69,12 +103,38 @@ const templatesById: Record<string, AssistantTemplate | undefined> = {
     type: "stock",
     updatedAt: "2026-05-10T00:00:00.000Z",
   },
+  "template-baseball": {
+    avatarKey: "pixel-catcher",
+    createdAt: "2026-05-10T00:00:00.000Z",
+    defaultConfig: baseballAssistant.config,
+    description: "KBO game summaries for your teams.",
+    id: "template-baseball",
+    isActive: true,
+    name: "KBO Brief",
+    systemPrompt: "prompt",
+    type: "baseball",
+    updatedAt: "2026-05-10T00:00:00.000Z",
+  },
+  "template-real-estate": {
+    avatarKey: "pixel-home",
+    createdAt: "2026-05-10T00:00:00.000Z",
+    defaultConfig: realEstateAssistant.config,
+    description: "Region-level housing updates with public signals.",
+    id: "template-real-estate",
+    isActive: true,
+    name: "Real Estate Brief",
+    systemPrompt: "prompt",
+    type: "real_estate",
+    updatedAt: "2026-05-10T00:00:00.000Z",
+  },
 };
 
 describe("assistant dashboard helpers", () => {
   it("returns readable type labels", () => {
     expect(getAssistantTypeLabel("news")).toBe("News AI");
     expect(getAssistantTypeLabel("stock")).toBe("Stock AI");
+    expect(getAssistantTypeLabel("baseball")).toBe("Baseball AI");
+    expect(getAssistantTypeLabel("real_estate")).toBe("Real Estate AI");
   });
 
   it("builds metadata chips for news and stock assistants", () => {
@@ -86,10 +146,23 @@ describe("assistant dashboard helpers", () => {
       "NVDA / TSLA",
       "US market",
     ]);
+    expect(getAssistantMetaChips(baseballAssistant)).toEqual([
+      "LG / KIA",
+      "순위 포함",
+    ]);
+    expect(getAssistantMetaChips(realEstateAssistant)).toEqual([
+      "서울 마포구 / 경기 성남시 분당구",
+      "2 types",
+    ]);
   });
 
   it("filters assistants by search text across names and config metadata", () => {
-    const assistants = [newsAssistant, stockAssistant];
+    const assistants = [
+      newsAssistant,
+      stockAssistant,
+      baseballAssistant,
+      realEstateAssistant,
+    ];
 
     expect(
       filterAssistantsForDashboard(assistants, "nvda", templatesById),
@@ -97,6 +170,12 @@ describe("assistant dashboard helpers", () => {
     expect(filterAssistantsForDashboard(assistants, "경제", templatesById)).toEqual([
       newsAssistant,
     ]);
+    expect(filterAssistantsForDashboard(assistants, "kia", templatesById)).toEqual([
+      baseballAssistant,
+    ]);
+    expect(
+      filterAssistantsForDashboard(assistants, "마포구", templatesById),
+    ).toEqual([realEstateAssistant]);
     expect(filterAssistantsForDashboard(assistants, "", templatesById)).toEqual(
       assistants,
     );

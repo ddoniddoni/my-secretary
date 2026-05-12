@@ -1,6 +1,8 @@
 import type {
   AssistantLanguage,
+  KboTeam,
   NewsCategory,
+  RealEstatePropertyType,
   StockMarket,
 } from "../../types/assistants";
 
@@ -68,4 +70,70 @@ export interface NewsProvider {
 
 export interface StockProvider {
   getMarketBrief(input: StockProviderInput): Promise<StockProviderResult>;
+}
+
+export type BaseballProviderInput = {
+  teams: KboTeam[];
+  language: AssistantLanguage;
+  includeStandings: boolean;
+};
+
+export type BaseballStanding = {
+  rank: number;
+  team: KboTeam;
+  record: string;
+  streak: string;
+};
+
+export type BaseballProviderItem = ProviderSource & {
+  latestResult: string;
+  keyPlayer: string;
+  keyStory: string;
+  nextGame: string;
+  recentRecord: string;
+  team: KboTeam;
+};
+
+export type BaseballProviderResult = {
+  generatedAt: string;
+  includeStandings: boolean;
+  isMock: boolean;
+  items: BaseballProviderItem[];
+  provider: string;
+  standings: BaseballStanding[];
+  teams: KboTeam[];
+};
+
+export type RealEstateProviderInput = {
+  language: AssistantLanguage;
+  propertyTypes: RealEstatePropertyType[];
+  regions: string[];
+};
+
+export type RealEstateProviderItem = ProviderSource & {
+  demandSignal: string;
+  keyChanges: string[];
+  priceTrendSummary: string;
+  propertyType: RealEstatePropertyType;
+  region: string;
+  supplySignal: string;
+};
+
+export type RealEstateProviderResult = {
+  generatedAt: string;
+  isMock: boolean;
+  items: RealEstateProviderItem[];
+  propertyTypes: RealEstatePropertyType[];
+  provider: string;
+  regions: string[];
+};
+
+export interface BaseballProvider {
+  getLeagueBrief(input: BaseballProviderInput): Promise<BaseballProviderResult>;
+}
+
+export interface RealEstateProvider {
+  getMarketPulse(
+    input: RealEstateProviderInput,
+  ): Promise<RealEstateProviderResult>;
 }

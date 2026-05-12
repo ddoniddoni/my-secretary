@@ -5,7 +5,9 @@ import {
   executeAssistantRun,
   getAssistantExecutionErrorMessage,
 } from "@/lib/assistants/execution";
+import { runDemoAssistant } from "@/lib/assistants/demo-store";
 import { AssistantRepositoryError } from "@/lib/assistants/repository";
+import { isDemoModeEnabled } from "@/lib/demo-mode";
 import { getRouteAuthContext } from "@/lib/supabase/server";
 import { dataResponse, errorResponse } from "@/lib/utils/api-response";
 
@@ -16,13 +18,23 @@ type RouteContext = {
 };
 
 export async function POST(_request: Request, context: RouteContext) {
+  const { assistantId } = await context.params;
+
+  if (isDemoModeEnabled()) {
+    const run = runDemoAssistant(assistantId);
+
+    if (!run) {
+      return errorResponse("비서를 찾을 수 없습니다.", 404);
+    }
+
+    return dataResponse({ run }, { status: 201 });
+  }
+
   const authContext = await getRouteAuthContext();
 
   if ("error" in authContext) {
     return errorResponse(authContext.error, authContext.status);
   }
-
-  const { assistantId } = await context.params;
 
   try {
     const { run } = await executeAssistantRun(authContext.supabase, {

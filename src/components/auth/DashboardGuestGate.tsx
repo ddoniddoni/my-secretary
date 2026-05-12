@@ -13,7 +13,7 @@ export function DashboardGuestGate({
   loginEnabled,
   templates,
 }: DashboardGuestGateProps) {
-  const previewCards = templates.slice(0, 2);
+  const previewCards = templates.slice(0, 4);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_420px]">
@@ -25,9 +25,9 @@ export function DashboardGuestGate({
               Unlock Your Assistant Deck
             </h1>
             <p className="mt-4 max-w-2xl text-[15px] leading-8 text-[var(--dashboard-muted)]">
-              뉴스와 주식 비서를 저장하고, 실행 결과를 채팅창 대신 읽기 좋은
-              카드 UI로 관리하는 메인 대시보드예요. 로그인하면 이 아래가 바로
-              당신만의 assistant OS로 열립니다.
+              뉴스, 주식, 국내야구, 부동산 비서를 저장하고, 실행 결과를
+              채팅창 대신 읽기 좋은 카드 UI로 관리하는 메인 대시보드예요.
+              로그인하면 이 아래가 바로 당신만의 assistant OS로 열립니다.
             </p>
           </div>
         </div>

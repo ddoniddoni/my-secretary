@@ -1,3 +1,4 @@
+import { getAssistantTypeLabel } from "@/lib/assistants/dashboard";
 import {
   formatAssistantRunTimestamp,
   getAssistantRunStatusCopy,
@@ -51,7 +52,9 @@ export function AssistantRunHistory({ runs }: AssistantRunHistoryProps) {
                   {formatAssistantRunTimestamp(run.completedAt ?? run.createdAt)}
                 </span>
               </div>
-              <span className="pixel-meta-pill">{run.type}</span>
+              <span className="pixel-meta-pill">
+                {getAssistantTypeLabel(run.type)}
+              </span>
             </div>
             <p className="mt-3 text-sm leading-7 text-[var(--dashboard-text)]">
               {getAssistantRunSummary(run)}

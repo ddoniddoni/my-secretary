@@ -1,15 +1,27 @@
 import {
+  BaseballBriefSchema,
   NewsBriefSchema,
+  RealEstateBriefSchema,
   StockBriefSchema,
+  type BaseballBrief,
   type NewsBrief,
+  type RealEstateBrief,
   type StockBrief,
 } from "@/lib/assistants/output-schemas";
 import type { AssistantRun } from "@/types/assistants";
 
 export type ParsedAssistantRunResult =
   | {
+      output: BaseballBrief;
+      type: "baseball";
+    }
+  | {
       output: NewsBrief;
       type: "news";
+    }
+  | {
+      output: RealEstateBrief;
+      type: "real_estate";
     }
   | {
       output: StockBrief;
@@ -76,7 +88,33 @@ export function parseAssistantRunResult(
     };
   }
 
-  const parsed = StockBriefSchema.safeParse(run.output);
+  if (run.type === "stock") {
+    const parsed = StockBriefSchema.safeParse(run.output);
+
+    if (!parsed.success) {
+      return null;
+    }
+
+    return {
+      output: parsed.data,
+      type: "stock",
+    };
+  }
+
+  if (run.type === "baseball") {
+    const parsed = BaseballBriefSchema.safeParse(run.output);
+
+    if (!parsed.success) {
+      return null;
+    }
+
+    return {
+      output: parsed.data,
+      type: "baseball",
+    };
+  }
+
+  const parsed = RealEstateBriefSchema.safeParse(run.output);
 
   if (!parsed.success) {
     return null;
@@ -84,7 +122,7 @@ export function parseAssistantRunResult(
 
   return {
     output: parsed.data,
-    type: "stock",
+    type: "real_estate",
   };
 }
 
@@ -107,5 +145,13 @@ export function getAssistantRunSummary(run: AssistantRun) {
     return `${parsed.output.highlights.length}개의 주요 이슈를 정리했습니다.`;
   }
 
-  return `${parsed.output.symbols.length}개 종목 브리핑을 저장했습니다.`;
+  if (parsed.type === "stock") {
+    return `${parsed.output.symbols.length}개 종목 브리핑을 저장했습니다.`;
+  }
+
+  if (parsed.type === "baseball") {
+    return `${parsed.output.teamBriefs.length}개 팀 흐름을 정리했습니다.`;
+  }
+
+  return `${parsed.output.regions.length}개 지역 브리핑을 저장했습니다.`;
 }

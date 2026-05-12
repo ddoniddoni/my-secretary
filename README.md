@@ -21,7 +21,7 @@ Pixel Agents는 목적별 AI 비서를 추가하고 실행 결과를 대시보�
 
 ## 현재 상태
 
-현재 저장소는 Step 05 AI runner 기반까지 연결된 상태입니다.
+현재 저장소는 Step 06 실행 API까지 연결된 상태입니다.
 
 - Next.js App Router와 TypeScript는 설정되어 있습니다.
 - Supabase Auth와 데이터 접근 구조, assistant CRUD API가 준비되어 있습니다.
@@ -29,7 +29,7 @@ Pixel Agents는 목적별 AI 비서를 추가하고 실행 결과를 대시보�
 - 루트 화면에서 로그인 게이트와 사용자 대시보드가 분기됩니다.
 - 비서 템플릿 조회, 내 비서 CRUD API, 대시보드 추가/삭제 흐름이 연결되어 있습니다.
 - 뉴스/주식 mock provider와 구조화 AI runner 기반이 준비되어 있습니다.
-- 실행 API와 결과 UI는 아직 다음 단계 범위입니다.
+- 실행 API와 run persistence는 연결되었고, 결과 UI는 다음 단계 범위입니다.
 - 상세한 구현 기준은 `AGENTS.md`와 `PRD.md`에 정리되어 있습니다.
 
 ## 주요 문서

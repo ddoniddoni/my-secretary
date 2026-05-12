@@ -1,3 +1,6 @@
+import Link from "next/link";
+
+import { AssistantRunButton } from "@/components/assistants/AssistantRunButton";
 import {
   getAssistantMetaChips,
   getAssistantStatusCopy,
@@ -60,22 +63,18 @@ export function AssistantCard({
       </div>
 
       <div className="mt-6 grid grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)_72px] gap-3">
-        <button
-          type="button"
-          disabled
+        <Link
+          href={`/assistants/${assistant.id}`}
           className="pixel-card-button pixel-card-button-primary"
-          title="Single-screen mode keeps everything on the main dashboard."
         >
-          Main
-        </button>
-        <button
-          type="button"
-          disabled
-          className="pixel-card-button pixel-card-button-secondary"
-          title="Run API lands in the next implementation step."
-        >
-          Run
-        </button>
+          Detail
+        </Link>
+        <AssistantRunButton
+          assistantId={assistant.id}
+          idleLabel="Run"
+          runningLabel="..."
+          buttonClassName="pixel-card-button pixel-card-button-secondary"
+        />
         <button
           type="button"
           onClick={() => onDelete(assistant)}

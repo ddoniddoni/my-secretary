@@ -38,7 +38,9 @@ export async function GET(_request: Request, context: RouteContext) {
     }
 
     const [template, runs] = await Promise.all([
-      getAssistantTemplateById(authContext.supabase, assistant.templateId),
+      getAssistantTemplateById(authContext.supabase, assistant.templateId, {
+        includeInactive: true,
+      }),
       listAssistantRunsForUserAssistant(
         authContext.supabase,
         authContext.user.id,

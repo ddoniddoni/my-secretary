@@ -1,8 +1,16 @@
+import { listDemoAssistantTemplates } from "@/lib/assistants/demo-store";
 import { listAssistantTemplates } from "@/lib/assistants/repository";
+import { isDemoModeEnabled } from "@/lib/demo-mode";
 import { errorResponse, dataResponse } from "@/lib/utils/api-response";
 import { getRouteAuthContext } from "@/lib/supabase/server";
 
 export async function GET() {
+  if (isDemoModeEnabled()) {
+    return dataResponse({
+      templates: listDemoAssistantTemplates(),
+    });
+  }
+
   const authContext = await getRouteAuthContext();
 
   if ("error" in authContext) {

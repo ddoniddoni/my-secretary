@@ -515,6 +515,14 @@ button {
   background: linear-gradient(180deg, #9fe989 0%, #c7f4b1 100%);
 }
 
+.pixel-card-portrait.is-baseball {
+  background: linear-gradient(180deg, #ffe08b 0%, #ffd3a1 100%);
+}
+
+.pixel-card-portrait.is-real-estate {
+  background: linear-gradient(180deg, #a7c8ff 0%, #d4e6ff 100%);
+}
+
 .pixel-card-portrait-frame {
   position: absolute;
   inset: 0;
@@ -551,6 +559,20 @@ button {
   box-shadow:
     -8px 5px 0 #3a73d9,
     8px 5px 0 #3a73d9;
+}
+
+.pixel-card-portrait.is-baseball .pixel-card-portrait-body {
+  background: #c96900;
+  box-shadow:
+    -8px 5px 0 #c96900,
+    8px 5px 0 #c96900;
+}
+
+.pixel-card-portrait.is-real-estate .pixel-card-portrait-body {
+  background: #4769d8;
+  box-shadow:
+    -8px 5px 0 #4769d8,
+    8px 5px 0 #4769d8;
 }
 
 .pixel-card-portrait-accent {

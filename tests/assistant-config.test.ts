@@ -27,6 +27,30 @@ describe("assistant config validation", () => {
     expect(parsed.symbols).toEqual(["AAPL", "NVDA"]);
   });
 
+  it("parses valid baseball config", () => {
+    const parsed = parseAssistantConfig("baseball", {
+      teams: ["LG", "KIA"],
+      summaryStyle: "series-focused",
+      includeStandings: true,
+      language: "ko",
+    });
+
+    expect(parsed.teams).toEqual(["LG", "KIA"]);
+    expect(parsed.includeStandings).toBe(true);
+  });
+
+  it("deduplicates real estate regions and property types", () => {
+    const parsed = parseAssistantConfig("real_estate", {
+      regions: ["서울 마포구", "서울 마포구", "경기 성남시 분당구"],
+      propertyTypes: ["apartment", "officetel", "apartment"],
+      summaryStyle: "balanced",
+      language: "ko",
+    });
+
+    expect(parsed.regions).toEqual(["서울 마포구", "경기 성남시 분당구"]);
+    expect(parsed.propertyTypes).toEqual(["apartment", "officetel"]);
+  });
+
   it("rejects invalid news config", () => {
     expect(() =>
       parseAssistantConfig("news", {
@@ -65,6 +89,40 @@ describe("assistant config validation", () => {
       symbols: ["aapl", "nvda", "TSLA"],
       market: "US",
       summaryStyle: "risk-focused",
+      language: "ko",
+    });
+  });
+
+  it("builds baseball config input from form data", () => {
+    const formData = new FormData();
+
+    formData.append("teams", "LG");
+    formData.append("teams", "KIA");
+    formData.set("summaryStyle", "player-focused");
+    formData.set("includeStandings", "true");
+
+    expect(getAssistantConfigInputFromFormData("baseball", formData)).toEqual({
+      teams: ["LG", "KIA"],
+      summaryStyle: "player-focused",
+      includeStandings: true,
+      language: "ko",
+    });
+  });
+
+  it("builds real estate config input from textarea form data", () => {
+    const formData = new FormData();
+
+    formData.set("regions", "서울 마포구\n경기 성남시 분당구");
+    formData.append("propertyTypes", "apartment");
+    formData.append("propertyTypes", "officetel");
+    formData.set("summaryStyle", "supply-focused");
+
+    expect(
+      getAssistantConfigInputFromFormData("real_estate", formData),
+    ).toEqual({
+      regions: ["서울 마포구", "경기 성남시 분당구"],
+      propertyTypes: ["apartment", "officetel"],
+      summaryStyle: "supply-focused",
       language: "ko",
     });
   });

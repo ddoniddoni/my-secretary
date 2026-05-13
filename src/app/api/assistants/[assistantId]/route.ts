@@ -1,6 +1,14 @@
 import { ZodError } from "zod";
 
+import {
+  deleteDemoUserAssistant,
+  getDemoAssistantTemplateById,
+  getDemoUserAssistantById,
+  listDemoAssistantRunsForUserAssistant,
+  updateDemoUserAssistant,
+} from "@/lib/assistants/demo-store";
 import { updateAssistantRequestSchema, parseAssistantConfig } from "@/lib/assistants/config";
+import { isDemoModeEnabled } from "@/lib/demo-mode";
 import {
   deleteUserAssistant,
   getAssistantTemplateById,
@@ -18,13 +26,33 @@ type RouteContext = {
 };
 
 export async function GET(_request: Request, context: RouteContext) {
+  const { assistantId } = await context.params;
+
+  if (isDemoModeEnabled()) {
+    const assistant = getDemoUserAssistantById(assistantId);
+
+    if (!assistant) {
+      return errorResponse("비서를 찾을 수 없습니다.", 404);
+    }
+
+    const [template, runs] = await Promise.all([
+      Promise.resolve(getDemoAssistantTemplateById(assistant.templateId)),
+      Promise.resolve(listDemoAssistantRunsForUserAssistant(assistant.id, 10)),
+    ]);
+
+    return dataResponse({
+      assistant,
+      template,
+      latestRun: runs[0] ?? null,
+      runs,
+    });
+  }
+
   const authContext = await getRouteAuthContext();
 
   if ("error" in authContext) {
     return errorResponse(authContext.error, authContext.status);
   }
-
-  const { assistantId } = await context.params;
 
   try {
     const assistant = await getUserAssistantById(
@@ -38,7 +66,9 @@ export async function GET(_request: Request, context: RouteContext) {
     }
 
     const [template, runs] = await Promise.all([
-      getAssistantTemplateById(authContext.supabase, assistant.templateId),
+      getAssistantTemplateById(authContext.supabase, assistant.templateId, {
+        includeInactive: true,
+      }),
       listAssistantRunsForUserAssistant(
         authContext.supabase,
         authContext.user.id,
@@ -61,12 +91,6 @@ export async function GET(_request: Request, context: RouteContext) {
 }
 
 export async function PATCH(request: Request, context: RouteContext) {
-  const authContext = await getRouteAuthContext();
-
-  if ("error" in authContext) {
-    return errorResponse(authContext.error, authContext.status);
-  }
-
   const { assistantId } = await context.params;
   let payload: unknown;
 
@@ -83,6 +107,33 @@ export async function PATCH(request: Request, context: RouteContext) {
   }
 
   try {
+    if (isDemoModeEnabled()) {
+      const existingAssistant = getDemoUserAssistantById(assistantId);
+
+      if (!existingAssistant) {
+        return errorResponse("비서를 찾을 수 없습니다.", 404);
+      }
+
+      const config = parseAssistantConfig(existingAssistant.type, parsed.data.config);
+      const assistant = updateDemoUserAssistant({
+        assistantId,
+        config,
+        name: parsed.data.name,
+      });
+
+      if (!assistant) {
+        return errorResponse("비서를 찾을 수 없습니다.", 404);
+      }
+
+      return dataResponse({ assistant });
+    }
+
+    const authContext = await getRouteAuthContext();
+
+    if ("error" in authContext) {
+      return errorResponse(authContext.error, authContext.status);
+    }
+
     const existingAssistant = await getUserAssistantById(
       authContext.supabase,
       authContext.user.id,
@@ -121,15 +172,25 @@ export async function PATCH(request: Request, context: RouteContext) {
 }
 
 export async function DELETE(_request: Request, context: RouteContext) {
-  const authContext = await getRouteAuthContext();
-
-  if ("error" in authContext) {
-    return errorResponse(authContext.error, authContext.status);
-  }
-
   const { assistantId } = await context.params;
 
   try {
+    if (isDemoModeEnabled()) {
+      const deleted = deleteDemoUserAssistant(assistantId);
+
+      if (!deleted) {
+        return errorResponse("비서를 찾을 수 없습니다.", 404);
+      }
+
+      return dataResponse({ deleted: true });
+    }
+
+    const authContext = await getRouteAuthContext();
+
+    if ("error" in authContext) {
+      return errorResponse(authContext.error, authContext.status);
+    }
+
     const deleted = await deleteUserAssistant(
       authContext.supabase,
       authContext.user.id,

@@ -1766,9 +1766,11 @@ Core MVP:
 3. Protected dashboard
 4. User assistant list
 5. Add assistant modal
-6. Two assistant templates:
+6. Four assistant templates:
    - News briefing assistant
    - Stock briefing assistant
+   - Domestic baseball briefing assistant
+   - Real estate briefing assistant
 7. Run assistant API
 8. Store assistant run history
 9. Render different result UIs per assistant type
@@ -1783,7 +1785,7 @@ Important architecture:
   - `runNewsAssistant`
   - `runStockAssistant`
 - Use Zod schemas for structured AI output validation.
-- Use mock providers first for news and stock data.
+- Use mock providers first for news, stock, domestic baseball, and real estate data.
 - Keep providers replaceable with real APIs later.
 - Store assistant runs in Supabase.
 - Apply RLS to all user-owned tables.
@@ -1809,6 +1811,8 @@ Document setup instructions in README.
 - 결과 공유 링크
 - 웹 검색 provider 정식 연동
 - 실제 주식 API provider 연동
+- 실제 스포츠 데이터 provider 연동
+- 실제 부동산 데이터 provider 연동
 - 실행 비용 추적
 - 비서 실행 캐싱
 - 프리미엄 비서 템플릿
@@ -1823,9 +1827,13 @@ MVP는 다음이 가능할 때 완료입니다.
 - 사용자가 대시보드에 접근할 수 있다.
 - 사용자가 뉴스 비서를 추가할 수 있다.
 - 사용자가 주식 비서를 추가할 수 있다.
+- 사용자가 국내야구 비서를 추가할 수 있다.
+- 사용자가 부동산 비서를 추가할 수 있다.
 - 사용자가 비서를 삭제할 수 있다.
 - 뉴스 비서를 실행하면 구조화된 뉴스 브리핑이 표시된다.
 - 주식 비서를 실행하면 구조화된 주식 브리핑이 표시된다.
+- 국내야구 비서를 실행하면 구조화된 경기 브리핑이 표시된다.
+- 부동산 비서를 실행하면 구조화된 지역 브리핑이 표시된다.
 - 실행 기록이 Supabase에 저장된다.
 - 비서별 결과 UI가 다르게 렌더링된다.
 - AI API key가 클라이언트에 노출되지 않는다.

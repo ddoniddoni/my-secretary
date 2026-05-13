@@ -148,10 +148,20 @@ export async function executeAssistantRun(
             assistant as UserAssistant<"news">,
             template as AssistantTemplate<"news">,
           )
-        : await runAssistant(
+        : assistant.type === "stock" && template.type === "stock"
+          ? await runAssistant(
             assistant as UserAssistant<"stock">,
             template as AssistantTemplate<"stock">,
-          );
+          )
+          : assistant.type === "baseball" && template.type === "baseball"
+            ? await runAssistant(
+                assistant as UserAssistant<"baseball">,
+                template as AssistantTemplate<"baseball">,
+              )
+            : await runAssistant(
+                assistant as UserAssistant<"real_estate">,
+                template as AssistantTemplate<"real_estate">,
+              );
 
     result = executionResult;
 

@@ -6,6 +6,7 @@ import { signOutAction } from "@/lib/supabase/actions";
 
 type DashboardShellProps = {
   children: ReactNode;
+  demoMode?: boolean;
   guestMode?: boolean;
   userEmail: string | null | undefined;
 };
@@ -28,6 +29,7 @@ const navItems: NavItem[] = [
 
 export function DashboardShell({
   children,
+  demoMode = false,
   guestMode = false,
   userEmail,
 }: DashboardShellProps) {
@@ -103,18 +105,26 @@ export function DashboardShell({
                     <PixelAvatar variant="news" size="sm" />
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-[var(--dashboard-text)]">
-                        {userEmail?.split("@")[0] ?? "PixelUser"}
+                        {demoMode
+                          ? "Demo User"
+                          : userEmail?.split("@")[0] ?? "PixelUser"}
                       </p>
                       <p className="mt-1 font-mono text-xs text-[var(--dashboard-success)]">
-                        Online
+                        {demoMode ? "Demo Mode" : "Online"}
                       </p>
                     </div>
                   </div>
-                  <form action={signOutAction} className="mt-3">
-                    <button type="submit" className="pixel-button pixel-button-secondary h-[40px] w-full text-sm">
-                      Logout
-                    </button>
-                  </form>
+                  {demoMode ? (
+                    <p className="mt-3 text-sm leading-6 text-[var(--dashboard-muted)]">
+                      로그인 없이 화면과 실행 흐름을 점검할 수 있는 임시 모드입니다.
+                    </p>
+                  ) : (
+                    <form action={signOutAction} className="mt-3">
+                      <button type="submit" className="pixel-button pixel-button-secondary h-[40px] w-full text-sm">
+                        Logout
+                      </button>
+                    </form>
+                  )}
                 </div>
               </div>
             </aside>

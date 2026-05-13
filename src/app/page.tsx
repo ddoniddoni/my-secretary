@@ -1,7 +1,13 @@
 import { AssistantDashboardClient } from "@/components/assistants/AssistantDashboardClient";
 import { DashboardGuestGate } from "@/components/auth/DashboardGuestGate";
 import { DashboardShell } from "@/components/layout/DashboardShell";
+import {
+  getDemoUserIdentity,
+  listDemoAssistantTemplates,
+  listDemoUserAssistants,
+} from "@/lib/assistants/demo-store";
 import { fallbackPreviewTemplates } from "@/lib/assistants/preview";
+import { isDemoModeEnabled } from "@/lib/demo-mode";
 import {
   listAssistantTemplates,
   listUserAssistants,
@@ -24,6 +30,7 @@ type HomePageProps = {
 
 export default async function HomePage({ searchParams }: HomePageProps) {
   const canUseSupabase = hasSupabaseEnv();
+  const demoModeEnabled = isDemoModeEnabled();
   const supabase = canUseSupabase ? await createServerSupabaseClient() : null;
   const user = canUseSupabase ? await getCurrentUser() : null;
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
@@ -39,6 +46,20 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   }
 
   if (!user) {
+    if (demoModeEnabled) {
+      const demoUser = getDemoUserIdentity();
+
+      return (
+        <DashboardShell demoMode userEmail={demoUser.email}>
+          <AssistantDashboardClient
+            assistants={listDemoUserAssistants()}
+            templates={listDemoAssistantTemplates()}
+            userEmail={demoUser.email}
+          />
+        </DashboardShell>
+      );
+    }
+
     return (
       <DashboardShell guestMode userEmail={null}>
         <DashboardGuestGate

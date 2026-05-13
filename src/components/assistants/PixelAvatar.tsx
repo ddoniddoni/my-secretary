@@ -1,5 +1,5 @@
 type PixelAvatarProps = {
-  variant: "news" | "stock" | "helper";
+  variant: "news" | "stock" | "baseball" | "real_estate" | "helper";
   size?: "sm" | "md" | "lg";
 };
 
@@ -13,6 +13,16 @@ const avatarStyles = {
     background: "linear-gradient(135deg, #e2f9df 0%, #a9e6b0 100%)",
     accent: "#2b8a3e",
     detail: "#226b31",
+  },
+  baseball: {
+    background: "linear-gradient(135deg, #fff4d6 0%, #f3c259 100%)",
+    accent: "#c96900",
+    detail: "#8a4500",
+  },
+  real_estate: {
+    background: "linear-gradient(135deg, #e5f0ff 0%, #9ec2ff 100%)",
+    accent: "#3358c8",
+    detail: "#213a87",
   },
   helper: {
     background: "linear-gradient(135deg, #fff0dc 0%, #ffc98e 100%)",

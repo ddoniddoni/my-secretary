@@ -33,6 +33,12 @@ export function DashboardShell({
   guestMode = false,
   userEmail,
 }: DashboardShellProps) {
+  const workspaceMode = guestMode
+    ? "Guest preview"
+    : demoMode
+      ? "Demo mode"
+      : "Workspace live";
+
   return (
     <div className="pixel-os-theme min-h-screen bg-[var(--dashboard-bg)] p-2 md:p-3">
       <div className="pixel-window mx-auto flex min-h-[calc(100vh-1rem)] w-full max-w-[1680px] flex-col overflow-hidden">
@@ -52,10 +58,29 @@ export function DashboardShell({
           </div>
 
           <div className="flex items-center gap-2">
-            <button type="button" aria-label="Minimize" className="pixel-window-control">
+            <span
+              className={`hidden rounded-full border px-3 py-2 font-mono text-xs md:inline-flex ${
+                guestMode
+                  ? "border-[rgba(243,194,89,0.35)] bg-[rgba(243,194,89,0.1)] text-[#ffe49d]"
+                  : demoMode
+                    ? "border-[rgba(161,143,255,0.4)] bg-[rgba(113,100,255,0.14)] text-[#e4ddff]"
+                    : "border-[rgba(137,239,116,0.35)] bg-[rgba(137,239,116,0.1)] text-[#d9ffd3]"
+              }`}
+            >
+              {workspaceMode}
+            </span>
+            <button
+              type="button"
+              aria-label="Minimize"
+              className="pixel-window-control"
+            >
               <span className="pixel-window-control-line" />
             </button>
-            <button type="button" aria-label="Maximize" className="pixel-window-control">
+            <button
+              type="button"
+              aria-label="Maximize"
+              className="pixel-window-control"
+            >
               <span className="pixel-window-control-square" />
             </button>
             <button
@@ -116,11 +141,15 @@ export function DashboardShell({
                   </div>
                   {demoMode ? (
                     <p className="mt-3 text-sm leading-6 text-[var(--dashboard-muted)]">
-                      로그인 없이 화면과 실행 흐름을 점검할 수 있는 임시 모드입니다.
+                      Explore the full dashboard flow without login while local
+                      Supabase keys are still missing.
                     </p>
                   ) : (
                     <form action={signOutAction} className="mt-3">
-                      <button type="submit" className="pixel-button pixel-button-secondary h-[40px] w-full text-sm">
+                      <button
+                        type="submit"
+                        className="pixel-button pixel-button-secondary h-[40px] w-full text-sm"
+                      >
                         Logout
                       </button>
                     </form>
@@ -150,7 +179,11 @@ type PixelNavIconProps = {
 function PixelNavIcon({ name }: PixelNavIconProps) {
   if (name === "home") {
     return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-[18px] w-[18px] fill-current">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="h-[18px] w-[18px] fill-current"
+      >
         <path d="M12 4 3.5 10.8v1.9h2V20H10v-4h4v4h4.5v-7.3h2v-1.9Z" />
       </svg>
     );
@@ -158,7 +191,11 @@ function PixelNavIcon({ name }: PixelNavIconProps) {
 
   if (name === "bot") {
     return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-[18px] w-[18px] fill-none stroke-current">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="h-[18px] w-[18px] fill-none stroke-current"
+      >
         <rect x="5" y="7" width="14" height="10" rx="2" strokeWidth="2" />
         <path d="M12 4v3M9 11h.01M15 11h.01M8 17v2M16 17v2" strokeWidth="2" />
       </svg>
@@ -167,7 +204,11 @@ function PixelNavIcon({ name }: PixelNavIconProps) {
 
   if (name === "file") {
     return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-[18px] w-[18px] fill-none stroke-current">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="h-[18px] w-[18px] fill-none stroke-current"
+      >
         <path d="M7 4h8l3 3v13H7z" strokeWidth="2" />
         <path d="M15 4v4h4M10 11h5M10 15h5" strokeWidth="2" />
       </svg>
@@ -176,7 +217,11 @@ function PixelNavIcon({ name }: PixelNavIconProps) {
 
   if (name === "pulse") {
     return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-[18px] w-[18px] fill-none stroke-current">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="h-[18px] w-[18px] fill-none stroke-current"
+      >
         <path d="M3 13h5l2-5 4 10 2-5h5" strokeWidth="2" />
       </svg>
     );
@@ -184,15 +229,29 @@ function PixelNavIcon({ name }: PixelNavIconProps) {
 
   if (name === "plug") {
     return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-[18px] w-[18px] fill-none stroke-current">
-        <path d="M9 4v6M15 4v6M7 10h10v2a5 5 0 0 1-5 5 5 5 0 0 1-5-5zM12 17v3" strokeWidth="2" />
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="h-[18px] w-[18px] fill-none stroke-current"
+      >
+        <path
+          d="M9 4v6M15 4v6M7 10h10v2a5 5 0 0 1-5 5 5 5 0 0 1-5-5zM12 17v3"
+          strokeWidth="2"
+        />
       </svg>
     );
   }
 
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-[18px] w-[18px] fill-none stroke-current">
-      <path d="M12 4v3M12 17v3M4 12h3M17 12h3M6.5 6.5l2.1 2.1M15.4 15.4l2.1 2.1M17.5 6.5l-2.1 2.1M8.6 15.4l-2.1 2.1" strokeWidth="2" />
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-[18px] w-[18px] fill-none stroke-current"
+    >
+      <path
+        d="M12 4v3M12 17v3M4 12h3M17 12h3M6.5 6.5l2.1 2.1M15.4 15.4l2.1 2.1M17.5 6.5l-2.1 2.1M8.6 15.4l-2.1 2.1"
+        strokeWidth="2"
+      />
       <circle cx="12" cy="12" r="3.5" strokeWidth="2" />
     </svg>
   );

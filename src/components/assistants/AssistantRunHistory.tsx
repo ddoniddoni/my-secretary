@@ -15,11 +15,11 @@ export function AssistantRunHistory({ runs }: AssistantRunHistoryProps) {
     return (
       <div className="rounded-[14px] border border-dashed border-[var(--dashboard-border)] px-5 py-8 text-center">
         <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-muted)]">
-          No History
+          No history
         </p>
         <p className="mt-4 text-sm leading-7 text-[var(--dashboard-muted)]">
-          아직 실행 기록이 없습니다. 첫 실행을 시작하면 최근 브리핑 이력이
-          이곳에 쌓입니다.
+          This assistant has not been run yet. Once you trigger the first
+          briefing, the recent timeline will appear here.
         </p>
       </div>
     );

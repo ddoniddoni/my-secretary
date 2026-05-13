@@ -5,8 +5,12 @@ import { useDeferredValue, useState, useTransition } from "react";
 
 import { AssistantCard } from "@/components/assistants/AssistantCard";
 import { AssistantCreateDialog } from "@/components/assistants/AssistantCreateDialog";
+import { StatePanel } from "@/components/shared/StatePanel";
 import { ModalShell } from "@/components/ui/ModalShell";
-import { filterAssistantsForDashboard } from "@/lib/assistants/dashboard";
+import {
+  buildDashboardOverview,
+  filterAssistantsForDashboard,
+} from "@/lib/assistants/dashboard";
 import type { AssistantTemplate, UserAssistant } from "@/types/assistants";
 
 type AssistantDashboardClientProps = {
@@ -47,11 +51,12 @@ export function AssistantDashboardClient({
     deferredQuery,
     templateById,
   );
+  const overviewCards = buildDashboardOverview(items);
 
   function handleCreated(assistant: UserAssistant) {
     setItems((current) => [...current, assistant]);
     setFeedback({
-      message: "새 비서가 대시보드에 추가됐어요.",
+      message: "The assistant has been added to your dashboard.",
       tone: "success",
     });
   }
@@ -72,7 +77,7 @@ export function AssistantDashboardClient({
 
       if (!response.ok || !result.data?.deleted) {
         setFeedback({
-          message: result.error ?? "비서를 삭제하지 못했어요.",
+          message: result.error ?? "We could not remove that assistant.",
           tone: "error",
         });
         return;
@@ -83,7 +88,7 @@ export function AssistantDashboardClient({
       );
       setDeleteTarget(null);
       setFeedback({
-        message: "비서를 목록에서 제거했어요.",
+        message: "The assistant has been removed from your dashboard.",
         tone: "success",
       });
       startTransition(() => {
@@ -92,7 +97,7 @@ export function AssistantDashboardClient({
     } catch (error) {
       console.error("Failed to delete assistant", error);
       setFeedback({
-        message: "비서를 삭제하지 못했어요.",
+        message: "We could not remove that assistant.",
         tone: "error",
       });
     } finally {
@@ -111,7 +116,8 @@ export function AssistantDashboardClient({
                 My AI Assistants
               </h1>
               <p className="mt-4 max-w-2xl text-[15px] leading-8 text-[var(--dashboard-muted)]">
-                Your custom AI assistants, ready to help you get things done.
+                Save repeatable workflows, rerun structured briefings, and keep
+                every assistant in one pixel-style workspace.
                 <span className="ml-2 hidden text-[var(--dashboard-text)] sm:inline">
                   {userEmail ?? "Signed in"}
                 </span>
@@ -141,6 +147,41 @@ export function AssistantDashboardClient({
         </div>
       </section>
 
+      <p className="mt-4 text-sm text-[var(--dashboard-muted)]">
+        {isRefreshing
+          ? "Refreshing the latest dashboard state..."
+          : "Search by assistant name, category, symbol, team, or region."}
+      </p>
+
+      {items.length > 0 ? (
+        <section className="mt-7 grid gap-4 lg:grid-cols-3">
+          {overviewCards.map((card) => (
+            <article
+              key={card.label}
+              className="rounded-[18px] border border-[var(--dashboard-border)] bg-[rgba(15,20,36,0.92)] px-5 py-5 shadow-[0_16px_32px_rgba(0,0,0,0.22)]"
+            >
+              <p
+                className={`font-pixel text-[10px] uppercase ${
+                  card.tone === "accent"
+                    ? "text-[var(--dashboard-accent-strong)]"
+                    : card.tone === "success"
+                      ? "text-[var(--dashboard-success)]"
+                      : "text-[var(--dashboard-info)]"
+                }`}
+              >
+                {card.label}
+              </p>
+              <p className="mt-4 font-pixel text-[24px] leading-none text-[var(--dashboard-text)]">
+                {card.value}
+              </p>
+              <p className="mt-4 text-sm leading-7 text-[var(--dashboard-muted)]">
+                {card.description}
+              </p>
+            </article>
+          ))}
+        </section>
+      ) : null}
+
       {feedback ? (
         <div
           className={`mt-6 rounded-[12px] border px-4 py-3 text-sm ${
@@ -154,40 +195,42 @@ export function AssistantDashboardClient({
       ) : null}
 
       {items.length === 0 ? (
-        <section className="pixel-empty-state mt-8">
-          <p className="font-pixel text-[12px] uppercase text-[var(--dashboard-text)]">
-            No assistants yet
-          </p>
-          <p className="mt-4 max-w-xl text-center text-[15px] leading-8 text-[var(--dashboard-muted)]">
-            Start with a news briefing assistant or a stock watch assistant and
-            this grid will fill in like the main OS screen.
-          </p>
-          <div className="mt-6">
-            <AssistantCreateDialog
-              onCreated={handleCreated}
-              templates={templates}
-              triggerClassName="pixel-button pixel-button-primary pixel-toolbar-button font-pixel text-[11px] uppercase"
-              triggerLabel="+ Add"
-            />
-          </div>
-        </section>
+        <div className="mt-8">
+          <StatePanel
+            align="center"
+            description="Start with a news, stock, baseball, or housing template and this dashboard will turn into your saved assistant deck."
+            eyebrow="Empty deck"
+            title="No assistants yet"
+            tone="info"
+            action={
+              <AssistantCreateDialog
+                onCreated={handleCreated}
+                templates={templates}
+                triggerClassName="pixel-button pixel-button-primary pixel-toolbar-button font-pixel text-[11px] uppercase"
+                triggerLabel="+ Add"
+              />
+            }
+          />
+        </div>
       ) : filteredItems.length === 0 ? (
-        <section className="pixel-empty-state mt-8">
-          <p className="font-pixel text-[12px] uppercase text-[var(--dashboard-warning)]">
-            No Match
-          </p>
-          <p className="mt-4 max-w-xl text-center text-[15px] leading-8 text-[var(--dashboard-muted)]">
-            Nothing matched <span>&quot;{query.trim()}&quot;</span>. Try an
-            assistant name, a stock symbol, or a news category.
-          </p>
-          <button
-            type="button"
-            onClick={() => setQuery("")}
-            className="pixel-button pixel-button-secondary mt-6 h-[52px] px-6"
-          >
-            Clear search
-          </button>
-        </section>
+        <div className="mt-8">
+          <StatePanel
+            align="center"
+            description={`Nothing matched "${query.trim()}". Try an assistant name, template name, symbol, team, or region.`}
+            eyebrow="No match"
+            title="Your search came up empty"
+            tone="warning"
+            action={
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                className="pixel-button pixel-button-secondary h-[52px] px-6"
+              >
+                Clear search
+              </button>
+            }
+          />
+        </div>
       ) : (
         <section className="mt-8 grid gap-5 xl:grid-cols-2 2xl:grid-cols-3">
           {filteredItems.map((assistant) => (
@@ -203,7 +246,7 @@ export function AssistantDashboardClient({
 
       <footer className="mt-auto pt-8 text-center">
         <p className="font-mono text-sm text-[var(--dashboard-muted)]">
-          Built with pixels, powered by AI
+          Built with pixels, providers, runners, and structured AI output.
         </p>
       </footer>
 
@@ -214,8 +257,8 @@ export function AssistantDashboardClient({
             setDeleteTarget(null);
           }
         }}
-        title="비서를 삭제할까요?"
-        description="대시보드에서 바로 사라지고, 이후 실행 기록이 연결되면 함께 정리될 수 있어요."
+        title="Remove this assistant?"
+        description="The card will disappear from your dashboard. Existing run history stays available if your data store still has those records."
       >
         <div className="space-y-5">
           <div className="rounded-[14px] border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-4 text-sm leading-7 text-[var(--color-foreground)]">
@@ -228,7 +271,7 @@ export function AssistantDashboardClient({
               disabled={isDeleting || isRefreshing}
               className="pixel-button pixel-button-secondary h-[48px] px-5"
             >
-              취소
+              Cancel
             </button>
             <button
               type="button"
@@ -236,7 +279,7 @@ export function AssistantDashboardClient({
               disabled={isDeleting || isRefreshing}
               className="pixel-button h-[48px] bg-[var(--dashboard-danger)] px-5 text-[#1d0910]"
             >
-              {isDeleting ? "삭제 중..." : "삭제"}
+              {isDeleting ? "Removing..." : "Remove"}
             </button>
           </div>
         </div>

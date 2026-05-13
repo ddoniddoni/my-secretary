@@ -1,65 +1,65 @@
-# Step 08 Portfolio Polish
+# Step 08 포트폴리오 마감
 
-## Goal
+## 목표
 
-Polish the MVP into a portfolio-ready experience by tightening the guest landing/dashboard presentation, improving state handling around assistant pages, and updating docs/env guidance to match the current product flow.
+게스트 랜딩/대시보드 진입 화면을 다듬고, 비서 페이지 주변 상태 처리를 개선하며, 문서와 환경 변수 가이드를 현재 제품 흐름에 맞게 정리해 MVP를 포트폴리오 수준의 경험으로 마감합니다.
 
-## Assumptions
+## 가정
 
-- Step 07 has already been merged into `develop`.
-- The root route continues to act as the primary entry point for both the guest gate and the signed-in dashboard.
-- Demo mode remains an important fallback when Supabase is not configured locally.
-- The core CRUD, runner, and execution flows already work, so this step should avoid broad architectural churn.
+- Step 07은 이미 `develop`에 머지되어 있습니다.
+- 루트 경로는 계속해서 게스트 게이트와 로그인 후 대시보드의 공통 진입점 역할을 합니다.
+- Supabase가 로컬에 연결되지 않은 경우에도 데모 모드는 중요한 fallback입니다.
+- 핵심 CRUD, runner, 실행 흐름은 이미 동작하므로, 이 step에서는 큰 구조 변경을 피해야 합니다.
 
-## Scope
+## 범위
 
-- Add Step 08 planning and bootstrap docs.
-- Refine the guest landing/dashboard gate so the product pitch feels more intentional and assistant-type previews are clearer.
-- Add portfolio-style summary modules to the signed-in dashboard so the main screen communicates system value quickly.
-- Improve loading, empty, error, and not-found states for assistant detail flows.
-- Tighten pixel-avatar branding and shared state-panel styling where it improves readability.
-- Refresh `README.md` and `.env.example` so setup and MVP scope are easy to understand from the repo alone.
-- Add or update focused tests for any new dashboard/state helpers introduced by the polish step.
+- Step 08 기획 문서와 부트스트랩 문서를 추가합니다.
+- 제품 소개와 비서 타입 미리보기가 더 분명하게 보이도록 게스트 랜딩/대시보드 게이트를 다듬습니다.
+- 메인 화면의 시스템 가치를 빠르게 전달할 수 있도록 로그인 사용자용 포트폴리오형 요약 모듈을 추가합니다.
+- 비서 상세 흐름의 loading, empty, error, not-found 상태를 개선합니다.
+- 가독성이 좋아지는 범위에서 픽셀 아바타 브랜딩과 공용 상태 패널 스타일을 정리합니다.
+- 저장소만 봐도 실행법과 MVP 범위를 이해할 수 있도록 `README.md`와 `.env.example`을 갱신합니다.
+- polish step에서 새로 추가한 대시보드/상태 헬퍼가 있다면 관련 테스트를 추가 또는 갱신합니다.
 
-## Out Of Scope
+## 범위 제외
 
-- New assistant domains beyond the current four types
-- Real provider integrations
-- Replacing the single-route guest/dashboard architecture
-- Deep visual redesign that would invalidate the established pixel OS language
+- 현재 4개 타입을 넘어서는 새로운 비서 도메인
+- 실제 provider 연동
+- 단일 루트 guest/dashboard 구조의 폐기
+- 기존 픽셀 OS 언어를 무효화하는 수준의 깊은 시각 리디자인
 
-## Implementation Steps
+## 구현 단계
 
-1. Add Step 08 planning and bootstrap docs.
-2. Introduce shared landing/dashboard presentation helpers for assistant-type copy and summary data.
-3. Upgrade the guest gate with stronger landing sections, clearer template previews, and better CTA framing.
-4. Add dashboard summary panels for signed-in and demo users.
-5. Add assistant detail loading/error/not-found states and reuse improved shared empty/error panels where helpful.
-6. Refresh repo docs and environment guidance to reflect the current MVP and demo mode workflow.
-7. Run lint, typecheck, and test, then prepare the Step 08 commit.
+1. Step 08 기획 문서와 부트스트랩 문서를 추가합니다.
+2. 비서 타입 소개 문구와 요약 데이터용 공용 landing/dashboard 표현 헬퍼를 도입합니다.
+3. 게스트 게이트를 더 강한 랜딩 섹션, 분명한 템플릿 미리보기, 개선된 CTA 구성으로 업그레이드합니다.
+4. 로그인 사용자와 데모 사용자 모두를 위한 대시보드 요약 패널을 추가합니다.
+5. 비서 상세 페이지의 loading/error/not-found 상태를 추가하고, 개선된 공용 empty/error 패널을 재사용합니다.
+6. 현재 MVP와 데모 모드 흐름에 맞게 저장소 문서와 환경 변수 가이드를 갱신합니다.
+7. lint, typecheck, test를 실행한 뒤 Step 08 커밋을 준비합니다.
 
-## Risks
+## 리스크
 
-- Over-polishing the shell could make the dashboard feel busier instead of clearer, so new modules should stay compact and scan-friendly.
-- Adding more guest marketing content must not slow down the path to login or demo use.
-- New shared state components can accidentally flatten domain-specific UI if they become too generic.
+- 셸을 과하게 다듬으면 오히려 대시보드가 명확하지 않고 복잡해 보일 수 있으므로, 새 모듈은 작고 빠르게 읽히게 유지해야 합니다.
+- 게스트 마케팅 콘텐츠가 늘어나더라도 로그인이나 데모 사용으로 가는 경로는 느려지면 안 됩니다.
+- 새로운 공용 상태 컴포넌트가 지나치게 일반화되면 도메인별 UI 개성이 평평해질 수 있습니다.
 
-## Validation
+## 검증
 
 - `npm.cmd run lint`
 - `npm.cmd run typecheck`
 - `npm.cmd run test`
-- Manual review of:
-  - guest mode landing/dashboard presentation on mobile and desktop
-  - signed-in or demo dashboard summary modules
-  - assistant detail loading, empty, error, and not-found states
-  - README/env instructions matching the current app flow
+- 수동 검토:
+  - 모바일/데스크톱에서 게스트 모드 랜딩/대시보드 표현
+  - 로그인 또는 데모 상태의 대시보드 요약 모듈
+  - 비서 상세 페이지의 loading, empty, error, not-found 상태
+  - 현재 앱 흐름과 README/env 안내가 일치하는지 확인
 
-## Deliverables
+## 결과물
 
 - `docs/execplans/step-08-portfolio-polish.md`
 - `docs/steps/bootstrap-step-08-portfolio-polish.md`
-- Guest landing/dashboard polish
-- Dashboard summary and state UI improvements
-- Assistant detail state routes
-- Updated README and env docs
+- 다듬어진 게스트 랜딩/대시보드
+- 대시보드 요약 및 상태 UI 개선
+- 비서 상세 상태 route
+- 업데이트된 README 및 env 문서

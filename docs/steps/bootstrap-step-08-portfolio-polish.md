@@ -1,41 +1,41 @@
-# Bootstrap Step 08 Portfolio Polish
+# 부트스트랩 Step 08 포트폴리오 마감
 
-## Why This Step Exists
+## 이 Step이 필요한 이유
 
-After Step 07, the MVP flow works end to end, but the product still needs the final layer of presentation quality that makes the repository feel intentional in a portfolio context. Step 08 focuses on the first impression, system readability, and setup clarity rather than introducing another large backend feature.
+Step 07 시점에는 MVP 흐름이 끝까지 동작하지만, 저장소가 포트폴리오 관점에서 의도적으로 다듬어진 제품처럼 보이려면 마지막 표현 품질이 더 필요합니다. Step 08은 또 하나의 큰 백엔드 기능보다 첫인상, 상태 가독성, 설정 문서 명확성에 집중합니다.
 
-## Starting Point
+## 시작 상태
 
-- The root route already handles guest and authenticated dashboard states.
-- Demo mode can stand in for local development when Supabase is not configured.
-- Assistant detail pages, run history, and result renderers already exist.
-- The repo already includes README, PRD, and schema/provider docs that now need to reflect the current polished MVP.
+- 루트 경로는 이미 게스트 상태와 인증된 대시보드 상태를 모두 처리합니다.
+- Supabase가 없어도 데모 모드로 로컬 개발과 리뷰를 진행할 수 있습니다.
+- 비서 상세 페이지, 실행 기록, 결과 렌더러가 이미 존재합니다.
+- README, PRD, schema/provider 문서는 현재 MVP 상태에 맞게 다듬을 필요가 있습니다.
 
-## Objectives
+## 목표
 
-- Make the guest landing/dashboard gate communicate the product value more clearly.
-- Give the main dashboard quick-glance summary panels that show assistant activity and coverage.
-- Improve loading, error, empty, and not-found handling around assistant detail pages.
-- Keep the pixel OS visual language, but tighten it so the UI feels more deliberate and portfolio-ready.
-- Update setup docs so a reviewer can run the project with minimal guesswork.
+- 게스트 랜딩/대시보드 진입 화면이 제품 가치를 더 명확하게 전달하도록 개선합니다.
+- 메인 대시보드에 비서 활동과 커버리지를 빠르게 파악할 수 있는 요약 패널을 추가합니다.
+- 비서 상세 페이지 주변의 loading, error, empty, not-found 처리를 강화합니다.
+- 픽셀 OS 비주얼 언어는 유지하되, UI가 더 의도적이고 포트폴리오답게 보이도록 다듬습니다.
+- 리뷰어가 거의 추측 없이 프로젝트를 실행할 수 있도록 설정 문서를 정리합니다.
 
-## Planned Commits
+## 예정 커밋
 
 - `feat(ui): polish guest landing and dashboard summary panels`
 - `feat(assistants): add detail state routes and shared state panels`
 - `docs(readme): refresh portfolio setup and MVP guide`
 
-## Notes
+## 메모
 
-- Prefer extending existing dashboard styles instead of introducing a second design system.
-- Keep the guest view actionable: login and demo mode should remain obvious.
-- Any new helper logic should stay typed and testable rather than being embedded directly into client UI components.
+- 두 번째 디자인 시스템을 들이는 대신 기존 대시보드 스타일을 확장하는 방향을 우선합니다.
+- 게스트 화면은 여전히 바로 행동할 수 있어야 하므로 로그인과 데모 모드는 눈에 잘 띄어야 합니다.
+- 새 헬퍼 로직은 클라이언트 UI 컴포넌트 안에 직접 묻히지 않도록 타입과 테스트 가능성을 유지합니다.
 
-## Handoff
+## 인계 기준
 
-When this step is complete:
+이 step이 끝나면:
 
-- `README.md` and `.env.example` should match the actual runtime flow.
-- The main dashboard should communicate product scope even before a user opens an assistant.
-- Assistant detail routes should fail gracefully with dedicated state UIs.
-- The branch should be ready for merge after lint, typecheck, test, commit, and push.
+- `README.md`와 `.env.example`이 실제 실행 흐름과 일치해야 합니다.
+- 메인 대시보드는 사용자가 비서를 열기 전에도 제품 범위를 전달해야 합니다.
+- 비서 상세 라우트는 전용 상태 UI와 함께 자연스럽게 실패를 처리해야 합니다.
+- 브랜치는 lint, typecheck, test, commit, push 이후 머지 가능한 상태여야 합니다.

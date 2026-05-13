@@ -1,52 +1,52 @@
-# Bootstrap Step 07 Result UI
+# 부트스트랩 Step 07 결과 UI
 
-## Summary
+## 요약
 
-This step turns the execution API into a user-visible experience. The main outcome is an assistant detail screen that can run a saved assistant, show recent results in assistant-specific layouts, and make execution history readable at a glance.
+이 step은 실행 API를 실제 사용자 경험으로 연결합니다. 저장된 비서를 실행하고, 비서 타입별 레이아웃으로 최근 결과를 보여주며, 실행 기록을 한눈에 읽기 쉽게 만드는 비서 상세 화면이 핵심 결과물입니다.
 
-## Branch Plan
+## 브랜치 계획
 
-- Start from the latest `develop`
-- Create branch: `step/07-result-ui`
-- Keep this step focused on detail-page UX, result rendering, and run history
-- Merge this branch back into `develop` before starting the final polish step
+- 최신 `develop`에서 시작
+- 브랜치 생성: `step/07-result-ui`
+- 이 step은 상세 페이지 UX, 결과 렌더링, 실행 기록에 집중
+- 최종 마감 step 전에 이 브랜치를 `develop`으로 머지
 
-## Commit Policy
+## 커밋 정책
 
-Use Conventional Commits from `AGENTS.md`.
+`AGENTS.md`의 Conventional Commits 규칙을 사용합니다.
 
-Recommended commits for this step:
+이 step에서 권장하는 커밋 예시:
 
 - `docs(planning): add step 07 result ui plan`
 - `feat(assistants): add assistant detail result ui`
 - `feat(dashboard): link cards to assistant detail view`
 - `test(assistants): cover run result presentation helpers`
 
-## Planned Work
+## 예정 작업
 
-- Create `docs/execplans/step-07-result-ui.md`
-- Create this bootstrap note under `docs/steps`
-- Add result parsing and summary helpers
-- Add assistant detail page and run button UX
-- Add news and stock result renderer components
-- Add run history UI and detail-page empty/error states
-- Update dashboard cards and README
+- `docs/execplans/step-07-result-ui.md` 작성
+- `docs/steps` 아래에 이 부트스트랩 문서 작성
+- 결과 파싱 및 요약 헬퍼 추가
+- 비서 상세 페이지와 실행 버튼 UX 추가
+- 뉴스/주식 결과 렌더러 컴포넌트 추가
+- 실행 기록 UI와 상세 페이지 empty/error 상태 추가
+- 대시보드 카드와 README 갱신
 
-## Working Notes
+## 작업 메모
 
-- Keep authenticated data fetching on the server side and only hydrate the run button client behavior.
-- Use assistant-specific result components instead of a generic JSON dump.
-- Fall back safely when stored run output does not match the expected schema.
-- Reuse the current pixel dashboard language so the detail screen feels like part of the same product.
+- 인증된 데이터 조회는 서버 사이드에 두고, 실행 버튼의 클라이언트 동작만 최소한으로 hydrate합니다.
+- 범용 JSON 덤프 대신 비서 타입 전용 결과 컴포넌트를 사용합니다.
+- 저장된 실행 출력이 기대 schema와 맞지 않아도 안전하게 fallback합니다.
+- 상세 화면도 기존 픽셀 대시보드 톤을 유지해 같은 제품 경험처럼 느껴지게 합니다.
 
-## Exit Criteria
+## 종료 기준
 
-- Users can open a detail page for each saved assistant.
-- Users can trigger assistant execution from the UI.
-- News and stock outputs render in clearly different layouts.
-- Run history shows readable status and summary information.
-- `lint`, `typecheck`, and `test` pass, or any blocker is documented clearly.
+- 사용자가 저장한 비서별 상세 페이지를 열 수 있습니다.
+- 사용자가 UI에서 비서 실행을 직접 시작할 수 있습니다.
+- 뉴스와 주식 출력이 명확히 다른 레이아웃으로 렌더링됩니다.
+- 실행 기록이 읽기 쉬운 상태와 요약 정보를 보여줍니다.
+- `lint`, `typecheck`, `test`가 통과하거나, 막히는 이유가 문서로 명확히 남아 있습니다.
 
-## Next Step
+## 다음 Step
 
-After this step is merged, move to the final polish step for responsive refinement, README cleanup, and MVP completion details.
+이 step이 머지되면 반응형 마감, README 정리, MVP 마무리 품질 개선을 위한 최종 polish step으로 진행합니다.

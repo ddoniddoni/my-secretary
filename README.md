@@ -1,59 +1,53 @@
 # My SECRETARY
 
-My SECRETARY is a production-minded Next.js MVP for saved AI assistants.
-Instead of a generic chat app, it lets a user keep task-specific assistants for
-news, stocks, KBO baseball, and housing signals, then review structured results
-inside a responsive dashboard.
+My SECRETARY는 저장형 AI 비서를 위한 실전 지향 Next.js MVP입니다.
+일반적인 채팅 앱 대신 뉴스, 주식, KBO 야구, 부동산 신호처럼 목적이 분명한 비서를 저장해 두고,
+반응형 대시보드에서 구조화된 결과를 읽기 쉽게 확인할 수 있도록 설계되었습니다.
 
-## What It Does
+## 주요 기능
 
-- Authenticated assistant dashboard with user-owned assistant records
-- Template-based assistant creation for news, stock, baseball, and real-estate
-  flows
-- Assistant detail pages with config summaries, run actions, latest result
-  panels, and execution history
-- Server-side AI execution through Route Handlers and assistant runners
-- Zod-validated structured outputs for each assistant type
-- Demo mode so the UI can still be reviewed without Supabase credentials
+- 사용자 소유 비서 레코드를 관리하는 인증 기반 대시보드
+- 뉴스, 주식, 야구, 부동산 템플릿 기반 비서 생성 흐름
+- 비서 설정 요약, 실행 버튼, 최신 결과 패널, 실행 기록을 포함한 상세 페이지
+- Route Handler와 비서 runner를 통한 서버 사이드 AI 실행
+- 비서 타입별 Zod 기반 구조화 응답 검증
+- Supabase 자격 증명이 없어도 UI를 확인할 수 있는 데모 모드
 
-## Core Stack
+## 핵심 기술 스택
 
 - Next.js App Router
 - React 19
 - TypeScript
 - Tailwind CSS v4
-- Supabase Auth and Postgres
+- Supabase Auth / Postgres
 - Zod
 - Vitest
 
-## Local Development
+## 로컬 개발
 
-Install dependencies and start the dev server:
+의존성을 설치한 뒤 개발 서버를 실행합니다.
 
 ```bash
 npm.cmd install
 npm.cmd run dev
 ```
 
-Open `http://localhost:3000`.
+브라우저에서 `http://localhost:3000`을 엽니다.
 
-- If Supabase is configured, the root route becomes the signed-in dashboard
-  after login.
-- If Supabase is missing and `NEXT_PUBLIC_DEMO_MODE=true`, the app loads the
-  demo dashboard and assistant detail pages without login.
-- If Supabase is missing and demo mode is disabled, the root route stays on the
-  guest gate.
+- Supabase가 설정되어 있으면 로그인 이후 루트 경로가 사용자 대시보드로 동작합니다.
+- Supabase가 없고 `NEXT_PUBLIC_DEMO_MODE=true`이면 로그인 없이 데모 대시보드와 비서 상세 페이지를 확인할 수 있습니다.
+- Supabase가 없고 데모 모드도 꺼져 있으면 루트 경로는 게스트 진입 화면으로 유지됩니다.
 
-On macOS or Linux, use:
+macOS 또는 Linux에서는 아래 명령을 사용합니다.
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Environment Variables
+## 환경 변수
 
-Copy `.env.example` into `.env.local` and fill in the values you need.
+`.env.example`을 `.env.local`로 복사한 뒤 필요한 값을 채워 넣습니다.
 
 ```env
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
@@ -69,35 +63,33 @@ BASEBALL_PROVIDER=mock
 REAL_ESTATE_PROVIDER=mock
 ```
 
-Notes:
+메모:
 
-- `NEXT_PUBLIC_DEMO_MODE=true` keeps the app usable before Supabase is wired.
-- `OPENAI_BASE_URL` is optional and only needed for an OpenAI-compatible
-  provider.
-- The MVP keeps all providers on `mock`.
-- Supabase Auth redirect URLs should include
-  `http://localhost:3000/auth/callback`.
+- `NEXT_PUBLIC_DEMO_MODE=true`를 사용하면 Supabase 연결 전에도 앱을 바로 확인할 수 있습니다.
+- `OPENAI_BASE_URL`은 선택 사항이며 OpenAI 호환 provider를 사용할 때만 필요합니다.
+- 현재 MVP는 모든 provider를 `mock`으로 유지합니다.
+- Supabase Auth 리다이렉트 URL에는 `http://localhost:3000/auth/callback`을 포함해야 합니다.
 
-## Supabase Schema Setup
+## Supabase 스키마 적용 방법
 
-Apply the SQL files in this order:
+아래 SQL 파일을 순서대로 적용합니다.
 
 1. `supabase/migrations/20260509_step_03_assistant_schema.sql`
 2. `supabase/migrations/20260514_step_08_expand_assistant_types.sql`
 3. `supabase/seed.sql`
 
-The schema includes:
+포함되는 항목은 다음과 같습니다.
 
 - `assistant_templates`
 - `user_assistants`
 - `assistant_runs`
 - `assistant_sources`
-- RLS policies for user-owned data
-- timestamp update triggers and basic indexes
+- 사용자 소유 데이터용 RLS 정책
+- timestamp 갱신 트리거와 기본 인덱스
 
-## AI Assistant Run Architecture
+## AI 비서 실행 구조
 
-Each assistant is defined by the combination below:
+각 비서는 아래 조합으로 정의됩니다.
 
 ```txt
 assistant_template
@@ -108,7 +100,7 @@ assistant_template
 + result_component
 ```
 
-The execution flow is:
+실행 흐름은 다음과 같습니다.
 
 ```txt
 saved assistant config
@@ -120,44 +112,42 @@ saved assistant config
 -> assistant-specific result UI
 ```
 
-Important guardrails:
+중요한 가드레일:
 
-- AI execution only happens on the server.
-- Client code never imports protected API keys.
-- Structured outputs must pass schema validation before being rendered.
-- Stock assistants stay informational and always include a non-advice
-  disclaimer.
+- AI 실행은 서버에서만 일어납니다.
+- 클라이언트 코드는 보호된 API 키를 import하지 않습니다.
+- 구조화 응답은 schema validation을 통과한 뒤에만 렌더링됩니다.
+- 주식 비서는 정보 요약 용도로만 동작하며 항상 투자 조언 아님 문구를 포함합니다.
 
-## Mock Providers
+## Mock Provider
 
-The MVP starts with mock providers for all assistant types:
+MVP는 모든 비서 타입을 mock provider로 시작합니다.
 
 - `src/lib/providers/news.ts`
 - `src/lib/providers/stock.ts`
 - `src/lib/providers/baseball.ts`
 - `src/lib/providers/real-estate.ts`
 
-This keeps the runner architecture stable while allowing later migration to
-real APIs with minimal UI churn.
+이 구조 덕분에 runner 아키텍처는 그대로 유지하면서도, 이후 실제 API로 교체할 때 UI 변경을 최소화할 수 있습니다.
 
-## MVP Scope
+## MVP 범위
 
-Current MVP coverage:
+현재 MVP에 포함된 범위는 다음과 같습니다.
 
-- Guest gate plus demo-mode dashboard entry
-- Supabase magic-link login flow
-- Assistant template loading
-- User assistant CRUD
-- Assistant run persistence
-- News result cards
-- Stock result cards
-- Baseball result cards
-- Real-estate result cards
-- Execution history and recent result rendering
+- 게스트 진입 화면과 데모 모드 대시보드 진입
+- Supabase 매직 링크 로그인 흐름
+- 비서 템플릿 조회
+- 사용자 비서 CRUD
+- 비서 실행 기록 저장
+- 뉴스 결과 카드
+- 주식 결과 카드
+- 야구 결과 카드
+- 부동산 결과 카드
+- 실행 기록과 최신 결과 렌더링
 
-## Validation
+## 검증
 
-Run the main checks before merging a step branch:
+step 브랜치를 머지하기 전 아래 검증을 실행합니다.
 
 ```bash
 npm.cmd run lint
@@ -165,7 +155,7 @@ npm.cmd run typecheck
 npm.cmd run test
 ```
 
-## Repo Structure
+## 저장소 구조
 
 ```txt
 src/
@@ -179,21 +169,18 @@ docs/
 supabase/
 ```
 
-High-level ownership:
+상위 레벨 역할은 다음과 같습니다.
 
-- `src/app`: App Router pages and API route handlers
-- `src/components`: dashboard, assistant, layout, and shared UI components
-- `src/lib/assistants`: assistant config, dashboard helpers, runner, execution,
-  and repository logic
-- `src/lib/providers`: mock provider implementations
-- `src/lib/supabase`: auth, server clients, and mapping helpers
-- `tests`: unit coverage for config validation, runners, schemas, routes, and
-  dashboard helpers
+- `src/app`: App Router 페이지와 API Route Handler
+- `src/components`: 대시보드, 비서, 레이아웃, 공용 UI 컴포넌트
+- `src/lib/assistants`: 비서 설정, 대시보드 헬퍼, runner, 실행, repository 로직
+- `src/lib/providers`: mock provider 구현
+- `src/lib/supabase`: 인증, 서버 클라이언트, 매핑 헬퍼
+- `tests`: 설정 검증, runner, schema, route, 대시보드 헬퍼에 대한 단위 테스트
 
-## Future Expansion
+## 향후 확장
 
-- Swap mock providers for real news, market, sports, and housing feeds
-- Add pagination and richer timeline controls for assistant runs
-- Expand assistant types without collapsing back into a generic chat UI
-- Tighten the portfolio presentation with deployment, analytics, and deeper
-  product copy
+- mock provider를 실제 뉴스, 시세, 스포츠, 부동산 데이터로 교체
+- 비서 실행 기록에 페이지네이션과 더 풍부한 타임라인 제어 추가
+- 새로운 비서 타입을 추가하되 다시 범용 채팅 UI로 되돌아가지 않기
+- 배포, 분석, 제품 소개 카피를 포함한 포트폴리오 완성도 강화

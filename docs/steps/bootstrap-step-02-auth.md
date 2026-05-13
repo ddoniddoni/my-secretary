@@ -1,21 +1,21 @@
-# Bootstrap Step 02 Auth
+# 부트스트랩 Step 02 인증
 
-## Summary
+## 요약
 
-This step turns the Step 01 scaffold into a user-aware app shell. The main outcome is a stable Supabase SSR authentication foundation that later steps can reuse for RLS-backed assistant data and execution APIs.
+이 step은 Step 01에서 만든 골격을 사용자 인지형 앱 셸로 바꿉니다. 핵심 결과물은 이후 step에서 RLS 기반 비서 데이터와 실행 API가 재사용할 수 있는 안정적인 Supabase SSR 인증 기반입니다.
 
-## Branch Plan
+## 브랜치 계획
 
-- Start from the latest `develop`
-- Create branch: `step/02-auth`
-- Keep this step focused on auth flow, session restoration, and protected routes
-- Merge this branch back into `develop` before starting `step/03-db-schema`
+- 최신 `develop`에서 시작
+- 브랜치 생성: `step/02-auth`
+- 이 step은 인증 흐름, 세션 복원, 보호 라우트에 집중
+- `step/03-db-schema`를 시작하기 전에 이 브랜치를 `develop`으로 머지
 
-## Commit Policy
+## 커밋 정책
 
-Use Conventional Commits from `AGENTS.md`.
+`AGENTS.md`의 Conventional Commits 규칙을 사용합니다.
 
-Recommended commits for this step:
+이 step에서 권장하는 커밋 예시:
 
 - `docs(planning): add step 02 auth plan`
 - `feat(auth): add supabase ssr auth foundation`
@@ -23,32 +23,32 @@ Recommended commits for this step:
 - `test(auth): add auth helper coverage`
 - `docs(readme): document supabase auth setup`
 
-## Planned Work
+## 예정 작업
 
-- Create `docs/execplans/step-02-auth.md`
-- Create this bootstrap step note under `docs/steps`
-- Install Supabase SSR dependencies
-- Add browser/server/proxy Supabase helpers
-- Implement `/login` and `/auth/callback`
-- Protect dashboard and assistant detail routes
-- Add signed-in header state and logout control
-- Document env vars and local auth setup
+- `docs/execplans/step-02-auth.md` 작성
+- `docs/steps` 아래에 이 부트스트랩 문서 작성
+- Supabase SSR 의존성 설치
+- browser/server/proxy Supabase 헬퍼 추가
+- `/login`과 `/auth/callback` 구현
+- 대시보드와 비서 상세 라우트 보호
+- 로그인 상태 헤더와 로그아웃 제어 추가
+- 환경 변수와 로컬 인증 설정 방법 문서화
 
-## Working Notes
+## 작업 메모
 
-- Prefer email magic link for the first complete auth flow.
-- Keep route protection logic outside UI components where possible.
-- Avoid introducing service role usage or database writes in this step.
-- If an env-dependent behavior cannot run locally, surface it clearly in the UI and docs instead of failing silently.
+- 첫 완성형 인증 흐름은 이메일 매직 링크를 우선합니다.
+- 가능하면 라우트 보호 로직을 UI 컴포넌트 밖에 둡니다.
+- 이 step에서는 service role 사용이나 데이터베이스 쓰기를 넣지 않습니다.
+- 환경 변수 부족으로 로컬 실행이 어려우면 조용히 실패시키지 말고 UI와 문서에서 분명히 드러냅니다.
 
-## Exit Criteria
+## 종료 기준
 
-- Users can request a magic link from `/login`.
-- The callback route can exchange the auth code for a session.
-- `/dashboard` and `/assistants/[assistantId]` are protected.
-- The header reflects whether a user is signed in and supports logout.
-- `lint`, `typecheck`, and `test` pass, or any blocker is documented clearly.
+- 사용자가 `/login`에서 매직 링크를 요청할 수 있습니다.
+- 콜백 라우트가 인증 코드를 세션으로 교환할 수 있습니다.
+- `/dashboard`와 `/assistants/[assistantId]`가 보호됩니다.
+- 헤더가 로그인 여부를 반영하고 로그아웃을 지원합니다.
+- `lint`, `typecheck`, `test`가 통과하거나, 막히는 이유가 문서로 명확히 남아 있습니다.
 
-## Next Step
+## 다음 Step
 
-After this step is merged, move to `step/03-db-schema` for assistant tables, RLS, seeds, and user-owned data modeling.
+이 step이 머지되면 비서 테이블, RLS, 시드 데이터, 사용자 소유 데이터 모델링을 위해 `step/03-db-schema`로 진행합니다.

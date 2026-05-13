@@ -1,52 +1,52 @@
-# Bootstrap Step 06 Execution API
+# 부트스트랩 Step 06 실행 API
 
-## Summary
+## 요약
 
-This step connects the saved assistant records to a public server action. It adds the authenticated run endpoint, persists pending and completed runs, and saves source metadata so the next step can focus on rendering the stored results.
+이 step은 저장된 비서 레코드를 공개 서버 실행 액션과 연결합니다. 인증된 실행 엔드포인트를 추가하고, pending 및 완료된 실행 기록을 저장하며, 다음 step에서 저장된 결과를 렌더링할 수 있도록 source 메타데이터도 함께 보관합니다.
 
-## Branch Plan
+## 브랜치 계획
 
-- Start from the latest `develop`
-- Create branch: `step/06-execution-api`
-- Keep this step focused on execution persistence and the public run route
-- Merge this branch back into `develop` before starting `step/07-result-ui`
+- 최신 `develop`에서 시작
+- 브랜치 생성: `step/06-execution-api`
+- 이 step은 실행 기록 저장과 공개 실행 라우트에 집중
+- `step/07-result-ui`를 시작하기 전에 이 브랜치를 `develop`으로 머지
 
-## Commit Policy
+## 커밋 정책
 
-Use Conventional Commits from `AGENTS.md`.
+`AGENTS.md`의 Conventional Commits 규칙을 사용합니다.
 
-Recommended commits for this step:
+이 step에서 권장하는 커밋 예시:
 
 - `docs(planning): add step 06 execution api plan`
 - `feat(assistants): persist assistant run lifecycle`
 - `feat(api): add assistant run route`
 - `test(api): cover assistant execution flow`
 
-## Planned Work
+## 예정 작업
 
-- Create `docs/execplans/step-06-execution-api.md`
-- Create this bootstrap note under `docs/steps`
-- Add repository helpers for assistant run and source persistence
-- Add an execution service that wraps lookup, runner execution, and failure handling
-- Add `POST /api/assistants/[assistantId]/run`
-- Add tests for success, failure, and not-found cases
-- Update README to reflect the new current step
+- `docs/execplans/step-06-execution-api.md` 작성
+- `docs/steps` 아래에 이 부트스트랩 문서 작성
+- 비서 실행 및 source 저장용 repository 헬퍼 추가
+- 조회, runner 실행, 실패 처리를 묶는 execution service 추가
+- `POST /api/assistants/[assistantId]/run` 구현
+- 성공, 실패, not-found 테스트 추가
+- 현재 step 상태를 README에 반영
 
-## Working Notes
+## 작업 메모
 
-- Keep the route handler thin and move execution orchestration into `src/lib/assistants`.
-- Create a pending run before the AI call so the execution history is durable.
-- Store user-safe failure messages in `assistant_runs.error_message`.
-- Clean up any source rows if final run completion fails after source insertion.
+- Route Handler는 얇게 유지하고 실행 오케스트레이션은 `src/lib/assistants`로 이동합니다.
+- 실행 기록이 남도록 AI 호출 전에 pending run을 먼저 생성합니다.
+- 사용자에게 보여줄 안전한 실패 메시지는 `assistant_runs.error_message`에 저장합니다.
+- source row 삽입 이후 최종 완료 처리에 실패하면 관련 source 정리도 함께 수행합니다.
 
-## Exit Criteria
+## 종료 기준
 
-- Authenticated users can execute their own assistants through the run API.
-- Each execution creates a pending run and ends as either `success` or `failed`.
-- Successful runs store source metadata in `assistant_sources`.
-- Failure responses stay safe for the client while detailed errors are still logged on the server.
-- `lint`, `typecheck`, and `test` pass, or any blocker is documented clearly.
+- 인증된 사용자가 실행 API를 통해 자신의 비서를 실행할 수 있습니다.
+- 모든 실행은 pending run을 만든 뒤 `success` 또는 `failed`로 끝납니다.
+- 성공한 실행은 `assistant_sources`에 source 메타데이터를 저장합니다.
+- 클라이언트에는 안전한 실패 응답만 노출하고, 상세 오류는 서버 로그에 남깁니다.
+- `lint`, `typecheck`, `test`가 통과하거나, 막히는 이유가 문서로 명확히 남아 있습니다.
 
-## Next Step
+## 다음 Step
 
-After this step is merged, move to `step/07-result-ui` for assistant-specific result components, run history rendering, and detail-page execution UX.
+이 step이 머지되면 비서 전용 결과 컴포넌트, 실행 기록 렌더링, 상세 페이지 실행 UX를 위해 `step/07-result-ui`로 진행합니다.

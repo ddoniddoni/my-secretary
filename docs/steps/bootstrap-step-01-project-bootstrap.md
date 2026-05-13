@@ -1,52 +1,52 @@
-# Bootstrap Step 01 Project Bootstrap
+# 부트스트랩 Step 01 프로젝트 초기 세팅
 
-## Summary
+## 요약
 
-This step prepares the repository for MVP delivery by replacing the starter app shell with a product-shaped foundation. The result should make Step 02 auth and Step 04 dashboard work straightforward instead of requiring another layout rewrite.
+이 step은 기본 스타터 앱 셸을 제품 형태의 기반으로 교체해 MVP 전달 준비를 마무리합니다. 결과적으로 Step 02 인증과 Step 04 대시보드 작업을 다시 레이아웃부터 뜯어고치지 않고 자연스럽게 이어갈 수 있어야 합니다.
 
-## Branch Plan
+## 브랜치 계획
 
-- Start from the latest `develop`
-- Create branch: `step/01-project-bootstrap`
-- Keep this step focused on project structure, styling foundations, and the landing page
-- Merge this branch back into `develop` before starting `step/02-auth`
+- 최신 `develop`에서 시작
+- 브랜치 생성: `step/01-project-bootstrap`
+- 이 step은 프로젝트 구조, 스타일 기반, 랜딩 페이지에 집중
+- `step/02-auth`를 시작하기 전에 이 브랜치를 `develop`으로 머지
 
-## Commit Policy
+## 커밋 정책
 
-Use Conventional Commits from `AGENTS.md`.
+`AGENTS.md`의 Conventional Commits 규칙을 사용합니다.
 
-Recommended commits for this step:
+이 step에서 권장하는 커밋 예시:
 
 - `docs(planning): add step 01 bootstrap plan`
 - `chore(repo): add project bootstrap structure`
 - `feat(landing): build product landing page`
 - `style(ui): refine shared design tokens`
 
-## Planned Work
+## 예정 작업
 
-- Create `docs/execplans/step-01-project-bootstrap.md`
-- Create this bootstrap step note under `docs/steps`
-- Add foundational directories under `src`
-- Establish base layout direction for public pages
-- Replace starter landing content with PRD-aligned messaging
-- Prepare shared UI patterns that can be reused by dashboard pages later
-- Add validation scripts that are currently missing
+- `docs/execplans/step-01-project-bootstrap.md` 작성
+- `docs/steps` 아래에 이 부트스트랩 문서 작성
+- `src` 아래 기본 디렉터리 구조 추가
+- 공개 페이지용 기본 레이아웃 방향 수립
+- 스타터 랜딩 콘텐츠를 PRD에 맞는 메시지로 교체
+- 이후 대시보드에서도 재사용할 공용 UI 패턴 준비
+- 현재 빠져 있는 검증 스크립트 추가
 
-## Working Notes
+## 작업 메모
 
-- Avoid touching auth, Supabase, assistant CRUD, or AI runner logic in this step.
-- Prefer reusable layout primitives over one-off page-specific wrappers.
-- Keep the public landing page polished, but do not build fake product behavior.
-- If an implementation choice is uncertain, prefer the option that reduces rework for the next step.
+- 이 step에서는 auth, Supabase, 비서 CRUD, AI runner 로직을 건드리지 않습니다.
+- 페이지 전용 래퍼보다 재사용 가능한 레이아웃 프리미티브를 우선합니다.
+- 공개 랜딩 페이지는 완성도 있게 다듬되, 실제 동작하지 않는 가짜 기능은 만들지 않습니다.
+- 구현 선택지가 애매하면 다음 step의 재작업을 줄이는 쪽을 우선합니다.
 
-## Exit Criteria
+## 종료 기준
 
-- The repository no longer looks like a default Next.js starter.
-- The landing page communicates the My SECRETARY product clearly.
-- Shared styling foundations exist for later dashboard screens.
-- `lint` and `typecheck` are available and pass, or any blocker is documented clearly.
-- The branch is ready for a clean review and merge into `develop`.
+- 저장소가 더 이상 기본 Next.js 스타터처럼 보이지 않습니다.
+- 랜딩 페이지가 My SECRETARY 제품을 명확하게 설명합니다.
+- 이후 대시보드 화면에 쓸 공용 스타일 기반이 준비되어 있습니다.
+- `lint`와 `typecheck`를 실행할 수 있고 통과하거나, 막히는 이유가 문서로 명확히 남아 있습니다.
+- 브랜치가 깔끔하게 리뷰 및 `develop` 머지가 가능한 상태입니다.
 
-## Next Step
+## 다음 Step
 
-After this step is merged, move to `step/02-auth` for Supabase authentication, login flow, middleware protection, and dashboard access control.
+이 step이 머지되면 Supabase 인증, 로그인 흐름, 미들웨어 보호, 대시보드 접근 제어를 위해 `step/02-auth`로 진행합니다.

@@ -1,21 +1,21 @@
-# Bootstrap Step 05 AI Runner
+# 부트스트랩 Step 05 AI 러너
 
-## Summary
+## 요약
 
-This step turns assistant records into runnable server-side workflows. It introduces the AI client boundary, mock data providers, and structured output validation so the next step can focus on API persistence and execution history.
+이 step은 비서 레코드를 실제로 실행 가능한 서버 사이드 워크플로로 바꿉니다. AI 클라이언트 경계, mock 데이터 provider, 구조화 응답 검증을 도입해 다음 step에서 API 저장과 실행 기록에 집중할 수 있게 만듭니다.
 
-## Branch Plan
+## 브랜치 계획
 
-- Start from the latest `develop`
-- Create branch: `step/05-ai-runner`
-- Keep this step focused on AI orchestration and validation foundations
-- Merge this branch back into `develop` before starting `step/06-run-api`
+- 최신 `develop`에서 시작
+- 브랜치 생성: `step/05-ai-runner`
+- 이 step은 AI 오케스트레이션과 검증 기반에 집중
+- `step/06-run-api`를 시작하기 전에 이 브랜치를 `develop`으로 머지
 
-## Commit Policy
+## 커밋 정책
 
-Use Conventional Commits from `AGENTS.md`.
+`AGENTS.md`의 Conventional Commits 규칙을 사용합니다.
 
-Recommended commits for this step:
+이 step에서 권장하는 커밋 예시:
 
 - `docs(planning): add step 05 ai runner plan`
 - `feat(ai): add structured generation client`
@@ -23,32 +23,32 @@ Recommended commits for this step:
 - `feat(assistants): add assistant runner orchestration`
 - `test(ai): cover structured outputs and runners`
 
-## Planned Work
+## 예정 작업
 
-- Create `docs/execplans/step-05-ai-runner.md`
-- Create this bootstrap note under `docs/steps`
-- Add AI env helpers and OpenAI-compatible JSON client
-- Add `generateStructured` helper with Zod validation
-- Add mock providers and seed data adapters
-- Add news and stock output schemas
-- Add news and stock runner functions plus shared dispatcher
-- Add tests for schema validation and runner outcomes
+- `docs/execplans/step-05-ai-runner.md` 작성
+- `docs/steps` 아래에 이 부트스트랩 문서 작성
+- AI 환경 변수 헬퍼와 OpenAI 호환 JSON 클라이언트 추가
+- Zod 검증을 포함한 `generateStructured` 헬퍼 추가
+- mock provider와 seed 데이터 어댑터 추가
+- 뉴스/주식 출력 schema 추가
+- 뉴스/주식 runner와 공용 dispatcher 추가
+- schema validation 및 runner 결과 테스트 추가
 
-## Working Notes
+## 작업 메모
 
-- Keep all AI calls on the server side only.
-- Treat provider data as the source of truth for source metadata.
-- Use mock providers by default so Step 05 stays runnable without third-party data services.
-- Design runner outputs so Step 06 can save them directly into `assistant_runs` and `assistant_sources`.
+- 모든 AI 호출은 서버 사이드에서만 처리합니다.
+- source 메타데이터의 기준값은 provider 데이터로 간주합니다.
+- Step 05는 외부 데이터 서비스 없이도 실행 가능해야 하므로 기본 provider는 mock으로 둡니다.
+- runner 출력 형태는 Step 06에서 `assistant_runs`와 `assistant_sources`에 바로 저장할 수 있도록 설계합니다.
 
-## Exit Criteria
+## 종료 기준
 
-- News and stock assistants can be executed through library code with injected dependencies.
-- Structured AI output is validated through Zod before being returned.
-- Stock output enforces the required disclaimer text.
-- Mock providers return source metadata consistently.
-- `lint`, `typecheck`, and `test` pass, or any blocker is documented clearly.
+- 뉴스와 주식 비서를 라이브러리 코드 수준에서 의존성 주입과 함께 실행할 수 있습니다.
+- 구조화된 AI 출력이 반환 전에 Zod로 검증됩니다.
+- 주식 출력에는 필수 disclaimer 문구가 강제됩니다.
+- mock provider가 source 메타데이터를 일관되게 반환합니다.
+- `lint`, `typecheck`, `test`가 통과하거나, 막히는 이유가 문서로 명확히 남아 있습니다.
 
-## Next Step
+## 다음 Step
 
-After this step is merged, move to `step/06-run-api` for pending/success/failed persistence, ownership checks, and the public assistant run endpoint.
+이 step이 머지되면 pending/success/failed 저장, 소유권 검증, 공개 실행 엔드포인트를 위해 `step/06-run-api`로 진행합니다.

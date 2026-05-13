@@ -58,7 +58,9 @@ OPENAI_API_KEY=
 OPENAI_MODEL=gpt-4.1-mini
 OPENAI_BASE_URL=
 NEWS_PROVIDER=mock
+NEWSAPI_API_KEY=
 STOCK_PROVIDER=mock
+ALPHA_VANTAGE_API_KEY=
 BASEBALL_PROVIDER=mock
 REAL_ESTATE_PROVIDER=mock
 ```
@@ -67,7 +69,10 @@ REAL_ESTATE_PROVIDER=mock
 
 - `NEXT_PUBLIC_DEMO_MODE=true`를 사용하면 Supabase 연결 전에도 앱을 바로 확인할 수 있습니다.
 - `OPENAI_BASE_URL`은 선택 사항이며 OpenAI 호환 provider를 사용할 때만 필요합니다.
-- 현재 MVP는 모든 provider를 `mock`으로 유지합니다.
+- 기본값은 모든 provider가 `mock`입니다.
+- `NEWS_PROVIDER=newsapi`를 사용하면 `NEWSAPI_API_KEY`가 필요합니다.
+- `STOCK_PROVIDER=alphavantage`를 사용하면 `ALPHA_VANTAGE_API_KEY`가 필요합니다.
+- 현재 야구와 부동산 provider는 `mock`만 지원합니다.
 - Supabase Auth 리다이렉트 URL에는 `http://localhost:3000/auth/callback`을 포함해야 합니다.
 
 ## Supabase 스키마 적용 방법
@@ -119,16 +124,23 @@ saved assistant config
 - 구조화 응답은 schema validation을 통과한 뒤에만 렌더링됩니다.
 - 주식 비서는 정보 요약 용도로만 동작하며 항상 투자 조언 아님 문구를 포함합니다.
 
-## Mock Provider
+## Provider 구성
 
-MVP는 모든 비서 타입을 mock provider로 시작합니다.
+기본 실행은 모든 비서 타입에서 `mock` provider로 시작합니다.
 
 - `src/lib/providers/news.ts`
 - `src/lib/providers/stock.ts`
 - `src/lib/providers/baseball.ts`
 - `src/lib/providers/real-estate.ts`
 
-이 구조 덕분에 runner 아키텍처는 그대로 유지하면서도, 이후 실제 API로 교체할 때 UI 변경을 최소화할 수 있습니다.
+현재 지원 상태는 다음과 같습니다.
+
+- `news`: `mock`, `newsapi`
+- `stock`: `mock`, `alphavantage`
+- `baseball`: `mock`
+- `real_estate`: `mock`
+
+이 구조 덕분에 runner 아키텍처는 그대로 유지하면서도, 실제 API로 교체하거나 추가할 때 UI 변경을 최소화할 수 있습니다.
 
 ## MVP 범위
 
@@ -174,7 +186,7 @@ supabase/
 - `src/app`: App Router 페이지와 API Route Handler
 - `src/components`: 대시보드, 비서, 레이아웃, 공용 UI 컴포넌트
 - `src/lib/assistants`: 비서 설정, 대시보드 헬퍼, runner, 실행, repository 로직
-- `src/lib/providers`: mock provider 구현
+- `src/lib/providers`: mock 및 선택적 실데이터 provider 구현
 - `src/lib/supabase`: 인증, 서버 클라이언트, 매핑 헬퍼
 - `tests`: 설정 검증, runner, schema, route, 대시보드 헬퍼에 대한 단위 테스트
 

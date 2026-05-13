@@ -1,73 +1,73 @@
-# Step 03 DB Schema
+# Step 03 DB 스키마
 
-## Goal
+## 목표
 
-Create the Supabase database foundation for My SECRETARY so authenticated users can own assistants, store assistant runs, and access their own data safely through RLS-backed tables.
+인증된 사용자가 비서를 소유하고, 비서 실행 기록을 저장하며, RLS가 적용된 테이블을 통해 자신의 데이터만 안전하게 조회할 수 있도록 My SECRETARY의 Supabase 데이터베이스 기반을 구축합니다.
 
-## Assumptions
+## 가정
 
-- Step 02 auth has already been merged into `develop`, and this work starts from a fresh `step/03-db-schema` branch.
-- Supabase Auth is already the identity source, so all user-owned rows can reference `auth.users(id)`.
-- MVP data sources remain mock-based for now, so the schema should support assistant configuration, run output, and sources without requiring provider-specific tables yet.
-- We may not have the Supabase CLI initialized in this repo yet, so SQL files should still be usable through the Supabase SQL editor.
+- Step 02 인증은 이미 `develop`에 머지되어 있고, 이 작업은 새 `step/03-db-schema` 브랜치에서 시작합니다.
+- 사용자 식별 기준은 이미 Supabase Auth이므로, 사용자 소유 row는 모두 `auth.users(id)`를 참조할 수 있습니다.
+- 현재 MVP 데이터 소스는 mock 기반이므로, provider 전용 테이블 없이도 비서 설정, 실행 결과, source 메타데이터를 담을 수 있어야 합니다.
+- 이 저장소에 Supabase CLI가 아직 초기화되지 않았더라도 SQL 파일은 Supabase SQL Editor에서 그대로 사용할 수 있어야 합니다.
 
-## Scope
+## 범위
 
-- Add SQL migration files for the core assistant tables.
-- Add RLS policies for all user-owned tables.
-- Add seed SQL for the initial news and stock assistant templates.
-- Add indexes and timestamp update helpers that will support upcoming CRUD and run queries.
-- Expand shared TypeScript domain types to match the Step 03 schema.
-- Add lightweight row-to-domain mappers for future API work.
-- Document how to apply the schema and seed locally or in Supabase.
+- 핵심 비서 테이블용 SQL migration 파일을 추가합니다.
+- 모든 사용자 소유 테이블에 RLS 정책을 추가합니다.
+- 초기 뉴스/주식 비서 템플릿용 seed SQL을 추가합니다.
+- 이후 CRUD와 실행 조회를 지원할 인덱스 및 timestamp 갱신 헬퍼를 추가합니다.
+- Step 03 스키마에 맞춰 공용 TypeScript 도메인 타입을 확장합니다.
+- 이후 API 작업에 사용할 가벼운 row-to-domain 매퍼를 추가합니다.
+- 로컬 또는 Supabase에서 스키마와 seed를 적용하는 방법을 문서화합니다.
 
-## Out Of Scope
+## 범위 제외
 
-- Assistant CRUD API routes
-- Dashboard data fetching from the database
-- AI runner implementation
-- Provider integration
-- Service-role-only admin workflows
+- 비서 CRUD API route
+- 대시보드의 DB 기반 데이터 조회
+- AI runner 구현
+- provider 연동
+- service-role 전용 관리자 워크플로
 
-## Implementation Steps
+## 구현 단계
 
-1. Define Step 03 planning docs and the intended schema boundaries.
-2. Expand the assistant domain types to cover templates, user assistants, runs, and sources.
-3. Add a Supabase migration that creates:
+1. Step 03 기획 문서와 스키마 경계를 정의합니다.
+2. 템플릿, 사용자 비서, 실행 기록, source를 포괄하는 비서 도메인 타입을 확장합니다.
+3. 아래 항목을 생성하는 Supabase migration을 추가합니다.
    - `assistant_templates`
    - `user_assistants`
    - `assistant_runs`
    - `assistant_sources`
    - updated-at trigger helper
-   - useful indexes
-4. Enable RLS and add owner-based policies for the user-owned tables.
-5. Add seed SQL for the default news and stock templates.
-6. Add mapping helpers so later route handlers can convert DB rows to camelCase domain objects consistently.
-7. Update README with schema application steps and current project status.
-8. Run lint, typecheck, and tests.
+   - 유용한 인덱스
+4. RLS를 활성화하고 사용자 소유 테이블에 소유자 기반 정책을 추가합니다.
+5. 기본 뉴스/주식 템플릿용 seed SQL을 추가합니다.
+6. 이후 Route Handler에서 일관되게 camelCase 도메인 객체로 변환할 수 있도록 매핑 헬퍼를 추가합니다.
+7. README에 스키마 적용 단계와 현재 프로젝트 상태를 반영합니다.
+8. lint, typecheck, test를 실행합니다.
 
-## Risks
+## 리스크
 
-- If seed rows are not idempotent, reapplying them in shared environments can create duplicates.
-- If RLS is incomplete now, Step 04 CRUD can appear to work locally and then fail in real Supabase environments.
-- Overfitting the schema to current mock providers could make future real provider integration awkward.
+- seed row가 멱등적이지 않으면 공유 환경에서 재적용 시 중복이 생길 수 있습니다.
+- 지금 RLS가 불완전하면 Step 04 CRUD는 로컬에서만 동작하고 실제 Supabase 환경에서는 실패할 수 있습니다.
+- 현재 mock provider에 너무 맞춘 스키마는 이후 실제 provider 연동을 불편하게 만들 수 있습니다.
 
-## Validation
+## 검증
 
 - `npm.cmd run lint`
 - `npm.cmd run typecheck`
 - `npm.cmd run test`
-- Manual review of the SQL for:
-  - foreign keys
-  - RLS enablement
-  - owner checks
-  - assistant type and run status constraints
+- SQL 수동 검토:
+  - foreign key
+  - RLS 활성화 여부
+  - owner check
+  - assistant type / run status 제약
 
-## Deliverables
+## 결과물
 
 - `docs/execplans/step-03-db-schema.md`
 - `docs/steps/bootstrap-step-03-db-schema.md`
-- Supabase migration SQL for schema and RLS
-- `supabase/seed.sql` for default templates
-- Updated TypeScript domain types and mappers
-- README notes for applying the schema
+- 스키마와 RLS를 위한 Supabase migration SQL
+- 기본 템플릿용 `supabase/seed.sql`
+- 업데이트된 TypeScript 도메인 타입과 매퍼
+- 스키마 적용 방법을 담은 README 메모

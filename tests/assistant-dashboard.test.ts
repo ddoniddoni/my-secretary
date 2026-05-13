@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  buildDashboardOverview,
   filterAssistantsForDashboard,
   getAssistantMetaChips,
   getAssistantTypeLabel,
+  getAssistantTypePreviewLabel,
 } from "../src/lib/assistants/dashboard";
 import type {
   AssistantTemplate,
@@ -12,7 +14,7 @@ import type {
 
 const newsAssistant: UserAssistant<"news"> = {
   config: {
-    categories: ["IT", "경제", "국제"],
+    categories: ["IT"],
     language: "ko",
     maxItems: 5,
     summaryStyle: "brief",
@@ -63,7 +65,7 @@ const baseballAssistant: UserAssistant<"baseball"> = {
 
 const realEstateAssistant: UserAssistant<"real_estate"> = {
   config: {
-    regions: ["서울 마포구", "경기 성남시 분당구"],
+    regions: ["Mapo", "Bundang"],
     propertyTypes: ["apartment", "officetel"],
     summaryStyle: "balanced",
     language: "ko",
@@ -130,29 +132,88 @@ const templatesById: Record<string, AssistantTemplate | undefined> = {
 };
 
 describe("assistant dashboard helpers", () => {
-  it("returns readable type labels", () => {
+  it("returns readable type labels and preview labels", () => {
     expect(getAssistantTypeLabel("news")).toBe("News AI");
     expect(getAssistantTypeLabel("stock")).toBe("Stock AI");
     expect(getAssistantTypeLabel("baseball")).toBe("Baseball AI");
     expect(getAssistantTypeLabel("real_estate")).toBe("Real Estate AI");
+
+    expect(getAssistantTypePreviewLabel("news")).toBe("News briefing");
+    expect(getAssistantTypePreviewLabel("stock")).toBe("Stock watch");
+    expect(getAssistantTypePreviewLabel("baseball")).toBe("KBO brief");
+    expect(getAssistantTypePreviewLabel("real_estate")).toBe("Housing pulse");
   });
 
-  it("builds metadata chips for news and stock assistants", () => {
-    expect(getAssistantMetaChips(newsAssistant)).toEqual([
-      "IT / 경제 / 국제",
-      "5 headlines",
-    ]);
+  it("builds metadata chips for each assistant type", () => {
+    expect(getAssistantMetaChips(newsAssistant)).toEqual(["IT", "5 headlines"]);
     expect(getAssistantMetaChips(stockAssistant)).toEqual([
       "NVDA / TSLA",
       "US market",
     ]);
     expect(getAssistantMetaChips(baseballAssistant)).toEqual([
       "LG / KIA",
-      "순위 포함",
+      "Standings on",
     ]);
     expect(getAssistantMetaChips(realEstateAssistant)).toEqual([
-      "서울 마포구 / 경기 성남시 분당구",
+      "Mapo / Bundang",
       "2 types",
+    ]);
+  });
+
+  it("builds dashboard overview cards from saved assistants", () => {
+    expect(buildDashboardOverview([])).toEqual([
+      {
+        description:
+          "Start with one template and build a reusable assistant deck.",
+        label: "Assistant deck",
+        tone: "accent",
+        value: "00",
+      },
+      {
+        description:
+          "News briefing / Stock watch / KBO brief / Housing pulse",
+        label: "Coverage",
+        tone: "info",
+        value: "0/4",
+      },
+      {
+        description:
+          "Categories, symbols, teams, and regions saved across your assistant configs.",
+        label: "Focus items",
+        tone: "success",
+        value: "00",
+      },
+    ]);
+
+    expect(
+      buildDashboardOverview([
+        newsAssistant,
+        stockAssistant,
+        baseballAssistant,
+        realEstateAssistant,
+      ]),
+    ).toEqual([
+      {
+        description:
+          "4 saved workflows are ready to run from this dashboard.",
+        label: "Assistant deck",
+        tone: "accent",
+        value: "04",
+      },
+      {
+        description:
+          "News briefing / Stock watch / KBO brief / Housing pulse",
+        label: "Coverage",
+        tone: "info",
+        value: "4/4",
+      },
+      {
+        description:
+          "Categories, symbols, teams, and regions saved across your assistant configs.",
+        label: "Focus items",
+        tone: "success",
+        value: "09",
+      },
     ]);
   });
 
@@ -167,14 +228,14 @@ describe("assistant dashboard helpers", () => {
     expect(
       filterAssistantsForDashboard(assistants, "nvda", templatesById),
     ).toEqual([stockAssistant]);
-    expect(filterAssistantsForDashboard(assistants, "경제", templatesById)).toEqual([
-      newsAssistant,
-    ]);
-    expect(filterAssistantsForDashboard(assistants, "kia", templatesById)).toEqual([
-      baseballAssistant,
-    ]);
     expect(
-      filterAssistantsForDashboard(assistants, "마포구", templatesById),
+      filterAssistantsForDashboard(assistants, "morning news", templatesById),
+    ).toEqual([newsAssistant]);
+    expect(filterAssistantsForDashboard(assistants, "kia", templatesById)).toEqual(
+      [baseballAssistant],
+    );
+    expect(
+      filterAssistantsForDashboard(assistants, "bundang", templatesById),
     ).toEqual([realEstateAssistant]);
     expect(filterAssistantsForDashboard(assistants, "", templatesById)).toEqual(
       assistants,

@@ -1,6 +1,15 @@
 import { PixelAvatar } from "@/components/assistants/PixelAvatar";
 import { LoginForm } from "@/components/auth/LoginForm";
-import type { AssistantTemplate } from "@/types/assistants";
+import {
+  getAssistantTypePreviewLabel,
+  getAssistantTypeDescription,
+} from "@/lib/assistants/dashboard";
+import {
+  assistantPreviews,
+  productHighlights,
+  productPrinciples,
+} from "@/lib/landing/content";
+import type { AssistantTemplate, AssistantType } from "@/types/assistants";
 
 type DashboardGuestGateProps = {
   authErrorMessage?: string | null;
@@ -13,64 +22,133 @@ export function DashboardGuestGate({
   loginEnabled,
   templates,
 }: DashboardGuestGateProps) {
-  const previewCards = templates.slice(0, 4);
+  const templateByType = Object.fromEntries(
+    templates.map((template) => [template.type, template]),
+  ) as Partial<Record<AssistantType, AssistantTemplate>>;
+
+  const previewCards = assistantPreviews.map((preview) => ({
+    description:
+      templateByType[preview.type]?.description ??
+      preview.description ??
+      getAssistantTypeDescription(preview.type),
+    name: templateByType[preview.type]?.name ?? preview.name,
+    preview,
+  }));
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_420px]">
-      <section className="space-y-6">
+    <div className="grid gap-8 xl:grid-cols-[minmax(0,1.08fr)_420px]">
+      <section className="space-y-8">
         <div className="flex items-start gap-3">
           <SparkleMark />
-          <div>
-            <h1 className="font-pixel text-[26px] leading-[1.4] text-[var(--dashboard-text)] sm:text-[34px]">
-              Unlock Your Assistant Deck
+          <div className="min-w-0">
+            <h1 className="font-pixel text-[26px] leading-[1.45] text-[var(--dashboard-text)] sm:text-[34px]">
+              Build a deck of task-specific AI assistants
             </h1>
-            <p className="mt-4 max-w-2xl text-[15px] leading-8 text-[var(--dashboard-muted)]">
-              뉴스, 주식, 국내야구, 부동산 비서를 저장하고, 실행 결과를
-              채팅창 대신 읽기 좋은 카드 UI로 관리하는 메인 대시보드예요.
-              로그인하면 이 아래가 바로 당신만의 assistant OS로 열립니다.
+            <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[var(--dashboard-muted)]">
+              My SECRETARY keeps recurring information chores out of a generic
+              chat window. Save assistants for news, markets, KBO, and housing,
+              then open clean result UIs from one responsive dashboard.
             </p>
           </div>
         </div>
 
-        <div className="grid gap-5 xl:grid-cols-2">
-          {previewCards.map((template) => (
-            <article key={template.id} className="pixel-locked-card">
-              <div className="flex items-start gap-4">
-                <PixelAvatar variant={template.type} size="md" />
-                <div className="min-w-0">
-                  <p className="font-pixel text-[11px] uppercase text-[var(--dashboard-accent-strong)]">
-                    Locked
-                  </p>
-                  <h2 className="mt-3 font-pixel text-[16px] leading-[1.6] text-[var(--dashboard-text)]">
-                    {template.name}
-                  </h2>
-                  <p className="mt-4 text-sm leading-7 text-[var(--dashboard-muted)]">
-                    {template.description}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-6 flex items-center justify-between gap-3">
-                <span className="pixel-meta-pill">
-                  {template.type === "news" ? "News briefing" : "Stock watch"}
-                </span>
-                <span className="pixel-lock-badge">Sign in to unlock</span>
-              </div>
+        <div className="grid gap-4 lg:grid-cols-3">
+          {productHighlights.map((highlight) => (
+            <article
+              key={highlight.label}
+              className="pixel-panel rounded-[18px] px-5 py-5"
+            >
+              <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-accent-strong)]">
+                {highlight.label}
+              </p>
+              <p className="mt-4 text-sm leading-7 text-[var(--dashboard-muted)]">
+                {highlight.value}
+              </p>
             </article>
           ))}
         </div>
 
-        <div className="pixel-guest-note">
-          <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-warning)]">
-            Why sign in
-          </p>
-          <p className="mt-3 text-sm leading-7 text-[var(--dashboard-muted)]">
-            사용자별 비서 목록, 설정 저장, 실행 기록, 구조화된 브리핑 결과는
-            로그인된 상태에서만 연결됩니다.
-          </p>
+        <div>
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-warning)]">
+                Assistant previews
+              </p>
+              <h2 className="mt-3 text-xl font-semibold text-[var(--dashboard-text)]">
+                Locked cards preview the product before sign-in
+              </h2>
+            </div>
+            <p className="hidden max-w-sm text-right text-sm leading-7 text-[var(--dashboard-muted)] xl:block">
+              Each assistant type keeps its own config, provider, runner, and
+              result UI.
+            </p>
+          </div>
+
+          <div className="mt-5 grid gap-5 xl:grid-cols-2">
+            {previewCards.map(({ description, name, preview }) => (
+              <article key={preview.type} className="pixel-locked-card">
+                <div className="flex items-start gap-4">
+                  <PixelAvatar variant={preview.type} size="md" />
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="pixel-lock-badge">Locked</span>
+                      <span className="pixel-meta-pill">
+                        {getAssistantTypePreviewLabel(preview.type)}
+                      </span>
+                    </div>
+                    <h3 className="mt-4 font-pixel text-[15px] leading-[1.7] text-[var(--dashboard-text)]">
+                      {name}
+                    </h3>
+                    <p className="mt-4 text-sm leading-7 text-[var(--dashboard-muted)]">
+                      {description}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-5 grid gap-3">
+                  {preview.previewItems.map((item) => (
+                    <div
+                      key={`${preview.type}-${item.title}`}
+                      className="rounded-[12px] border border-[var(--dashboard-border)] bg-[rgba(255,255,255,0.03)] px-4 py-3"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-sm font-medium text-[var(--dashboard-text)]">
+                          {item.title}
+                        </p>
+                        <span className="pixel-meta-pill">{item.meta}</span>
+                      </div>
+                      <p className="mt-3 text-sm leading-6 text-[var(--dashboard-muted)]">
+                        {item.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-3">
+          {productPrinciples.map((principle) => (
+            <article
+              key={principle.title}
+              className="rounded-[18px] border border-[var(--dashboard-border)] bg-[rgba(16,21,40,0.86)] px-5 py-5"
+            >
+              <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-info)]">
+                {principle.eyebrow}
+              </p>
+              <h3 className="mt-4 text-lg font-semibold text-[var(--dashboard-text)]">
+                {principle.title}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-[var(--dashboard-muted)]">
+                {principle.description}
+              </p>
+            </article>
+          ))}
         </div>
       </section>
 
-      <aside className="pixel-login-panel">
+      <aside className="pixel-login-panel self-start">
         <div className="flex items-center gap-4">
           <div className="pixel-login-avatar">
             <PixelAvatar variant="helper" size="md" />
@@ -80,15 +158,30 @@ export function DashboardGuestGate({
               Access Required
             </p>
             <h2 className="mt-2 text-2xl font-semibold text-[var(--dashboard-text)]">
-              Login to open the dashboard
+              Open your assistant OS
             </h2>
           </div>
         </div>
 
         <p className="mt-5 text-sm leading-7 text-[var(--dashboard-muted)]">
-          이메일 매직링크로 바로 들어올 수 있게 해둘게요. 로그인하면 지금
-          보고 있는 메인 화면이 실제 대시보드로 전환됩니다.
+          Sign in with a magic link to load your saved assistants, rerun
+          briefings, and review structured history from the same dashboard.
         </p>
+
+        <div className="mt-6 grid gap-3">
+          <FeatureRow
+            label="Saved assistant deck"
+            value="User-owned assistant configs and templates"
+          />
+          <FeatureRow
+            label="Structured run history"
+            value="Readable result cards instead of raw transcripts"
+          />
+          <FeatureRow
+            label="Server-side execution"
+            value="Provider fetches and AI calls stay off the client"
+          />
+        </div>
 
         {authErrorMessage ? (
           <div className="mt-5 rounded-[14px] border border-[rgba(255,120,140,0.36)] bg-[rgba(255,120,140,0.12)] px-4 py-3 text-sm leading-6 text-[#ffd8de]">
@@ -97,9 +190,10 @@ export function DashboardGuestGate({
         ) : null}
 
         {!loginEnabled ? (
-          <div className="mt-6 rounded-[14px] border border-[rgba(243,194,89,0.34)] bg-[rgba(243,194,89,0.1)] px-4 py-3 text-sm leading-6 text-[#ffe9b3]">
-            Supabase 환경변수가 아직 없어 로그인 링크를 보낼 수 없어요.
-            `.env.local`을 채우면 이 자리에서 바로 로그인할 수 있습니다.
+          <div className="mt-5 rounded-[14px] border border-[rgba(243,194,89,0.34)] bg-[rgba(243,194,89,0.1)] px-4 py-3 text-sm leading-6 text-[#ffe9b3]">
+            Supabase is not configured yet, so login is disabled. Keep
+            `NEXT_PUBLIC_DEMO_MODE=true` to review the dashboard locally while
+            wiring up your real project keys.
           </div>
         ) : null}
 
@@ -107,6 +201,24 @@ export function DashboardGuestGate({
           <LoginForm disabled={!loginEnabled} nextPath="/" />
         </div>
       </aside>
+    </div>
+  );
+}
+
+type FeatureRowProps = {
+  label: string;
+  value: string;
+};
+
+function FeatureRow({ label, value }: FeatureRowProps) {
+  return (
+    <div className="rounded-[14px] border border-[var(--dashboard-border)] bg-[rgba(255,255,255,0.03)] px-4 py-3">
+      <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-warning)]">
+        {label}
+      </p>
+      <p className="mt-3 text-sm leading-6 text-[var(--dashboard-muted)]">
+        {value}
+      </p>
     </div>
   );
 }

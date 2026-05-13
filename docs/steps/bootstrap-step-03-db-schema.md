@@ -1,53 +1,53 @@
-# Bootstrap Step 03 DB Schema
+# 부트스트랩 Step 03 DB 스키마
 
-## Summary
+## 요약
 
-This step adds the persistent data model behind the authenticated shell. The result should give later assistant CRUD and execution APIs a stable Supabase schema with clear ownership boundaries.
+이 step은 인증된 앱 셸 뒤에 실제 영속 데이터 모델을 추가합니다. 이후 비서 CRUD와 실행 API가 재사용할 수 있도록, 명확한 소유권 경계를 가진 안정적인 Supabase 스키마를 만드는 것이 목표입니다.
 
-## Branch Plan
+## 브랜치 계획
 
-- Start from the latest `develop`
-- Create branch: `step/03-db-schema`
-- Keep this step focused on schema, RLS, seed data, and supporting domain types
-- Merge this branch back into `develop` before starting `step/04-assistant-crud`
+- 최신 `develop`에서 시작
+- 브랜치 생성: `step/03-db-schema`
+- 이 step은 스키마, RLS, 시드 데이터, 보조 도메인 타입에 집중
+- `step/04-assistant-crud`를 시작하기 전에 이 브랜치를 `develop`으로 머지
 
-## Commit Policy
+## 커밋 정책
 
-Use Conventional Commits from `AGENTS.md`.
+`AGENTS.md`의 Conventional Commits 규칙을 사용합니다.
 
-Recommended commits for this step:
+이 step에서 권장하는 커밋 예시:
 
 - `docs(planning): add step 03 db schema plan`
 - `feat(db): add assistant schema and rls policies`
 - `feat(types): add assistant domain models and mappers`
 - `docs(readme): document supabase schema setup`
 
-## Planned Work
+## 예정 작업
 
-- Create `docs/execplans/step-03-db-schema.md`
-- Create this bootstrap step note under `docs/steps`
-- Add Supabase migration SQL for assistant tables and helper triggers
-- Add RLS policies for `user_assistants`, `assistant_runs`, and `assistant_sources`
-- Add seed SQL for the default assistant templates
-- Expand shared assistant types
-- Add DB row mapping helpers
-- Update README with schema apply instructions
+- `docs/execplans/step-03-db-schema.md` 작성
+- `docs/steps` 아래에 이 부트스트랩 문서 작성
+- 비서 테이블과 보조 트리거를 위한 Supabase migration SQL 추가
+- `user_assistants`, `assistant_runs`, `assistant_sources`용 RLS 정책 추가
+- 기본 비서 템플릿용 seed SQL 추가
+- 공용 비서 타입 확장
+- DB row 매핑 헬퍼 추가
+- README에 스키마 적용 방법 반영
 
-## Working Notes
+## 작업 메모
 
-- Keep template rows reusable across all users.
-- Use snake_case in SQL and camelCase in TypeScript-facing models.
-- Prefer idempotent seed behavior where practical.
-- Avoid mixing assistant CRUD logic into this step.
+- 템플릿 row는 모든 사용자가 재사용할 수 있게 유지합니다.
+- SQL은 snake_case, TypeScript 모델은 camelCase를 사용합니다.
+- 가능하면 seed는 반복 적용에도 안전한 형태를 우선합니다.
+- 이 step에 비서 CRUD 로직을 섞지 않습니다.
 
-## Exit Criteria
+## 종료 기준
 
-- The repo contains a reproducible SQL schema for the assistant domain.
-- RLS is enabled for all user-owned tables with owner-based access rules.
-- Seed data exists for the default news and stock templates.
-- Shared types are ready for Step 04 CRUD and Step 06 run persistence.
-- `lint`, `typecheck`, and `test` pass, or any blocker is documented clearly.
+- 저장소에 비서 도메인을 위한 재현 가능한 SQL 스키마가 존재합니다.
+- 모든 사용자 소유 테이블에서 RLS가 활성화되고 소유자 기반 접근 규칙이 적용됩니다.
+- 기본 뉴스/주식 템플릿용 seed 데이터가 존재합니다.
+- 공용 타입이 Step 04 CRUD와 Step 06 실행 기록 저장을 받을 준비가 되어 있습니다.
+- `lint`, `typecheck`, `test`가 통과하거나, 막히는 이유가 문서로 명확히 남아 있습니다.
 
-## Next Step
+## 다음 Step
 
-After this step is merged, move to `step/04-assistant-crud` for template queries, user assistant CRUD routes, and dashboard list UI.
+이 step이 머지되면 템플릿 조회, 사용자 비서 CRUD 라우트, 대시보드 목록 UI를 위해 `step/04-assistant-crud`로 진행합니다.

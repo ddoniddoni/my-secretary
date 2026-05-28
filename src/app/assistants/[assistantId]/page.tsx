@@ -139,7 +139,7 @@ function AssistantDetailContent({
               <PixelAvatar variant={assistant.type} size="md" />
               <div className="min-w-0">
                 <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-accent-strong)]">
-                  {getAssistantTypeLabel(assistant.type)} 비서
+                  {getAssistantTypeLabel(assistant.type)}
                 </p>
                 <h1 className="mt-3 text-2xl font-semibold text-[var(--dashboard-text)] sm:text-3xl">
                   {assistant.name}

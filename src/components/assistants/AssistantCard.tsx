@@ -25,20 +25,20 @@ export function AssistantCard({
 
   return (
     <article className="pixel-assistant-card">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex min-w-0 items-start gap-5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex min-w-0 items-start gap-4 sm:gap-5">
           <PixelCardPortrait type={assistant.type} />
           <div className="min-w-0">
             <h2 className="truncate font-pixel text-[17px] leading-[1.55] text-[var(--dashboard-text)] sm:text-[19px]">
               {assistant.name}
             </h2>
-            <p className="mt-4 max-w-[280px] text-[15px] leading-8 text-[var(--dashboard-muted)]">
+            <p className="mt-4 max-w-none text-[15px] leading-8 text-[var(--dashboard-muted)] sm:max-w-[280px]">
               {template?.description ??
                 getAssistantTypeDescription(assistant.type)}
             </p>
           </div>
         </div>
-        <div className="pt-1">
+        <div className="hidden pt-1 sm:block">
           <CardGlyph type={assistant.type} />
         </div>
       </div>
@@ -62,10 +62,10 @@ export function AssistantCard({
         ))}
       </div>
 
-      <div className="mt-6 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_72px] gap-3">
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1.1fr)_56px]">
         <Link
           href={`/assistants/${assistant.id}`}
-          className="pixel-card-button pixel-card-button-primary"
+          className="pixel-card-button pixel-card-button-primary w-full"
         >
           Detail
         </Link>
@@ -73,12 +73,12 @@ export function AssistantCard({
           assistantId={assistant.id}
           idleLabel="Run"
           runningLabel="..."
-          buttonClassName="pixel-card-button pixel-card-button-secondary"
+          buttonClassName="pixel-card-button pixel-card-button-secondary w-full whitespace-nowrap"
         />
         <button
           type="button"
           onClick={() => onDelete(assistant)}
-          className="pixel-card-button pixel-card-button-icon"
+          className="pixel-card-button pixel-card-button-icon col-span-2 w-full sm:col-span-1"
           aria-label={`${assistant.name} 삭제`}
         >
           <DotsIcon />

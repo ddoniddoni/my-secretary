@@ -42,60 +42,146 @@ export function DashboardShell({
   return (
     <div className="pixel-os-theme min-h-screen bg-[var(--dashboard-bg)] p-2 md:p-3">
       <div className="pixel-window mx-auto flex min-h-[calc(100vh-1rem)] w-full max-w-[1680px] flex-col overflow-hidden">
-        <header className="pixel-window-bar flex h-[72px] items-center justify-between px-5 sm:px-7">
-          <div className="flex min-w-0 items-center gap-4">
-            <div className="pixel-brand-chip">
-              <PixelAvatar variant="helper" size="sm" />
+        <header className="pixel-window-bar">
+          <div className="flex items-center justify-between gap-3 px-4 py-3 lg:hidden">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="pixel-brand-chip">
+                <PixelAvatar variant="helper" size="sm" />
+              </div>
+              <div className="min-w-0">
+                <p className="font-pixel text-[11px] uppercase leading-none text-[var(--dashboard-text)]">
+                  AI ASSISTANT OS
+                </p>
+                <p className="mt-1 text-[11px] text-[var(--dashboard-muted)]">
+                  {workspaceMode}
+                </p>
+              </div>
             </div>
-            <div className="flex min-w-0 items-baseline gap-3">
-              <p className="font-pixel text-[12px] uppercase leading-none text-[var(--dashboard-text)]">
-                AI ASSISTANT OS
-              </p>
-              <p className="font-pixel text-[9px] uppercase text-[var(--dashboard-muted)]">
-                v1.0.0
-              </p>
-            </div>
+
+            {!guestMode ? (
+              <details className="relative">
+                <summary
+                  className="pixel-window-control list-none cursor-pointer appearance-none [&::-webkit-details-marker]:hidden"
+                  aria-label="Open navigation menu"
+                >
+                  <MenuIcon />
+                </summary>
+                <div className="absolute right-0 top-full z-30 mt-3 w-[min(320px,calc(100vw-1.5rem))] overflow-hidden rounded-[18px] border border-[var(--dashboard-border)] bg-[rgba(9,12,22,0.98)] shadow-[0_24px_48px_rgba(0,0,0,0.35)]">
+                  <div className="border-b border-[var(--dashboard-divider)] px-4 py-4">
+                    <span
+                      className={`inline-flex rounded-full border px-3 py-2 font-mono text-xs ${
+                        demoMode
+                          ? "border-[rgba(161,143,255,0.4)] bg-[rgba(113,100,255,0.14)] text-[#e4ddff]"
+                          : "border-[rgba(137,239,116,0.35)] bg-[rgba(137,239,116,0.1)] text-[#d9ffd3]"
+                      }`}
+                    >
+                      {workspaceMode}
+                    </span>
+                    <div className="mt-4 flex items-center gap-3">
+                      <PixelAvatar variant="news" size="sm" />
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium text-[var(--dashboard-text)]">
+                          {demoMode
+                            ? "Demo User"
+                            : userEmail?.split("@")[0] ?? "PixelUser"}
+                        </p>
+                        <p className="mt-1 font-mono text-xs text-[var(--dashboard-success)]">
+                          {demoMode ? "Demo Mode" : "Online"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <nav className="grid gap-1 px-3 py-3" aria-label="Dashboard navigation">
+                    {navItems.map((item) =>
+                      item.href ? (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          className={`pixel-nav-item ${item.selected ? "is-active" : ""}`}
+                        >
+                          <PixelNavIcon name={item.icon} />
+                          <span>{item.label}</span>
+                        </Link>
+                      ) : (
+                        <div key={item.label} className="pixel-nav-item is-idle">
+                          <PixelNavIcon name={item.icon} />
+                          <span>{item.label}</span>
+                        </div>
+                      ),
+                    )}
+                  </nav>
+
+                  {!demoMode ? (
+                    <form action={signOutAction} className="border-t border-[var(--dashboard-divider)] p-3">
+                      <button
+                        type="submit"
+                        className="pixel-button pixel-button-secondary h-[44px] w-full text-sm"
+                      >
+                        Logout
+                      </button>
+                    </form>
+                  ) : null}
+                </div>
+              </details>
+            ) : null}
           </div>
 
-          <div className="flex items-center gap-2">
-            <span
-              className={`hidden rounded-full border px-3 py-2 font-mono text-xs md:inline-flex ${
-                guestMode
-                  ? "border-[rgba(243,194,89,0.35)] bg-[rgba(243,194,89,0.1)] text-[#ffe49d]"
-                  : demoMode
-                    ? "border-[rgba(161,143,255,0.4)] bg-[rgba(113,100,255,0.14)] text-[#e4ddff]"
-                    : "border-[rgba(137,239,116,0.35)] bg-[rgba(137,239,116,0.1)] text-[#d9ffd3]"
-              }`}
-            >
-              {workspaceMode}
-            </span>
-            <button
-              type="button"
-              aria-label="Minimize"
-              className="pixel-window-control"
-            >
-              <span className="pixel-window-control-line" />
-            </button>
-            <button
-              type="button"
-              aria-label="Maximize"
-              className="pixel-window-control"
-            >
-              <span className="pixel-window-control-square" />
-            </button>
-            <button
-              type="button"
-              aria-label="Close"
-              className="pixel-window-control pixel-window-control-danger"
-            >
-              <span className="pixel-window-control-x" />
-            </button>
+          <div className="hidden h-[72px] items-center justify-between px-5 sm:px-7 lg:flex">
+            <div className="flex min-w-0 items-center gap-4">
+              <div className="pixel-brand-chip">
+                <PixelAvatar variant="helper" size="sm" />
+              </div>
+              <div className="flex min-w-0 items-baseline gap-3">
+                <p className="font-pixel text-[12px] uppercase leading-none text-[var(--dashboard-text)]">
+                  AI ASSISTANT OS
+                </p>
+                <p className="font-pixel text-[9px] uppercase text-[var(--dashboard-muted)]">
+                  v1.0.0
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span
+                className={`hidden rounded-full border px-3 py-2 font-mono text-xs md:inline-flex ${
+                  guestMode
+                    ? "border-[rgba(243,194,89,0.35)] bg-[rgba(243,194,89,0.1)] text-[#ffe49d]"
+                    : demoMode
+                      ? "border-[rgba(161,143,255,0.4)] bg-[rgba(113,100,255,0.14)] text-[#e4ddff]"
+                      : "border-[rgba(137,239,116,0.35)] bg-[rgba(137,239,116,0.1)] text-[#d9ffd3]"
+                }`}
+              >
+                {workspaceMode}
+              </span>
+              <button
+                type="button"
+                aria-label="Minimize"
+                className="pixel-window-control"
+              >
+                <span className="pixel-window-control-line" />
+              </button>
+              <button
+                type="button"
+                aria-label="Maximize"
+                className="pixel-window-control"
+              >
+                <span className="pixel-window-control-square" />
+              </button>
+              <button
+                type="button"
+                aria-label="Close"
+                className="pixel-window-control pixel-window-control-danger"
+              >
+                <span className="pixel-window-control-x" />
+              </button>
+            </div>
           </div>
         </header>
 
         <div className="flex flex-1 flex-col lg:flex-row">
           {guestMode ? null : (
-            <aside className="pixel-sidebar w-full border-b border-[var(--dashboard-divider)] lg:w-[270px] lg:border-b-0 lg:border-r">
+            <aside className="pixel-sidebar hidden w-full border-b border-[var(--dashboard-divider)] lg:block lg:w-[270px] lg:border-b-0 lg:border-r">
               <div className="flex h-full flex-col px-6 py-7">
                 <div className="flex justify-center py-3">
                   <div className="pixel-sidebar-avatar">
@@ -169,6 +255,18 @@ export function DashboardShell({
         </div>
       </div>
     </div>
+  );
+}
+
+function MenuIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-[18px] w-[18px] fill-none stroke-current text-[var(--dashboard-text)]"
+    >
+      <path d="M4 7h16M4 12h16M4 17h16" strokeWidth="2" strokeLinecap="round" />
+    </svg>
   );
 }
 

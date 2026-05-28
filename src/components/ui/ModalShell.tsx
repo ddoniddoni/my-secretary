@@ -63,7 +63,10 @@ export function ModalShell({
           ×
         </button>
         <div className="pr-10">
-          <h2 id="modal-title" className="text-2xl font-semibold tracking-[-0.04em]">
+          <h2
+            id="modal-title"
+            className="text-2xl font-semibold tracking-[-0.04em] text-[color:var(--dashboard-text,#1f1308)]"
+          >
             {title}
           </h2>
           {description ? (

@@ -155,7 +155,7 @@ function AssistantDetailContent({
               idleLabel="Run briefing"
               runningLabel="Generating..."
               showFeedback
-              buttonClassName="pixel-button pixel-button-primary min-w-[180px] text-sm"
+              buttonClassName="pixel-button pixel-button-primary h-[52px] w-full text-sm lg:w-auto lg:min-w-[180px]"
             />
           </div>
 

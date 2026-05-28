@@ -78,6 +78,35 @@ export async function fetchProviderJson<TSchema extends z.ZodType>(
   return parsed.data;
 }
 
+export async function fetchProviderText(
+  url: URL,
+  options: {
+    errorContext: string;
+    headers?: HeadersInit;
+  },
+) {
+  const response = await fetch(url, {
+    headers: {
+      Accept: "application/xml, text/xml;q=0.9, */*;q=0.8",
+      ...options.headers,
+    },
+    next: {
+      revalidate: 300,
+    },
+  });
+  const bodyText = await response.text();
+
+  if (!response.ok) {
+    throw new Error(
+      bodyText.trim()
+        ? `${options.errorContext} failed: ${bodyText.trim()}`
+        : `${options.errorContext} failed with status ${response.status}.`,
+    );
+  }
+
+  return bodyText;
+}
+
 function extractProviderError(body: unknown) {
   if (!body || typeof body !== "object") {
     return null;

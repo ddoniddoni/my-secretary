@@ -63,7 +63,14 @@ STOCK_PROVIDER=mock
 ALPHA_VANTAGE_API_KEY=
 BASEBALL_PROVIDER=mock
 REAL_ESTATE_PROVIDER=mock
+MOLIT_API_KEY=
 ```
+
+Additional provider setup:
+
+- `BASEBALL_PROVIDER=kbo` uses official KBO standings, schedule, breaking news, and leader pages.
+- `REAL_ESTATE_PROVIDER=molit` requires `MOLIT_API_KEY`.
+- The MOLIT real estate provider currently supports mapped district names or a 5-digit `LAWD_CD`.
 
 메모:
 
@@ -72,7 +79,8 @@ REAL_ESTATE_PROVIDER=mock
 - 기본값은 모든 provider가 `mock`입니다.
 - `NEWS_PROVIDER=newsapi`를 사용하면 `NEWSAPI_API_KEY`가 필요합니다.
 - `STOCK_PROVIDER=alphavantage`를 사용하면 `ALPHA_VANTAGE_API_KEY`가 필요합니다.
-- 현재 야구와 부동산 provider는 `mock`만 지원합니다.
+- `BASEBALL_PROVIDER=kbo` enables official KBO-backed baseball summaries.
+- `REAL_ESTATE_PROVIDER=molit` enables official MOLIT-backed housing summaries.
 - Supabase Auth 리다이렉트 URL에는 `http://localhost:3000/auth/callback`을 포함해야 합니다.
 
 ## Supabase 스키마 적용 방법
@@ -137,8 +145,8 @@ saved assistant config
 
 - `news`: `mock`, `newsapi`
 - `stock`: `mock`, `alphavantage`
-- `baseball`: `mock`
-- `real_estate`: `mock`
+- `baseball`: `mock`, `kbo`
+- `real_estate`: `mock`, `molit`
 
 이 구조 덕분에 runner 아키텍처는 그대로 유지하면서도, 실제 API로 교체하거나 추가할 때 UI 변경을 최소화할 수 있습니다.
 

@@ -11,7 +11,7 @@ export function BaseballAssistantResult({
     <section className="space-y-5">
       <div className="rounded-[14px] border border-[rgba(243,194,89,0.28)] bg-[rgba(243,194,89,0.08)] px-5 py-5">
         <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-warning)]">
-          League Summary
+          리그 요약
         </p>
         <p className="mt-4 text-sm leading-7 text-[var(--dashboard-text)]">
           {result.leagueSummary}
@@ -21,7 +21,7 @@ export function BaseballAssistantResult({
       {result.standings.length > 0 ? (
         <div className="rounded-[14px] border border-[var(--dashboard-border)] bg-[rgba(16,21,40,0.96)] px-5 py-5">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--dashboard-muted)]">
-            Standings Snapshot
+            순위 현황
           </p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {result.standings.map((standing) => (
@@ -60,7 +60,7 @@ export function BaseballAssistantResult({
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="rounded-[12px] border border-[rgba(161,143,255,0.22)] bg-[rgba(113,100,255,0.08)] px-4 py-4">
                 <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--dashboard-accent-strong)]">
-                  Key Story
+                  핵심 이야기
                 </p>
                 <p className="mt-3 text-sm leading-7 text-[var(--dashboard-text)]">
                   {team.keyStory}
@@ -68,7 +68,7 @@ export function BaseballAssistantResult({
               </div>
               <div className="rounded-[12px] border border-[rgba(107,220,251,0.22)] bg-[rgba(107,220,251,0.08)] px-4 py-4">
                 <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--dashboard-info)]">
-                  Watch
+                  확인 포인트
                 </p>
                 <p className="mt-3 text-sm leading-7 text-[var(--dashboard-text)]">
                   주목 선수: {team.keyPlayer}

@@ -13,7 +13,7 @@ export function StockAssistantResult({ result }: StockAssistantResultProps) {
     <section className="space-y-5">
       <div className="rounded-[14px] border border-[rgba(137,239,116,0.24)] bg-[rgba(137,239,116,0.08)] px-5 py-5">
         <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-success)]">
-          Market Summary
+          시장 요약
         </p>
         <p className="mt-4 text-sm leading-7 text-[var(--dashboard-text)]">
           {result.marketSummary}
@@ -53,11 +53,14 @@ export function StockAssistantResult({ result }: StockAssistantResultProps) {
 
             <div className="mt-4">
               <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--dashboard-muted)]">
-                Key Issues
+                핵심 이슈
               </p>
               <ul className="mt-3 space-y-2 text-sm leading-7 text-[var(--dashboard-text)]">
                 {item.keyIssues.map((issue) => (
-                  <li key={issue} className="rounded-[10px] bg-[rgba(255,255,255,0.03)] px-3 py-2">
+                  <li
+                    key={issue}
+                    className="rounded-[10px] bg-[rgba(255,255,255,0.03)] px-3 py-2"
+                  >
                     {issue}
                   </li>
                 ))}
@@ -66,7 +69,7 @@ export function StockAssistantResult({ result }: StockAssistantResultProps) {
 
             <div className="mt-5">
               <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--dashboard-muted)]">
-                Related News
+                관련 뉴스
               </p>
               <div className="mt-3 grid gap-3">
                 {item.relatedNews.map((news, index) => (

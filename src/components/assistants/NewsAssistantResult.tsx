@@ -9,7 +9,7 @@ export function NewsAssistantResult({ result }: NewsAssistantResultProps) {
     <section className="space-y-5">
       <div className="rounded-[14px] border border-[rgba(107,220,251,0.26)] bg-[rgba(107,220,251,0.08)] px-5 py-5">
         <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-info)]">
-          Overall Summary
+          전체 요약
         </p>
         <p className="mt-4 text-sm leading-7 text-[var(--dashboard-text)]">
           {result.overallSummary}
@@ -34,7 +34,7 @@ export function NewsAssistantResult({ result }: NewsAssistantResultProps) {
             </p>
             <div className="mt-4 rounded-[12px] border border-[rgba(161,143,255,0.24)] bg-[rgba(113,100,255,0.08)] px-4 py-4">
               <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--dashboard-accent-strong)]">
-                Why it matters
+                중요한 이유
               </p>
               <p className="mt-3 text-sm leading-7 text-[var(--dashboard-text)]">
                 {item.whyItMatters}

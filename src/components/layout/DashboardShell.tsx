@@ -19,12 +19,12 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { href: "/", icon: "home", label: "Dashboard", selected: true },
-  { icon: "bot", label: "Assistants" },
-  { icon: "file", label: "Templates" },
-  { icon: "pulse", label: "Activity" },
-  { icon: "plug", label: "Integrations" },
-  { icon: "gear", label: "Settings" },
+  { href: "/", icon: "home", label: "대시보드", selected: true },
+  { icon: "bot", label: "비서" },
+  { icon: "file", label: "템플릿" },
+  { icon: "pulse", label: "활동" },
+  { icon: "plug", label: "연동" },
+  { icon: "gear", label: "설정" },
 ];
 
 export function DashboardShell({
@@ -34,10 +34,10 @@ export function DashboardShell({
   userEmail,
 }: DashboardShellProps) {
   const workspaceMode = guestMode
-    ? "Guest preview"
+    ? "게스트 미리보기"
     : demoMode
-      ? "Demo mode"
-      : "Workspace live";
+      ? "데모 모드"
+      : "작업공간 활성";
 
   return (
     <div className="pixel-os-theme min-h-screen bg-[var(--dashboard-bg)] p-2 md:p-3">
@@ -50,7 +50,7 @@ export function DashboardShell({
               </div>
               <div className="min-w-0">
                 <p className="font-pixel text-[11px] uppercase leading-none text-[var(--dashboard-text)]">
-                  AI ASSISTANT OS
+                  인공지능 비서 OS
                 </p>
                 <p className="mt-1 text-[11px] text-[var(--dashboard-muted)]">
                   {workspaceMode}
@@ -62,7 +62,7 @@ export function DashboardShell({
               <details className="relative">
                 <summary
                   className="pixel-window-control list-none cursor-pointer appearance-none [&::-webkit-details-marker]:hidden"
-                  aria-label="Open navigation menu"
+                  aria-label="메뉴 열기"
                 >
                   <MenuIcon />
                 </summary>
@@ -82,17 +82,17 @@ export function DashboardShell({
                       <div className="min-w-0">
                         <p className="truncate text-sm font-medium text-[var(--dashboard-text)]">
                           {demoMode
-                            ? "Demo User"
-                            : userEmail?.split("@")[0] ?? "PixelUser"}
+                            ? "데모 사용자"
+                            : userEmail?.split("@")[0] ?? "사용자"}
                         </p>
                         <p className="mt-1 font-mono text-xs text-[var(--dashboard-success)]">
-                          {demoMode ? "Demo Mode" : "Online"}
+                          {demoMode ? "데모 모드" : "온라인"}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <nav className="grid gap-1 px-3 py-3" aria-label="Dashboard navigation">
+                  <nav className="grid gap-1 px-3 py-3" aria-label="대시보드 탐색">
                     {navItems.map((item) =>
                       item.href ? (
                         <Link
@@ -118,7 +118,7 @@ export function DashboardShell({
                         type="submit"
                         className="pixel-button pixel-button-secondary h-[44px] w-full text-sm"
                       >
-                        Logout
+                        로그아웃
                       </button>
                     </form>
                   ) : null}
@@ -134,7 +134,7 @@ export function DashboardShell({
               </div>
               <div className="flex min-w-0 items-baseline gap-3">
                 <p className="font-pixel text-[12px] uppercase leading-none text-[var(--dashboard-text)]">
-                  AI ASSISTANT OS
+                  인공지능 비서 OS
                 </p>
                 <p className="font-pixel text-[9px] uppercase text-[var(--dashboard-muted)]">
                   v1.0.0
@@ -168,7 +168,7 @@ export function DashboardShell({
                   </div>
                 </div>
 
-                <nav className="mt-6 grid gap-3" aria-label="Dashboard navigation">
+                <nav className="mt-6 grid gap-3" aria-label="대시보드 탐색">
                   {navItems.map((item) =>
                     item.href ? (
                       <Link
@@ -194,20 +194,20 @@ export function DashboardShell({
                   <div className="flex items-center gap-3">
                     <PixelAvatar variant="news" size="sm" />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-[var(--dashboard-text)]">
-                        {demoMode
-                          ? "Demo User"
-                          : userEmail?.split("@")[0] ?? "PixelUser"}
+                        <p className="truncate text-sm font-medium text-[var(--dashboard-text)]">
+                          {demoMode
+                            ? "데모 사용자"
+                            : userEmail?.split("@")[0] ?? "사용자"}
                       </p>
                       <p className="mt-1 font-mono text-xs text-[var(--dashboard-success)]">
-                        {demoMode ? "Demo Mode" : "Online"}
+                        {demoMode ? "데모 모드" : "온라인"}
                       </p>
                     </div>
                   </div>
                   {demoMode ? (
                     <p className="mt-3 text-sm leading-6 text-[var(--dashboard-muted)]">
-                      Explore the full dashboard flow without login while local
-                      Supabase keys are still missing.
+                      로그인 없이 전체 대시보드 흐름을 둘러볼 수 있어요.
+                      로컬 Supabase 키가 아직 없어도 데모로 확인할 수 있습니다.
                     </p>
                   ) : (
                     <form action={signOutAction} className="mt-3">
@@ -215,7 +215,7 @@ export function DashboardShell({
                         type="submit"
                         className="pixel-button pixel-button-secondary h-[40px] w-full text-sm"
                       >
-                        Logout
+                        로그아웃
                       </button>
                     </form>
                   )}

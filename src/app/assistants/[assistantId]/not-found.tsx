@@ -9,16 +9,16 @@ export default function AssistantDetailNotFound() {
       <div className="mx-auto max-w-3xl py-10">
         <StatePanel
           align="center"
-          description="The assistant may have been deleted, or the current user does not have access to this record."
-          eyebrow="Not found"
-          title="We could not find that assistant"
+          description="비서가 삭제됐거나 현재 사용자가 이 기록에 접근할 수 없어요."
+          eyebrow="찾을 수 없음"
+          title="해당 비서를 찾지 못했어요"
           tone="warning"
           action={
             <Link
               href="/"
               className="pixel-button pixel-button-primary px-6 text-sm"
             >
-              Back to dashboard
+              대시보드로 돌아가기
             </Link>
           }
         />

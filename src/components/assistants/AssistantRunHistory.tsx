@@ -15,11 +15,11 @@ export function AssistantRunHistory({ runs }: AssistantRunHistoryProps) {
     return (
       <div className="rounded-[14px] border border-dashed border-[var(--dashboard-border)] px-5 py-8 text-center">
         <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-muted)]">
-          No history
+          기록 없음
         </p>
         <p className="mt-4 text-sm leading-7 text-[var(--dashboard-muted)]">
-          This assistant has not been run yet. Once you trigger the first
-          briefing, the recent timeline will appear here.
+          아직 이 비서를 실행한 기록이 없어요. 첫 브리핑을 실행하면 최근
+          실행 타임라인이 여기에 표시됩니다.
         </p>
       </div>
     );

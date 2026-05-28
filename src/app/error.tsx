@@ -15,11 +15,10 @@ export default function RootError({ error, reset }: RootErrorProps) {
           <StatePanel
             align="center"
             description={
-              error.message ||
-              "Check your local environment and try loading the dashboard again."
+              error.message || "로컬 환경을 확인한 뒤 대시보드를 다시 불러와보세요."
             }
-            eyebrow="Dashboard error"
-            title="We could not load the main dashboard"
+            eyebrow="대시보드 오류"
+            title="메인 대시보드를 불러오지 못했어요"
             tone="danger"
             action={
               <button
@@ -27,7 +26,7 @@ export default function RootError({ error, reset }: RootErrorProps) {
                 onClick={reset}
                 className="pixel-button pixel-button-primary px-6 text-sm"
               >
-                Try again
+                다시 시도
               </button>
             }
           />

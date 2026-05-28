@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: "%s | My SECRETARY",
   },
   description:
-    "Purpose-built AI assistants for reading news and market briefings in a clean dashboard.",
+    "뉴스와 시장 브리핑을 읽기 쉽게 정리해주는 목적별 인공지능 비서 대시보드입니다.",
 };
 
 export default function RootLayout({

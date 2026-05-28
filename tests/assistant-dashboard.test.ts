@@ -7,10 +7,7 @@ import {
   getAssistantTypeLabel,
   getAssistantTypePreviewLabel,
 } from "../src/lib/assistants/dashboard";
-import type {
-  AssistantTemplate,
-  UserAssistant,
-} from "../src/types/assistants";
+import type { AssistantTemplate, UserAssistant } from "../src/types/assistants";
 
 const newsAssistant: UserAssistant<"news"> = {
   config: {
@@ -133,30 +130,30 @@ const templatesById: Record<string, AssistantTemplate | undefined> = {
 
 describe("assistant dashboard helpers", () => {
   it("returns readable type labels and preview labels", () => {
-    expect(getAssistantTypeLabel("news")).toBe("News AI");
-    expect(getAssistantTypeLabel("stock")).toBe("Stock AI");
-    expect(getAssistantTypeLabel("baseball")).toBe("Baseball AI");
-    expect(getAssistantTypeLabel("real_estate")).toBe("Real Estate AI");
+    expect(getAssistantTypeLabel("news")).toBe("뉴스 비서");
+    expect(getAssistantTypeLabel("stock")).toBe("주식 비서");
+    expect(getAssistantTypeLabel("baseball")).toBe("야구 비서");
+    expect(getAssistantTypeLabel("real_estate")).toBe("부동산 비서");
 
-    expect(getAssistantTypePreviewLabel("news")).toBe("News briefing");
-    expect(getAssistantTypePreviewLabel("stock")).toBe("Stock watch");
-    expect(getAssistantTypePreviewLabel("baseball")).toBe("KBO brief");
-    expect(getAssistantTypePreviewLabel("real_estate")).toBe("Housing pulse");
+    expect(getAssistantTypePreviewLabel("news")).toBe("뉴스 브리핑");
+    expect(getAssistantTypePreviewLabel("stock")).toBe("종목 관찰");
+    expect(getAssistantTypePreviewLabel("baseball")).toBe("KBO 브리핑");
+    expect(getAssistantTypePreviewLabel("real_estate")).toBe("부동산 흐름");
   });
 
   it("builds metadata chips for each assistant type", () => {
-    expect(getAssistantMetaChips(newsAssistant)).toEqual(["IT", "5 headlines"]);
+    expect(getAssistantMetaChips(newsAssistant)).toEqual(["IT", "5개 헤드라인"]);
     expect(getAssistantMetaChips(stockAssistant)).toEqual([
       "NVDA / TSLA",
-      "US market",
+      "US 시장",
     ]);
     expect(getAssistantMetaChips(baseballAssistant)).toEqual([
       "LG / KIA",
-      "Standings on",
+      "순위 포함",
     ]);
     expect(getAssistantMetaChips(realEstateAssistant)).toEqual([
       "Mapo / Bundang",
-      "2 types",
+      "2개 유형",
     ]);
   });
 
@@ -164,22 +161,21 @@ describe("assistant dashboard helpers", () => {
     expect(buildDashboardOverview([])).toEqual([
       {
         description:
-          "Start with one template and build a reusable assistant deck.",
-        label: "Assistant deck",
+          "템플릿 하나로 시작해 재사용 가능한 비서 묶음을 만들어보세요.",
+        label: "비서 묶음",
         tone: "accent",
         value: "00",
       },
       {
-        description:
-          "News briefing / Stock watch / KBO brief / Housing pulse",
-        label: "Coverage",
+        description: "뉴스 브리핑 / 종목 관찰 / KBO 브리핑 / 부동산 흐름",
+        label: "범위",
         tone: "info",
         value: "0/4",
       },
       {
         description:
-          "Categories, symbols, teams, and regions saved across your assistant configs.",
-        label: "Focus items",
+          "비서 설정에 저장된 카테고리, 종목, 팀, 지역 수를 보여줍니다.",
+        label: "집중 항목",
         tone: "success",
         value: "00",
       },
@@ -195,22 +191,21 @@ describe("assistant dashboard helpers", () => {
     ).toEqual([
       {
         description:
-          "4 saved workflows are ready to run from this dashboard.",
-        label: "Assistant deck",
+          "4개의 저장된 작업 흐름이 이 대시보드에서 바로 실행할 준비가 되어 있습니다.",
+        label: "비서 묶음",
         tone: "accent",
         value: "04",
       },
       {
-        description:
-          "News briefing / Stock watch / KBO brief / Housing pulse",
-        label: "Coverage",
+        description: "뉴스 브리핑 / 종목 관찰 / KBO 브리핑 / 부동산 흐름",
+        label: "범위",
         tone: "info",
         value: "4/4",
       },
       {
         description:
-          "Categories, symbols, teams, and regions saved across your assistant configs.",
-        label: "Focus items",
+          "비서 설정에 저장된 카테고리, 종목, 팀, 지역 수를 보여줍니다.",
+        label: "집중 항목",
         tone: "success",
         value: "09",
       },

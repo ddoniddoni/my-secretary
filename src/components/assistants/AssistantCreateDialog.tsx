@@ -81,7 +81,7 @@ export function AssistantCreateDialog({
       const result = (await response.json()) as ApiResponse;
 
       if (!response.ok || !result.data) {
-        setErrorMessage(result.error ?? "비서를 추가하지 못했습니다.");
+        setErrorMessage(result.error ?? "비서를 추가하지 못했어요.");
         return;
       }
 
@@ -92,7 +92,7 @@ export function AssistantCreateDialog({
       });
     } catch (error) {
       console.error("Failed to submit assistant create form", error);
-      setErrorMessage("비서를 추가하지 못했습니다.");
+      setErrorMessage("비서를 추가하지 못했어요.");
     } finally {
       setIsSubmitting(false);
     }
@@ -112,7 +112,9 @@ export function AssistantCreateDialog({
           triggerClassName ??
           "inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] px-6 py-3 text-sm font-medium text-[var(--color-foreground)]"
         }
-        title={disabled ? "Preview mode에서는 비서 추가가 비활성화됩니다." : undefined}
+        title={
+          disabled ? "미리보기 모드에서는 비서 추가가 비활성화됩니다." : undefined
+        }
       >
         {triggerLabel}
       </button>
@@ -120,8 +122,8 @@ export function AssistantCreateDialog({
       <ModalShell
         open={isOpen}
         onClose={closeDialog}
-        title="새 AI 비서 추가"
-        description="템플릿을 선택하고 내 대시보드에서 사용할 설정을 저장하세요."
+        title="새 비서 추가"
+        description="템플릿을 선택하고 대시보드에서 사용할 설정을 저장하세요."
       >
         {!selectedTemplate ? (
           <div className="grid gap-4 md:grid-cols-2">

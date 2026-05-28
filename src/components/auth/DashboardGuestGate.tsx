@@ -42,12 +42,12 @@ export function DashboardGuestGate({
           <SparkleMark />
           <div className="min-w-0">
             <h1 className="font-pixel text-[26px] leading-[1.45] text-[var(--dashboard-text)] sm:text-[34px]">
-              Build a deck of task-specific AI assistants
+              작업별 인공지능 비서 묶음을 만들어보세요
             </h1>
             <p className="mt-4 max-w-3xl text-[15px] leading-8 text-[var(--dashboard-muted)]">
-              My SECRETARY keeps recurring information chores out of a generic
-              chat window. Save assistants for news, markets, KBO, and housing,
-              then open clean result UIs from one responsive dashboard.
+              My SECRETARY는 반복되는 정보 확인 작업을 일반 채팅창에 두지
+              않습니다. 뉴스, 주식, KBO, 부동산 비서를 저장하고, 하나의 반응형
+              대시보드에서 읽기 쉬운 결과 화면을 열어보세요.
             </p>
           </div>
         </div>
@@ -72,15 +72,15 @@ export function DashboardGuestGate({
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-warning)]">
-                Assistant previews
+                비서 미리보기
               </p>
               <h2 className="mt-3 text-xl font-semibold text-[var(--dashboard-text)]">
-                Locked cards preview the product before sign-in
+                잠금 카드로 로그인 전에 제품을 미리 볼 수 있어요
               </h2>
             </div>
             <p className="hidden max-w-sm text-right text-sm leading-7 text-[var(--dashboard-muted)] xl:block">
-              Each assistant type keeps its own config, provider, runner, and
-              result UI.
+              각 비서 유형은 별도의 설정, 데이터 제공자, 실행기, 결과 UI를
+              가집니다.
             </p>
           </div>
 
@@ -91,7 +91,7 @@ export function DashboardGuestGate({
                   <PixelAvatar variant={preview.type} size="md" />
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="pixel-lock-badge">Locked</span>
+                      <span className="pixel-lock-badge">잠금</span>
                       <span className="pixel-meta-pill">
                         {getAssistantTypePreviewLabel(preview.type)}
                       </span>
@@ -155,31 +155,31 @@ export function DashboardGuestGate({
           </div>
           <div>
             <p className="font-pixel text-[11px] uppercase text-[var(--dashboard-accent-strong)]">
-              Access Required
+              접근 필요
             </p>
             <h2 className="mt-2 text-2xl font-semibold text-[var(--dashboard-text)]">
-              Open your assistant OS
+              인공지능 비서 OS를 열어보세요
             </h2>
           </div>
         </div>
 
         <p className="mt-5 text-sm leading-7 text-[var(--dashboard-muted)]">
-          Sign in with a magic link to load your saved assistants, rerun
-          briefings, and review structured history from the same dashboard.
+          매직 링크로 로그인하면 저장한 비서를 불러오고, 브리핑을 다시
+          실행하고, 구조화된 실행 기록을 같은 대시보드에서 확인할 수 있어요.
         </p>
 
         <div className="mt-6 grid gap-3">
           <FeatureRow
-            label="Saved assistant deck"
-            value="User-owned assistant configs and templates"
+            label="저장된 비서 묶음"
+            value="사용자 소유의 비서 설정과 템플릿"
           />
           <FeatureRow
-            label="Structured run history"
-            value="Readable result cards instead of raw transcripts"
+            label="구조화된 실행 기록"
+            value="원문 로그 대신 읽기 쉬운 결과 카드"
           />
           <FeatureRow
-            label="Server-side execution"
-            value="Provider fetches and AI calls stay off the client"
+            label="서버 측 실행"
+            value="데이터 제공자 호출과 인공지능 요청은 클라이언트 밖에서 처리"
           />
         </div>
 
@@ -191,9 +191,9 @@ export function DashboardGuestGate({
 
         {!loginEnabled ? (
           <div className="mt-5 rounded-[14px] border border-[rgba(243,194,89,0.34)] bg-[rgba(243,194,89,0.1)] px-4 py-3 text-sm leading-6 text-[#ffe9b3]">
-            Supabase is not configured yet, so login is disabled. Keep
-            `NEXT_PUBLIC_DEMO_MODE=true` to review the dashboard locally while
-            wiring up your real project keys.
+            Supabase 설정이 아직 없어 로그인은 비활성화되어 있습니다. 실제
+            프로젝트 키를 연결하는 동안에는 `NEXT_PUBLIC_DEMO_MODE=true`를
+            유지하면 로컬에서 대시보드를 확인할 수 있어요.
           </div>
         ) : null}
 

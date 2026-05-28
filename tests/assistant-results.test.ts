@@ -29,12 +29,12 @@ const newsRun: AssistantRun<"news"> = {
           sourceUrl: "https://example.com/news/ai-chip-demand",
           title: "AI chip demand stays firm",
         },
-        summary: "칩 수요가 견조했습니다.",
+        summary: "수요가 견조합니다.",
         title: "AI chip demand stays firm",
-        whyItMatters: "인프라 투자 지속성을 보여줍니다.",
+        whyItMatters: "인프라 수요가 이어지고 있음을 보여줍니다.",
       },
     ],
-    overallSummary: "기술 뉴스 흐름이 비교적 견조했습니다.",
+    overallSummary: "기술 뉴스 요약입니다.",
   },
   providerMeta: {
     provider: "mock",
@@ -54,13 +54,13 @@ const stockRun: AssistantRun<"stock"> = {
   output: {
     disclaimer: STOCK_ASSISTANT_DISCLAIMER,
     generatedAt: "2026-05-13T01:20:00.000Z",
-    marketSummary: "대형 기술주의 분위기가 안정적이었습니다.",
+    marketSummary: "시장 분위기는 안정적입니다.",
     symbols: [
       {
         change: 2.1,
         changePercent: 1.2,
         currency: "USD",
-        keyIssues: ["서비스 매출이 안정적이었습니다."],
+        keyIssues: ["서비스 매출이 안정적으로 유지됐습니다."],
         price: 190.5,
         relatedNews: [
           {
@@ -68,11 +68,11 @@ const stockRun: AssistantRun<"stock"> = {
             sentiment: "positive",
             sourceName: "Street Brief",
             sourceUrl: "https://example.com/stocks/aapl-services",
-            summary: "반복 매출 흐름이 지지 요인이었습니다.",
+            summary: "반복 매출 흐름이 지지 요인으로 보입니다.",
             title: "Apple services remain supportive",
           },
         ],
-        summary: "수익구조 안정성이 부각됐습니다.",
+        summary: "실적 기대감이 유지됩니다.",
         symbol: "AAPL",
       },
     ],
@@ -94,7 +94,7 @@ const baseballRun: AssistantRun<"baseball"> = {
   input: {},
   output: {
     generatedAt: "2026-05-13T01:20:00.000Z",
-    leagueSummary: "상위권 경쟁이 이어졌습니다.",
+    leagueSummary: "상위권 경쟁이 이어지고 있습니다.",
     standings: [
       {
         rank: 1,
@@ -105,8 +105,8 @@ const baseballRun: AssistantRun<"baseball"> = {
     ],
     teamBriefs: [
       {
-        latestResult: "LG가 최근 경기에서 승리했습니다.",
-        keyPlayer: "오스틴",
+        latestResult: "LG가 최근 경기에서 활약했습니다.",
+        keyPlayer: "주전 타자",
         keyStory: "타선 집중력이 돋보였습니다.",
         nextGame: "내일 18:30 경기 예정",
         recentRecord: "최근 5경기 4승 1패",
@@ -137,22 +137,22 @@ const realEstateRun: AssistantRun<"real_estate"> = {
   input: {},
   output: {
     generatedAt: "2026-05-13T01:20:00.000Z",
-    marketSummary: "선호 입지 중심의 차별화 흐름이 이어졌습니다.",
+    marketSummary: "지역별 흐름을 살펴볼 수 있습니다.",
     notice: REAL_ESTATE_ASSISTANT_NOTICE,
     regions: [
       {
-        demandSignal: "실거주 수요가 꾸준합니다.",
-        keyChanges: ["문의 강도가 유지되고 있습니다."],
-        priceTrendSummary: "마포구 아파트는 보합권에서 강세 흐름입니다.",
+        demandSignal: "실거주 수요가 견조합니다.",
+        keyChanges: ["문의 강도가 높습니다."],
+        priceTrendSummary: "마포 아파트는 보합권에서 움직입니다.",
         propertyType: "apartment",
         region: "서울 마포구",
         source: {
           publishedAt: "2026-05-13T01:10:00.000Z",
           sourceName: "Housing Watch",
           sourceUrl: "https://example.com/real-estate/mapo",
-          title: "마포구 아파트 흐름",
+          title: "마포 아파트 요약",
         },
-        supplySignal: "공급 뉴스는 제한적입니다.",
+        supplySignal: "공급은 제한적입니다.",
       },
     ],
   },
@@ -176,9 +176,11 @@ describe("assistant result helpers", () => {
     expect(parsedStock?.type).toBe("stock");
     expect(parsedBaseball?.type).toBe("baseball");
     expect(parsedRealEstate?.type).toBe("real_estate");
-    expect(parsedStock && parsedStock.type === "stock"
-      ? parsedStock.output.disclaimer
-      : null).toBe(STOCK_ASSISTANT_DISCLAIMER);
+    expect(
+      parsedStock && parsedStock.type === "stock"
+        ? parsedStock.output.disclaimer
+        : null,
+    ).toBe(STOCK_ASSISTANT_DISCLAIMER);
   });
 
   it("returns null for non-success or invalid outputs", () => {
@@ -219,17 +221,17 @@ describe("assistant result helpers", () => {
         output: null,
         status: "pending",
       }),
-    ).toBe("AI 브리핑을 생성하고 있어요.");
+    ).toBe("인공지능 브리핑을 생성하고 있어요.");
   });
 
   it("returns readable status labels and timestamp formatting", () => {
     expect(getAssistantRunStatusCopy(newsRun)).toEqual({
-      label: "Success",
+      label: "완료",
       tone: "success",
     });
-    expect(
-      formatAssistantRunTimestamp("2026-05-13T01:20:00.000Z"),
-    ).toMatch(/2026/);
+    expect(formatAssistantRunTimestamp("2026-05-13T01:20:00.000Z")).toMatch(
+      /2026/,
+    );
     expect(formatAssistantRunTimestamp("invalid")).toBe("시간 정보 없음");
   });
 });

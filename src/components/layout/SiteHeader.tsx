@@ -5,9 +5,9 @@ import { signOutAction } from "@/lib/supabase/actions";
 import { getCurrentUser } from "@/lib/supabase/server";
 
 const navItems = [
-  { href: "#assistant-preview", label: "Assistant Preview" },
-  { href: "#why", label: "Why It Works" },
-  { href: "/dashboard", label: "Dashboard" },
+  { href: "#assistant-preview", label: "비서 미리보기" },
+  { href: "#why", label: "작동 원리" },
+  { href: "/dashboard", label: "대시보드" },
 ];
 
 export async function SiteHeader() {
@@ -26,7 +26,7 @@ export async function SiteHeader() {
                 My SECRETARY
               </p>
               <p className="text-sm font-medium text-[var(--color-foreground)]">
-                AI assistants for readable briefings
+                읽기 쉬운 브리핑용 인공지능 비서
               </p>
             </div>
           </Link>
@@ -46,14 +46,14 @@ export async function SiteHeader() {
           {user ? (
             <div className="flex items-center gap-3">
               <p className="hidden rounded-full border border-[var(--color-stroke)] bg-white px-3 py-2 text-xs text-[var(--color-muted)] lg:block">
-                {user.email ?? "Signed in"}
+                {user.email ?? "로그인됨"}
               </p>
               <form action={signOutAction}>
                 <button
                   type="submit"
                   className="inline-flex items-center justify-center rounded-full bg-[var(--color-foreground)] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#342011]"
                 >
-                  Logout
+                  로그아웃
                 </button>
               </form>
             </div>
@@ -62,7 +62,7 @@ export async function SiteHeader() {
               href="/login"
               className="inline-flex items-center justify-center rounded-full bg-[var(--color-foreground)] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#342011]"
             >
-              Login
+              로그인
             </Link>
           )}
         </div>

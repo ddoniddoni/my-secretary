@@ -56,7 +56,7 @@ export function AssistantDashboardClient({
   function handleCreated(assistant: UserAssistant) {
     setItems((current) => [...current, assistant]);
     setFeedback({
-      message: "The assistant has been added to your dashboard.",
+      message: "비서를 대시보드에 추가했어요.",
       tone: "success",
     });
   }
@@ -77,7 +77,7 @@ export function AssistantDashboardClient({
 
       if (!response.ok || !result.data?.deleted) {
         setFeedback({
-          message: result.error ?? "We could not remove that assistant.",
+          message: result.error ?? "비서를 삭제하지 못했어요.",
           tone: "error",
         });
         return;
@@ -88,7 +88,7 @@ export function AssistantDashboardClient({
       );
       setDeleteTarget(null);
       setFeedback({
-        message: "The assistant has been removed from your dashboard.",
+        message: "비서를 대시보드에서 삭제했어요.",
         tone: "success",
       });
       startTransition(() => {
@@ -97,7 +97,7 @@ export function AssistantDashboardClient({
     } catch (error) {
       console.error("Failed to delete assistant", error);
       setFeedback({
-        message: "We could not remove that assistant.",
+        message: "비서를 삭제하지 못했어요.",
         tone: "error",
       });
     } finally {
@@ -113,13 +113,13 @@ export function AssistantDashboardClient({
             <SparkleMark />
             <div>
               <h1 className="font-pixel text-[28px] leading-[1.3] text-[var(--dashboard-text)] sm:text-[36px]">
-                My AI Assistants
+                내 인공지능 비서
               </h1>
               <p className="mt-4 max-w-2xl text-[15px] leading-8 text-[var(--dashboard-muted)]">
-                Save repeatable workflows, rerun structured briefings, and keep
-                every assistant in one pixel-style workspace.
+                반복해서 쓰는 작업 흐름을 저장하고, 구조화된 브리핑을 다시
+                실행하며, 모든 비서를 한 화면에서 관리하세요.
                 <span className="ml-2 hidden text-[var(--dashboard-text)] sm:inline">
-                  {userEmail ?? "Signed in"}
+                  {userEmail ?? "로그인됨"}
                 </span>
               </p>
             </div>
@@ -133,24 +133,24 @@ export function AssistantDashboardClient({
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search assistants..."
+              placeholder="비서 검색..."
               className="pixel-input h-[68px] pl-14 pr-5 text-[15px]"
-              aria-label="Search assistants"
+              aria-label="비서 검색"
             />
           </label>
           <AssistantCreateDialog
             onCreated={handleCreated}
             templates={templates}
             triggerClassName="pixel-button pixel-button-primary pixel-toolbar-button font-pixel text-[11px] uppercase"
-            triggerLabel="+ Add"
+            triggerLabel="+ 추가"
           />
         </div>
       </section>
 
       <p className="mt-4 text-sm text-[var(--dashboard-muted)]">
         {isRefreshing
-          ? "Refreshing the latest dashboard state..."
-          : "Search by assistant name, category, symbol, team, or region."}
+          ? "가장 최근 대시보드 상태를 불러오는 중입니다..."
+          : "비서 이름, 카테고리, 종목, 팀, 지역으로 검색해보세요."}
       </p>
 
       {items.length > 0 ? (
@@ -198,16 +198,16 @@ export function AssistantDashboardClient({
         <div className="mt-8">
           <StatePanel
             align="center"
-            description="Start with a news, stock, baseball, or housing template and this dashboard will turn into your saved assistant deck."
-            eyebrow="Empty deck"
-            title="No assistants yet"
+            description="뉴스, 주식, 야구, 부동산 템플릿 중 하나로 시작하면 이 대시보드가 바로 저장된 비서 묶음으로 바뀝니다."
+            eyebrow="비어 있는 비서 묶음"
+            title="아직 비서가 없어요"
             tone="info"
             action={
               <AssistantCreateDialog
                 onCreated={handleCreated}
                 templates={templates}
                 triggerClassName="pixel-button pixel-button-primary pixel-toolbar-button font-pixel text-[11px] uppercase"
-                triggerLabel="+ Add"
+                triggerLabel="+ 추가"
               />
             }
           />
@@ -216,9 +216,9 @@ export function AssistantDashboardClient({
         <div className="mt-8">
           <StatePanel
             align="center"
-            description={`Nothing matched "${query.trim()}". Try an assistant name, template name, symbol, team, or region.`}
-            eyebrow="No match"
-            title="Your search came up empty"
+            description={`"${query.trim()}"과 일치하는 항목이 없어요. 비서 이름, 템플릿 이름, 종목, 팀, 지역을 다시 확인해보세요.`}
+            eyebrow="검색 결과 없음"
+            title="검색 결과가 없어요"
             tone="warning"
             action={
               <button
@@ -226,7 +226,7 @@ export function AssistantDashboardClient({
                 onClick={() => setQuery("")}
                 className="pixel-button pixel-button-secondary h-[52px] px-6"
               >
-                Clear search
+                검색 지우기
               </button>
             }
           />
@@ -246,7 +246,8 @@ export function AssistantDashboardClient({
 
       <footer className="mt-auto pt-8 text-center">
         <p className="font-mono text-sm text-[var(--dashboard-muted)]">
-          Built with pixels, providers, runners, and structured AI output.
+          픽셀 스타일, 데이터 제공자, 실행기, 구조화된 인공지능 출력으로
+          만들었습니다.
         </p>
       </footer>
 
@@ -257,8 +258,8 @@ export function AssistantDashboardClient({
             setDeleteTarget(null);
           }
         }}
-        title="Remove this assistant?"
-        description="The card will disappear from your dashboard. Existing run history stays available if your data store still has those records."
+        title="이 비서를 삭제할까요?"
+        description="카드는 대시보드에서 사라집니다. 데이터 저장소에 기록이 남아 있으면 기존 실행 기록은 계속 볼 수 있습니다."
       >
         <div className="space-y-5">
           <div className="rounded-[14px] border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-4 text-sm leading-7 text-[var(--color-foreground)]">
@@ -271,7 +272,7 @@ export function AssistantDashboardClient({
               disabled={isDeleting || isRefreshing}
               className="pixel-button pixel-button-secondary h-[48px] px-5"
             >
-              Cancel
+              취소
             </button>
             <button
               type="button"
@@ -279,7 +280,7 @@ export function AssistantDashboardClient({
               disabled={isDeleting || isRefreshing}
               className="pixel-button h-[48px] bg-[var(--dashboard-danger)] px-5 text-[#1d0910]"
             >
-              {isDeleting ? "Removing..." : "Remove"}
+              {isDeleting ? "삭제 중..." : "삭제"}
             </button>
           </div>
         </div>

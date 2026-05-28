@@ -6,132 +6,130 @@ import type {
 
 export const productHighlights: ProductHighlight[] = [
   {
-    label: "Saved workflows",
+    label: "저장된 작업 흐름",
     value:
-      "Turn repeated checks for news, markets, baseball, and housing into assistants you can rerun in one click.",
+      "뉴스, 시장, 야구, 부동산처럼 반복 확인하는 일을 한 번의 클릭으로 다시 실행할 수 있는 비서로 바꿉니다.",
   },
   {
-    label: "Structured output",
+    label: "구조화된 출력",
     value:
-      "Render validated result cards instead of dumping raw model text into a generic chat transcript.",
+      "원시 모델 텍스트를 채팅 로그처럼 보여주지 않고, 검증된 결과 카드를 렌더링합니다.",
   },
   {
-    label: "Server-side AI",
+    label: "서버 측 인공지능",
     value:
-      "Keep provider fetching, AI generation, and schema validation behind route handlers and assistant runners.",
+      "데이터 제공자 조회, 인공지능 생성, 스키마 검증은 모두 라우트 핸들러와 비서 실행기 뒤에서 처리합니다.",
   },
 ];
 
 export const assistantPreviews: AssistantPreview[] = [
   {
     type: "news",
-    badge: "news brief",
-    name: "Morning News Desk",
-    summary:
-      "Summarize the top stories you care about into a compact morning briefing.",
+    badge: "뉴스 브리핑",
+    name: "아침 뉴스 데스크",
+    summary: "관심 있는 주요 뉴스를 간결한 아침 브리핑으로 정리합니다.",
     description:
-      "The news assistant turns category-based source data into a readable brief with headline cards, why-it-matters copy, and source links.",
+      "뉴스 비서는 카테고리 기반 소스 데이터를 읽기 쉬운 브리프와 헤드라인 카드, 중요한 이유 설명, 출처 링크로 바꿔줍니다.",
     bullets: [
-      "Track categories such as IT, finance, world, or culture.",
-      "Show a headline stack, a top-line summary, and source context.",
-      "Stay compatible with mock providers first and real feeds later.",
+      "IT, 금융, 국제, 문화 같은 카테고리를 추적합니다.",
+      "헤드라인 묶음, 핵심 요약, 출처 맥락을 함께 보여줍니다.",
+      "처음엔 모의 데이터 제공자, 나중엔 실제 피드로 그대로 연결할 수 있습니다.",
     ],
     previewItems: [
       {
-        title: "Semiconductor spending expands",
+        title: "반도체 투자 확대",
         meta: "IT",
         description:
-          "Cloud and infrastructure demand continues to drive new capex plans across the supply chain.",
+          "클라우드와 인프라 수요가 이어지면서 공급망 전반에서 새로운 투자 계획이 나오고 있습니다.",
       },
       {
-        title: "Why it matters",
-        meta: "context",
+        title: "왜 중요한가",
+        meta: "맥락",
         description:
-          "The same cycle can affect enterprise budgets, AI vendors, and downstream hardware makers.",
+          "같은 흐름이 기업 예산, 인공지능 공급사, 하드웨어 제조사 모두에 영향을 줄 수 있습니다.",
       },
     ],
   },
   {
     type: "stock",
-    badge: "market brief",
-    name: "Market Radar",
+    badge: "시장 브리핑",
+    name: "시장 레이더",
     summary:
-      "Track watchlist moves, key issues, and public-market context without drifting into investment advice.",
+      "관심 종목의 움직임과 핵심 이슈를 추적하되, 투자 조언으로 흐르지 않게 정리합니다.",
     description:
-      "The stock assistant packages price moves, related headlines, and market framing into a structured result card with a clear disclaimer.",
+      "주식 비서는 가격 변화, 관련 헤드라인, 시장 맥락을 하나의 구조화된 카드와 명확한 주의 문구로 묶어줍니다.",
     bullets: [
-      "Watch US or KR symbols from the same dashboard.",
-      "Summaries stay informational instead of making buy or sell calls.",
-      "Related news and issue lists stay tied to provider data.",
+      "같은 대시보드에서 미국과 한국 종목을 함께 확인합니다.",
+      "요약은 매수/매도 판단이 아니라 정보 안내에 머뭅니다.",
+      "관련 뉴스와 이슈 목록은 데이터 제공자 데이터와 연결됩니다.",
     ],
     previewItems: [
       {
         title: "NVDA",
         meta: "+2.1%",
         description:
-          "Demand expectations and data-center commentary continue to shape the near-term narrative.",
+          "수요 기대와 데이터센터 코멘트가 단기 내러티브를 계속 이끌고 있습니다.",
       },
       {
-        title: "Disclaimer",
-        meta: "notice",
-        description:
-          "This briefing is a public-data summary and not investment advice.",
+        title: "주의 문구",
+        meta: "알림",
+        description: "이 브리핑은 공개 데이터 요약이며 투자 조언이 아닙니다.",
       },
     ],
   },
   {
     type: "baseball",
-    badge: "kbo brief",
-    name: "KBO Radar",
+    badge: "KBO 브리핑",
+    name: "KBO 레이더",
     summary:
-      "Follow your teams with standings-aware roundups instead of scanning several recap pages.",
+      "여러 페이지를 뒤지지 않아도 순위 정보를 포함한 경기 흐름을 한 번에 확인합니다.",
     description:
-      "The baseball assistant collects team updates, standings context, and next-game signals into a quick-read sports briefing.",
+      "야구 비서는 팀 업데이트, 순위 맥락, 다음 경기 신호를 빠르게 읽을 수 있는 스포츠 브리핑으로 묶어줍니다.",
     bullets: [
-      "Track one or more KBO teams from the same saved setup.",
-      "Choose whether standings appear in the final brief.",
-      "Keep sports data isolated behind a provider boundary.",
+      "하나의 저장된 설정에서 KBO 여러 팀을 추적합니다.",
+      "최종 브리핑에 순위를 포함할지 선택할 수 있습니다.",
+      "스포츠 데이터는 데이터 제공자 경계 안에서 분리해 둡니다.",
     ],
     previewItems: [
       {
-        title: "LG Twins",
-        meta: "series",
+        title: "LG 트윈스",
+        meta: "시리즈",
         description:
-          "Pitching depth and bullpen usage are the key watchpoints heading into the next matchup.",
+          "다음 경기 전까지는 선발진과 불펜 운영이 핵심 관전 포인트입니다.",
       },
       {
-        title: "Standings",
-        meta: "included",
+        title: "순위",
+        meta: "포함",
         description:
-          "League position stays visible so a single game update is easier to interpret in context.",
+          "리그 위치를 함께 보여줘서 한 경기 결과를 더 쉽게 해석할 수 있습니다.",
       },
     ],
   },
   {
     type: "real_estate",
-    badge: "housing pulse",
-    name: "Home Pulse",
+    badge: "부동산 흐름",
+    name: "집 흐름",
     summary:
-      "Monitor regional housing signals with a result UI built for scanning public market updates.",
+      "공개 시장 업데이트를 빠르게 훑기 좋은 결과 UI로 지역별 주택 신호를 확인합니다.",
     description:
-      "The real-estate assistant groups public market signals by region and property type so repeated checks stay fast and readable.",
+      "부동산 비서는 지역과 주택 유형별로 공개 시장 신호를 묶어서 반복 확인이 빠르고 읽기 쉽게 만듭니다.",
     bullets: [
-      "Track multiple regions and property types in one assistant.",
-      "Keep copy grounded in public market updates and supply signals.",
-      "Stay ready to swap mock data for a real housing feed later.",
+      "하나의 비서에서 여러 지역과 주택 유형을 추적합니다.",
+      "공개 시장 업데이트와 공급 신호를 바탕으로 문구를 유지합니다.",
+      "나중에 실제 주택 피드로 교체하기 쉽게 설계합니다.",
     ],
     previewItems: [
       {
-        title: "Mapo apartments",
-        meta: "Seoul",
+        title: "마포 아파트",
+        meta: "서울",
         description:
-          "Listing movement, sentiment, and supply notes are grouped into one short regional pulse.",
+          "매물 움직임, 심리, 공급 메모를 한 번에 읽을 수 있는 지역 요약으로 묶습니다.",
       },
       {
-        title: "Signal",
-        meta: "public data",
+        title: "신호",
+        meta: "공개 데이터",
         description:
-          "Each update is meant to summarize context, not generate a speculative recommendation.",
+          "각 업데이트는 추측보다 맥락 요약에 초점을 맞춥니다.",
       },
     ],
   },
@@ -139,21 +137,21 @@ export const assistantPreviews: AssistantPreview[] = [
 
 export const productPrinciples: ProductPrinciple[] = [
   {
-    eyebrow: "Readable UI",
-    title: "Result cards over chat transcripts",
+    eyebrow: "읽기 쉬운 UI",
+    title: "채팅 로그 대신 결과 카드",
     description:
-      "Each assistant type should render a purpose-built result view that matches the task instead of repeating a generic chat window.",
+      "각 비서 유형은 일반 채팅창을 반복하기보다 작업 목적에 맞는 전용 결과 화면으로 렌더링되어야 합니다.",
   },
   {
-    eyebrow: "Reliable boundaries",
-    title: "Providers, runners, and schemas stay separate",
+    eyebrow: "명확한 경계",
+    title: "데이터 제공자, 실행기, 스키마를 분리",
     description:
-      "Mock providers can be swapped for real APIs later without rewriting the assistant UI or the route-level execution flow.",
+      "모의 데이터 제공자는 나중에 실제 API로 바꿔도 비서 UI와 route-level 실행 흐름을 다시 쓰지 않아도 됩니다.",
   },
   {
-    eyebrow: "Safe by default",
-    title: "User ownership and server-only AI execution",
+    eyebrow: "안전 기본값",
+    title: "소유권 검증과 서버 측 실행",
     description:
-      "Supabase ownership checks, RLS, and server-side AI calls keep data access and secrets on the safe side of the boundary.",
+      "Supabase 소유권 검사, RLS, 서버 측 인공지능 호출은 데이터 접근과 비밀키를 안전한 경계 안에 둡니다.",
   },
 ];

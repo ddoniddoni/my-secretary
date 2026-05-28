@@ -50,20 +50,20 @@ export function formatAssistantRunTimestamp(value: string | null) {
 export function getAssistantRunStatusCopy(run: Pick<AssistantRun, "status">) {
   if (run.status === "success") {
     return {
-      label: "Success",
+      label: "완료",
       tone: "success",
     } as const;
   }
 
   if (run.status === "failed") {
     return {
-      label: "Failed",
+      label: "실패",
       tone: "danger",
     } as const;
   }
 
   return {
-    label: "Running",
+    label: "실행 중",
     tone: "info",
   } as const;
 }
@@ -128,7 +128,7 @@ export function parseAssistantRunResult(
 
 export function getAssistantRunSummary(run: AssistantRun) {
   if (run.status === "pending") {
-    return "AI 브리핑을 생성하고 있어요.";
+    return "인공지능 브리핑을 생성하고 있어요.";
   }
 
   if (run.status === "failed") {
@@ -138,20 +138,20 @@ export function getAssistantRunSummary(run: AssistantRun) {
   const parsed = parseAssistantRunResult(run);
 
   if (!parsed) {
-    return "저장된 실행 결과를 해석하지 못했습니다.";
+    return "저장된 실행 결과를 해석하지 못했어요.";
   }
 
   if (parsed.type === "news") {
-    return `${parsed.output.highlights.length}개의 주요 이슈를 정리했습니다.`;
+    return `${parsed.output.highlights.length}개의 주요 이슈를 정리했어요.`;
   }
 
   if (parsed.type === "stock") {
-    return `${parsed.output.symbols.length}개 종목 브리핑을 저장했습니다.`;
+    return `${parsed.output.symbols.length}개 종목 브리핑을 저장했어요.`;
   }
 
   if (parsed.type === "baseball") {
-    return `${parsed.output.teamBriefs.length}개 팀 흐름을 정리했습니다.`;
+    return `${parsed.output.teamBriefs.length}개 팀 흐름을 정리했어요.`;
   }
 
-  return `${parsed.output.regions.length}개 지역 브리핑을 저장했습니다.`;
+  return `${parsed.output.regions.length}개 지역 브리핑을 저장했어요.`;
 }

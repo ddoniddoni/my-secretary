@@ -73,7 +73,7 @@ function buildFallbackNews(
   return {
     publishedAt: "2026-05-12T05:00:00.000Z",
     sentiment: "neutral",
-    sourceName: "Mock Market Feed",
+    sourceName: "가상 시장 피드",
     sourceUrl: `https://example.com/stocks/${symbol.toLowerCase()}-overview`,
     summary: `${symbol} is using fallback mock market context for ${market} testing.`,
     symbol,

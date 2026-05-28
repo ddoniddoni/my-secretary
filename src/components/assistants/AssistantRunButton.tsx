@@ -25,7 +25,7 @@ export function AssistantRunButton({
   assistantId,
   buttonClassName,
   idleLabel,
-  runningLabel = "Running...",
+  runningLabel = "실행 중...",
   showFeedback = false,
 }: AssistantRunButtonProps) {
   const router = useRouter();
@@ -48,14 +48,14 @@ export function AssistantRunButton({
 
       if (!response.ok || !result.data?.run) {
         setMessage({
-          text: result.error ?? "We could not run that assistant.",
+          text: result.error ?? "비서를 실행하지 못했어요.",
           tone: "error",
         });
         return;
       }
 
       setMessage({
-        text: "A fresh briefing has been generated.",
+        text: "새 브리핑을 생성했어요.",
         tone: "success",
       });
       startTransition(() => {
@@ -64,7 +64,7 @@ export function AssistantRunButton({
     } catch (error) {
       console.error("Failed to run assistant", error);
       setMessage({
-        text: "We could not run that assistant.",
+        text: "비서를 실행하지 못했어요.",
         tone: "error",
       });
     } finally {

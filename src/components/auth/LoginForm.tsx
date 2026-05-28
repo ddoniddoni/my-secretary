@@ -38,7 +38,7 @@ export function LoginForm({
           name="email"
           type="email"
           autoComplete="email"
-          placeholder="you@example.com"
+          placeholder="이메일 주소를 입력하세요"
           disabled={disabled || isPending}
           className="w-full rounded-[14px] border border-[var(--color-stroke)] bg-[var(--color-surface-strong)] px-4 py-3 text-sm text-[var(--color-foreground)] outline-none transition focus:border-[var(--color-foreground)] disabled:cursor-not-allowed disabled:opacity-60"
         />
@@ -66,7 +66,7 @@ export function LoginForm({
 
       <p className="text-sm leading-7 text-[var(--color-muted)]">
         처음 로그인하는 이메일이라면 Supabase Auth에서 계정이 함께 생성될 수
-        있습니다.
+        있어요.
       </p>
     </form>
   );

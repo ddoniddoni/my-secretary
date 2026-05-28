@@ -11,7 +11,7 @@ export function RealEstateAssistantResult({
     <section className="space-y-5">
       <div className="rounded-[14px] border border-[rgba(107,220,251,0.26)] bg-[rgba(107,220,251,0.08)] px-5 py-5">
         <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-info)]">
-          Market Summary
+          시장 요약
         </p>
         <p className="mt-4 text-sm leading-7 text-[var(--dashboard-text)]">
           {result.marketSummary}
@@ -34,7 +34,7 @@ export function RealEstateAssistantResult({
             <div className="mt-4 grid gap-3">
               <div className="rounded-[12px] border border-[rgba(137,239,116,0.22)] bg-[rgba(137,239,116,0.08)] px-4 py-4">
                 <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--dashboard-success)]">
-                  Demand
+                  수요
                 </p>
                 <p className="mt-3 text-sm leading-7 text-[var(--dashboard-text)]">
                   {region.demandSignal}
@@ -42,7 +42,7 @@ export function RealEstateAssistantResult({
               </div>
               <div className="rounded-[12px] border border-[rgba(243,194,89,0.22)] bg-[rgba(243,194,89,0.08)] px-4 py-4">
                 <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--dashboard-warning)]">
-                  Supply
+                  공급
                 </p>
                 <p className="mt-3 text-sm leading-7 text-[var(--dashboard-text)]">
                   {region.supplySignal}

@@ -21,10 +21,10 @@ export default function AssistantDetailError({
             align="center"
             description={
               error.message ||
-              "Try loading the assistant again after the current request settles."
+              "현재 요청이 끝난 뒤 다시 비서 상세 페이지를 불러와보세요."
             }
-            eyebrow="Assistant error"
-            title="The assistant detail page could not load"
+            eyebrow="비서 오류"
+            title="비서 상세 페이지를 불러오지 못했어요"
             tone="danger"
           >
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -33,13 +33,13 @@ export default function AssistantDetailError({
                 onClick={reset}
                 className="pixel-button pixel-button-primary px-6 text-sm"
               >
-                Try again
+                다시 시도
               </button>
               <Link
                 href="/"
                 className="pixel-button pixel-button-secondary px-6 text-sm"
               >
-                Back to dashboard
+                대시보드로 돌아가기
               </Link>
             </div>
           </StatePanel>

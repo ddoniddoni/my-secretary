@@ -20,11 +20,11 @@ export function AssistantResultRenderer({
     return (
       <div className="pixel-empty-state min-h-[300px] px-6">
         <p className="font-pixel text-[12px] uppercase text-[var(--dashboard-text)]">
-          No Results Yet
+          아직 결과가 없어요
         </p>
         <p className="mt-4 max-w-xl text-center text-[15px] leading-8 text-[var(--dashboard-muted)]">
-          아직 저장된 실행 결과가 없어요. 비서를 한 번 실행하면 여기에서
-          뉴스/주식 브리핑을 읽기 좋은 형태로 확인할 수 있습니다.
+          아직 저장된 실행 결과가 없어요. 비서를 한 번 실행하면 여기에서 뉴스와
+          주식 브리핑을 읽기 좋은 형태로 확인할 수 있습니다.
         </p>
       </div>
     );
@@ -43,7 +43,8 @@ export function AssistantResultRenderer({
           </span>
         </div>
         <p className="mt-4 text-sm leading-7 text-[var(--dashboard-text)]">
-          AI 브리핑을 생성하고 있어요. 잠시 후 최신 결과가 여기에 표시됩니다.
+          인공지능 브리핑을 생성하고 있어요. 잠시 후 최신 결과가 여기에
+          표시됩니다.
         </p>
       </div>
     );
@@ -71,7 +72,7 @@ export function AssistantResultRenderer({
     return (
       <div className="rounded-[14px] border border-[rgba(243,194,89,0.28)] bg-[rgba(243,194,89,0.08)] px-5 py-6">
         <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-warning)]">
-          Result Unavailable
+          결과를 불러올 수 없어요
         </p>
         <p className="mt-4 text-sm leading-7 text-[#ffe8b4]">
           저장된 실행 결과 형식을 해석하지 못했어요. 스키마가 변경됐거나

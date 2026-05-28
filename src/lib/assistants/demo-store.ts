@@ -55,7 +55,7 @@ function createDemoNewsRun(assistant: UserAssistant<"news">): AssistantRun<"news
           category: firstCategory,
           source: {
             publishedAt: now,
-            sourceName: "Demo Tech Wire",
+            sourceName: "데모 기술 와이어",
             sourceUrl: "https://example.com/demo/news/ai-infra",
             title: "AI 인프라 수요가 견조한 흐름을 이어가고 있습니다.",
           },
@@ -69,7 +69,7 @@ function createDemoNewsRun(assistant: UserAssistant<"news">): AssistantRun<"news
           category: assistant.config.categories[1] ?? firstCategory,
           source: {
             publishedAt: now,
-            sourceName: "Demo Daily",
+            sourceName: "데모 데일리",
             sourceUrl: "https://example.com/demo/news/market-watch",
             title: "거시 변수와 기술 섹터 흐름이 함께 주목받고 있습니다.",
           },
@@ -134,7 +134,7 @@ function createDemoStockRun(
             {
               publishedAt: now,
               sentiment: "positive",
-              sourceName: "Demo Market Brief",
+              sourceName: "데모 마켓 브리프",
               sourceUrl: "https://example.com/demo/stocks/first-symbol",
               summary:
                 "공개 데이터 기준으로 수요와 실적 기대가 함께 언급되고 있습니다.",
@@ -157,7 +157,7 @@ function createDemoStockRun(
             {
               publishedAt: now,
               sentiment: "neutral",
-              sourceName: "Demo Equity Watch",
+              sourceName: "데모 주식 관찰",
               sourceUrl: "https://example.com/demo/stocks/second-symbol",
               summary: "가격 변동 자체보다 배경 이슈를 함께 보는 데 초점을 둡니다.",
               title: `${secondSymbol} 관련 이슈 체크`,
@@ -220,7 +220,7 @@ function createDemoBaseballRun(
         recentRecord: `최근 5경기 ${3 - (index % 2)}승 ${2 + (index % 2)}패`,
         source: {
           publishedAt: now,
-          sourceName: "Demo KBO Wire",
+          sourceName: "데모 KBO 와이어",
           sourceUrl: `https://example.com/demo/baseball/${encodeURIComponent(team)}`,
           title: `${team} 최근 경기 흐름 데모 브리핑`,
         },
@@ -277,7 +277,7 @@ function createDemoRealEstateRun(
           region,
           source: {
             publishedAt: now,
-            sourceName: "Demo Housing Watch",
+            sourceName: "데모 주거 관찰",
             sourceUrl: `https://example.com/demo/real-estate/${encodeURIComponent(region)}-${propertyType}`,
             title: `${region} ${propertyType} 데모 브리핑`,
           },

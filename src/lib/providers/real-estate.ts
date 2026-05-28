@@ -121,7 +121,7 @@ function buildFallbackPulse(
     propertyType,
     publishedAt: "2026-05-13T08:50:00.000Z",
     region,
-    sourceName: "Demo Property Feed",
+    sourceName: "데모 부동산 피드",
     sourceUrl: `https://example.com/real-estate/${encodeURIComponent(region)}-${propertyType}`,
     supplySignal: "실제 공급 지표 대신 데모용 요약을 표시합니다.",
     title: `${region} ${propertyType} 데모 브리프`,

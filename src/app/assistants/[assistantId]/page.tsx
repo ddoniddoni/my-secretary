@@ -21,6 +21,7 @@ import {
   getUserAssistantById,
   listAssistantRunsForUserAssistant,
 } from "@/lib/assistants/repository";
+import { getAssistantTypeLabel } from "@/lib/assistants/dashboard";
 import { isDemoModeEnabled } from "@/lib/demo-mode";
 import {
   createServerSupabaseClient,
@@ -125,7 +126,7 @@ function AssistantDetailContent({
           href="/"
           className="rounded-[8px] border border-[var(--dashboard-border)] px-3 py-2 transition hover:border-[var(--dashboard-border-strong)] hover:text-[var(--dashboard-text)]"
         >
-          Dashboard
+          대시보드
         </Link>
         <span>/</span>
         <span className="text-[var(--dashboard-text)]">{assistant.name}</span>
@@ -138,22 +139,22 @@ function AssistantDetailContent({
               <PixelAvatar variant={assistant.type} size="md" />
               <div className="min-w-0">
                 <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-accent-strong)]">
-                  {assistant.type} assistant
+                  {getAssistantTypeLabel(assistant.type)}
                 </p>
                 <h1 className="mt-3 text-2xl font-semibold text-[var(--dashboard-text)] sm:text-3xl">
                   {assistant.name}
                 </h1>
                 <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--dashboard-muted)]">
                   {template?.description ??
-                    "A reusable personal AI assistant built from a saved config, a template, and a structured result schema."}
+                    "저장된 설정, 템플릿, 구조화된 결과 스키마를 기반으로 만든 재사용 가능한 개인 인공지능 비서입니다."}
                 </p>
               </div>
             </div>
 
             <AssistantRunButton
               assistantId={assistant.id}
-              idleLabel="Run briefing"
-              runningLabel="Generating..."
+              idleLabel="브리핑 실행"
+              runningLabel="생성 중..."
               showFeedback
               buttonClassName="pixel-button pixel-button-primary h-[52px] w-full text-sm lg:w-auto lg:min-w-[180px]"
             />
@@ -178,23 +179,23 @@ function AssistantDetailContent({
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <div className="rounded-[14px] border border-[var(--dashboard-border)] bg-[rgba(255,255,255,0.03)] px-4 py-4">
               <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--dashboard-muted)]">
-                Latest execution
+                최근 실행 시각
               </p>
               <p className="mt-3 text-sm leading-7 text-[var(--dashboard-text)]">
                 {latestRun
                   ? formatAssistantRunTimestamp(
                       latestRun.completedAt ?? latestRun.createdAt,
                     )
-                  : "No runs yet."}
+                  : "아직 실행 기록이 없어요."}
               </p>
             </div>
             <div className="rounded-[14px] border border-[var(--dashboard-border)] bg-[rgba(255,255,255,0.03)] px-4 py-4">
               <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--dashboard-muted)]">
-                Recent runs
+                최근 실행 수
               </p>
               <p className="mt-3 text-sm leading-7 text-[var(--dashboard-text)]">
-                Showing the latest {runs.length} run
-                {runs.length === 1 ? "" : "s"} for this assistant.
+                이 비서의 최근 {runs.length}
+                {runs.length === 1 ? "건" : "건"} 실행만 보여줍니다.
               </p>
             </div>
           </div>
@@ -203,16 +204,16 @@ function AssistantDetailContent({
         <aside className="space-y-6">
           <section className="pixel-panel rounded-[18px] px-6 py-6">
             <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-warning)]">
-              Settings
+              설정
             </p>
             <div className="mt-4">
               {template ? (
                 <AssistantDetailEditor assistant={assistant} template={template} />
               ) : (
                 <StatePanel
-                  description="The assistant still exists, but its backing template could not be loaded for editing."
-                  eyebrow="Template missing"
-                  title="Settings are unavailable"
+                  description="비서는 아직 존재하지만, 편집할 수 있는 템플릿을 불러오지 못했습니다."
+                  eyebrow="템플릿 없음"
+                  title="설정 정보를 사용할 수 없어요"
                   tone="danger"
                 />
               )}
@@ -225,10 +226,10 @@ function AssistantDetailContent({
         <div className="space-y-4">
           <div>
             <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-info)]">
-              Latest result
+              최근 결과
             </p>
             <h2 className="mt-3 text-xl font-semibold text-[var(--dashboard-text)]">
-              Most recent briefing output
+              가장 최근 브리핑 결과
             </h2>
           </div>
           <AssistantResultRenderer run={latestRun} />
@@ -237,10 +238,10 @@ function AssistantDetailContent({
         <div className="space-y-4">
           <div>
             <p className="font-pixel text-[10px] uppercase text-[var(--dashboard-success)]">
-              History
+              기록
             </p>
             <h2 className="mt-3 text-xl font-semibold text-[var(--dashboard-text)]">
-              Execution timeline
+              실행 타임라인
             </h2>
           </div>
           <AssistantRunHistory runs={runs} />

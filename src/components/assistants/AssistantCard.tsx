@@ -54,7 +54,9 @@ export function AssistantCard({
       </div>
 
       <div className="mt-5 flex flex-wrap gap-2">
-        <span className="pixel-meta-pill">{getAssistantTypeLabel(assistant.type)}</span>
+        <span className="pixel-meta-pill">
+          {getAssistantTypeLabel(assistant.type)}
+        </span>
         {metaChips.map((chip) => (
           <span key={chip} className="pixel-meta-pill">
             {chip}
@@ -62,23 +64,23 @@ export function AssistantCard({
         ))}
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1.1fr)_56px]">
+      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1.1fr)_56px]">
         <Link
           href={`/assistants/${assistant.id}`}
           className="pixel-card-button pixel-card-button-primary w-full"
         >
-          Detail
+          상세
         </Link>
         <AssistantRunButton
           assistantId={assistant.id}
-          idleLabel="Run"
+          idleLabel="실행"
           runningLabel="..."
           buttonClassName="pixel-card-button pixel-card-button-secondary w-full whitespace-nowrap"
         />
         <button
           type="button"
           onClick={() => onDelete(assistant)}
-          className="pixel-card-button pixel-card-button-icon col-span-2 w-full sm:col-span-1"
+          className="pixel-card-button pixel-card-button-icon w-full sm:col-span-1"
           aria-label={`${assistant.name} 삭제`}
         >
           <DotsIcon />
@@ -103,10 +105,7 @@ function PixelCardPortrait({ type }: PixelCardPortraitProps) {
           : "is-real-estate";
 
   return (
-    <div
-      className={`pixel-card-portrait ${typeClass}`}
-      aria-hidden="true"
-    >
+    <div className={`pixel-card-portrait ${typeClass}`} aria-hidden="true">
       <div className="pixel-card-portrait-frame" />
       <div className="pixel-card-portrait-head" />
       <div className="pixel-card-portrait-body" />

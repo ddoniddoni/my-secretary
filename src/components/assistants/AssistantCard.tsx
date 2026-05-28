@@ -62,7 +62,7 @@ export function AssistantCard({
         ))}
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1.1fr)_56px]">
+      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1.1fr)_56px]">
         <Link
           href={`/assistants/${assistant.id}`}
           className="pixel-card-button pixel-card-button-primary w-full"
@@ -78,7 +78,7 @@ export function AssistantCard({
         <button
           type="button"
           onClick={() => onDelete(assistant)}
-          className="pixel-card-button pixel-card-button-icon col-span-2 w-full sm:col-span-1"
+          className="pixel-card-button pixel-card-button-icon w-full sm:col-span-1"
           aria-label={`${assistant.name} 삭제`}
         >
           <DotsIcon />

@@ -154,27 +154,6 @@ export function DashboardShell({
               >
                 {workspaceMode}
               </span>
-              <button
-                type="button"
-                aria-label="Minimize"
-                className="pixel-window-control"
-              >
-                <span className="pixel-window-control-line" />
-              </button>
-              <button
-                type="button"
-                aria-label="Maximize"
-                className="pixel-window-control"
-              >
-                <span className="pixel-window-control-square" />
-              </button>
-              <button
-                type="button"
-                aria-label="Close"
-                className="pixel-window-control pixel-window-control-danger"
-              >
-                <span className="pixel-window-control-x" />
-              </button>
             </div>
           </div>
         </header>
